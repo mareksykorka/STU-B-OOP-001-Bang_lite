@@ -1,19 +1,27 @@
 package sk.stuba.fei.uim.oop.player;
 
+import sk.stuba.fei.uim.oop.cards.Barrel;
 import sk.stuba.fei.uim.oop.cards.Card;
+import sk.stuba.fei.uim.oop.cards.Missed;
+import sk.stuba.fei.uim.oop.game.Game;
+import sk.stuba.fei.uim.oop.table.Table;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Player {
     private final String name;
     private int lives;
     private ArrayList<Card> cardsOnHand;
     private ArrayList<Card> cardsOnTable;
+    private Random randomGenerator;
 
     public Player(String name) {
         this.name = name;
         this.lives = 4;
         this.cardsOnHand = new ArrayList<Card>();
         this.cardsOnTable = new ArrayList<Card>();
+        this.randomGenerator = new Random();
     }
 
     public String getName(){
@@ -55,6 +63,7 @@ public class Player {
         lives--;
     }
 
+
     public void setCardsOnHand(ArrayList<Card> cards) {
         this.cardsOnHand.addAll(cards);
     }
@@ -63,6 +72,9 @@ public class Player {
     }
     public ArrayList<Card> getCardsOnHand(){
         return this.cardsOnHand;
+    }
+    public int getCardsOnHandNumber() {
+        return cardsOnHand.size();
     }
     public Card removeCardOnHand(int indexOfCard){
         Card card = this.cardsOnHand.get(indexOfCard);
@@ -73,6 +85,7 @@ public class Player {
         return card;
     }
 
+
     public void setCardsOnTable(ArrayList<Card> cards) {
         this.cardsOnTable.addAll(cards);
     }
@@ -82,6 +95,9 @@ public class Player {
     public ArrayList<Card> getCardsOnTable(){
         return this.cardsOnTable;
     }
+    public int getCardsOnTableNumber() {
+        return cardsOnTable.size();
+    }
     public Card removeCardOnTable(int indexOfCard){
         Card card = this.cardsOnTable.get(indexOfCard);
         return removeCardOnHand(card);
@@ -90,6 +106,7 @@ public class Player {
         this.cardsOnTable.remove(card);
         return card;
     }
+
 
     public void showCardsOnTable() {
         if(cardsOnTable.size() > 0){
@@ -110,15 +127,46 @@ public class Player {
         }
     }
 
-    /*
-    public void useCard(int cardIndex, Table table)
-    {
-        this.cardsOnHand.get(cardIndex).play();
-        this.throwAway(cardIndex, table);
+
+    public boolean receiveBang(Table table){
+        if(checkBarrel()){
+            return false;
+        }
+        if(checkMissed(table)){
+            return false;
+        }
+        this.removeLives(1);
+        return true;
+    }
+    public boolean receiveCatBalou(){
+        return false;
+    }
+    private boolean checkBarrel() {
+        for (Card card:this.cardsOnTable) {
+            if(card instanceof Barrel){
+                if ((randomGenerator.nextInt(4) + 1) == 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean checkMissed(Table table) {
+        for (Card card:this.cardsOnHand) {
+            if(card instanceof Missed){
+                table.discardCard(this.removeCardOnHand(this.cardsOnHand.indexOf(card)));
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void throwAway(int input, Table table) {
-        table.discardCard(this.cardsOnHand.get(input));
-        cardsOnHand.remove(input);
-    }*/
+    public void useCard(int cardIndex, Table table, Game game)
+    {
+        if(this.cardsOnHand.get(cardIndex).play(this, table, game)){
+            table.discardCard(this.removeCardOnHand(cardIndex));
+        } else {
+            System.out.println("The Card could not be played.");
+        }
+    }
 }

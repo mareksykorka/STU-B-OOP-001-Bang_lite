@@ -72,6 +72,7 @@ public class Table {
     public boolean reffillDeck(){
         if (!(discardPile.isEmpty())) {
             Collections.shuffle(this.discardPile);
+            System.out.println("Reffiling deck from the discard pile.");
             deck.addAll(discardPile);
             discardPile.clear();
             return true;

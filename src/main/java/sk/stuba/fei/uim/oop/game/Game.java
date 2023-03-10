@@ -4,6 +4,8 @@ import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.table.Table;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
+import java.util.ArrayList;
+
 public class Game {
     private Player[] players;
     private Player activePlayer;
@@ -32,17 +34,16 @@ public class Game {
     private void gameLoop(){
         while(this.getNumberOfAlivePlayers() > 1){
             if(this.activePlayer.isAlive()) {
-                // First Phase
+                // First Phase - Automatic
                 this.activePlayer.setCardsOnHand(this.table.drawCards(2));
-                showPlayingField();
                 // Second Phase
-                while (this.askForAction()) {
+                do {
                     showPlayingField();
-                }
+                } while (this.askForAction());
                 // Third phase
-                while (this.checkPlayerCards()) {
+                do {
                     showPlayingField();
-                }
+                } while (this.checkPlayerCards());
             }
             this.nextPlayer();
         }
@@ -61,8 +62,12 @@ public class Game {
     private boolean askForAction() {
         int input = ZKlavesnice.readInt("What card you want to play? If you want to end your turn just write '0'.");
         if (input != 0) {
-            // TODO: Playcard method
-            //this.activePlayer;
+            input -= 1;
+            if((input >= 0) && (input < this.activePlayer.getCardsOnHandNumber())){
+                this.activePlayer.useCard(input, this.table,this);
+            } else {
+                System.out.println("You don't have the card "+ (input+1) + "! Try Again!");
+            }
             return true;
         }
         return false;
@@ -70,14 +75,18 @@ public class Game {
     private boolean checkPlayerCards() {
         if(!(activePlayer.isTurnEndAllowed())) {
             int input = ZKlavesnice.readInt("What card do you want to throw away?");
-            // TODO: ThrowAway method
-            //this.activePlayer;
+            input -= 1;
+            if((input >= 0) && (input < this.activePlayer.getCardsOnHandNumber())){
+                table.discardCard(this.activePlayer.removeCardOnHand(input));
+            } else {
+                System.out.println("You don't have the card "+ (input+1) + "! Try Again!");
+            }
             return true;
         }
         return false;
     }
 
-    private int getNumberOfAlivePlayers(){
+    public int getNumberOfAlivePlayers(){
         int alivePlayers = 0;
         for (Player player:players) {
             if(player.isAlive()) {
@@ -85,6 +94,15 @@ public class Game {
             }
         }
         return alivePlayers;
+    }
+    public int getIndexOfActivePlayer() {
+        return indexOfActivePlayer;
+    }
+    public Player getActivePlayer(){
+        return activePlayer;
+    }
+    public Player getPlayerByIndex(int index) {
+        return players[index];
     }
     private void nextPlayer(){
         indexOfActivePlayer++;
