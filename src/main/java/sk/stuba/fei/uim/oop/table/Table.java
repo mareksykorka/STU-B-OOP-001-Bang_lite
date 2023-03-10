@@ -1,14 +1,13 @@
 package sk.stuba.fei.uim.oop.table;
 
 import sk.stuba.fei.uim.oop.cards.*;
-import sk.stuba.fei.uim.oop.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Table {
     private ArrayList<Card> deck;
-    private ArrayList<Card> discardDeck;
+    private ArrayList<Card> discardPile;
 
     public Table() {
         ArrayList<Card> cards = new ArrayList<Card>();
@@ -39,37 +38,46 @@ public class Table {
         Collections.shuffle(cards);
 
         this.deck = cards;
-        this.discardDeck = new ArrayList<Card>();
+        this.discardPile = new ArrayList<Card>();
     }
 
     public ArrayList<Card> drawCards(int numberOfCards) {
         ArrayList<Card> outputCards = new ArrayList<Card>();
+        Card newCard;
         for (int i = 0; i < numberOfCards; i++){
-            if(deck.isEmpty()){
-                reffillDeck();
-            } else {
-                outputCards.add(deck.get(0));
-                deck.remove(0);
+            if((newCard = this.drawCards()) == null) {
+                break;
             }
+            outputCards.add(newCard);
         }
         return outputCards;
     }
+    private Card drawCards() {
+        Card outputCard;
+        if(this.deck.isEmpty()) {
+            return (this.reffillDeck() ? this.drawCards() : null);
+        }
+        outputCard = deck.get(0);
+        this.deck.remove(0);
+        return outputCard;
+    }
 
     public void discardCard(Card card) {
-        this.discardDeck.add(card);
+        this.discardPile.add(card);
     }
-
     public void discardCards(ArrayList<Card> cards) {
-        this.discardDeck.addAll(cards);
+        this.discardPile.addAll(cards);
     }
 
-    public void reffillDeck(){
-        if (!(discardDeck.isEmpty())) {
-            Collections.shuffle(this.discardDeck);
-            deck.addAll(discardDeck);
-            discardDeck.clear();
-        } else {
-            System.out.println("Vsetky balicky su prazdne.");
+    public boolean reffillDeck(){
+        if (!(discardPile.isEmpty())) {
+            Collections.shuffle(this.discardPile);
+            deck.addAll(discardPile);
+            discardPile.clear();
+            return true;
         }
+
+        System.out.println("There are no more cards left on the table, neither in the deck nor in the discard pile.");
+        return false;
     }
 }
