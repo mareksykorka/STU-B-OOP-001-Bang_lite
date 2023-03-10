@@ -1,9 +1,6 @@
 package sk.stuba.fei.uim.oop.player;
 
-import sk.stuba.fei.uim.oop.cards.Barrel;
-import sk.stuba.fei.uim.oop.cards.Card;
-import sk.stuba.fei.uim.oop.cards.Dynamite;
-import sk.stuba.fei.uim.oop.cards.Missed;
+import sk.stuba.fei.uim.oop.cards.*;
 import sk.stuba.fei.uim.oop.game.Game;
 import sk.stuba.fei.uim.oop.table.Table;
 
@@ -128,7 +125,13 @@ public class Player {
         }
     }
 
-
+    public boolean receiveIndians(Table table) {
+        if (checkBang(table)) {
+            return false;
+        }
+        this.removeLives(1);
+        return true;
+    }
     public boolean receiveBang(Table table){
         if(checkBarrel()){
             return false;
@@ -142,20 +145,21 @@ public class Player {
     public boolean receiveCatBalou(){
         return false;
     }
-    public void checkDynamit(Table table, Game game){
+    public boolean checkDynamit(Table table, Game game){
         for (Card card:this.cardsOnTable) {
             if (card instanceof Dynamite) {
                 if ((randomGenerator.nextInt(8) + 1) == 1) {
-                    this.removeLives(1);
-                    table.discardCard(this.removeCardOnTable(this.cardsOnHand.indexOf(card)));
+                    this.removeLives(3);
+                    table.discardCard(this.removeCardOnTable(this.cardsOnTable.indexOf(card)));
+                    return true;
                 }
                 Player prevPlayer = game.getPlayerByIndex(game.prevPlayer());
-                prevPlayer.setCardsOnTable(this.removeCardOnTable(this.cardsOnHand.indexOf(card)));
+                prevPlayer.setCardsOnTable(this.removeCardOnTable(card));
+                return false;
             }
         }
+        return false;
     }
-
-
     private boolean checkBarrel() {
         for (Card card:this.cardsOnTable) {
             if(card instanceof Barrel){
@@ -169,6 +173,15 @@ public class Player {
     private boolean checkMissed(Table table) {
         for (Card card:this.cardsOnHand) {
             if(card instanceof Missed){
+                table.discardCard(this.removeCardOnHand(this.cardsOnHand.indexOf(card)));
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean checkBang(Table table) {
+        for (Card card:this.cardsOnHand) {
+            if(card instanceof Bang){
                 table.discardCard(this.removeCardOnHand(this.cardsOnHand.indexOf(card)));
                 return true;
             }

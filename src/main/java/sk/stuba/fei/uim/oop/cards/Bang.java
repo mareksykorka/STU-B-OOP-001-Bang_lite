@@ -16,11 +16,14 @@ public class Bang extends Card {
     public boolean play(Player player, Table table, Game game) {
         int input = ZKlavesnice.readInt("Who is the target ?");
         input -= 1;
-        if((input >= 0) && (input < game.getNumberOfAlivePlayers())){
+        if((input >= 0) && (input < game.getNumberOfAllPlayers())){
             if(input != game.getIndexOfActivePlayer()) {
                 Player target = game.getPlayerByIndex(input);
-                target.receiveBang(table);
-                return true;
+                if(target.isAlive()){
+                    target.receiveBang(table);
+                    return true;
+                }
+                return false;
             }
             System.out.println("You can not shoot yourself!");
             return false;

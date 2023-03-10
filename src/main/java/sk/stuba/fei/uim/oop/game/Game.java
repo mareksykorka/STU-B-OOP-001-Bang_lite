@@ -39,10 +39,14 @@ public class Game {
                 this.activePlayer.setCardsOnHand(this.table.drawCards(2));
                 // Second Phase
                 do {
+                    if(!(this.getNumberOfAlivePlayers() > 1))
+                        break;
                     showPlayingField();
                 } while (this.askForAction());
                 // Third phase
                 do {
+                    if(!(this.getNumberOfAlivePlayers() > 1))
+                        break;
                     showPlayingField();
                 } while (this.checkPlayerCards());
             }
@@ -96,6 +100,9 @@ public class Game {
         }
         return alivePlayers;
     }
+    public int getNumberOfAllPlayers(){
+        return players.length;
+    }
     public int getIndexOfActivePlayer() {
         return indexOfActivePlayer;
     }
@@ -113,9 +120,16 @@ public class Game {
         activePlayer = players[indexOfActivePlayer];
     }
     public int prevPlayer(){
-        int index = indexOfActivePlayer-1;
+        int index = indexOfActivePlayer;
+        index-=1;
         if(index < 0){
             index = (this.players.length-1);
+        }
+        while (!(getPlayerByIndex(index).isAlive())){
+            index-=1;
+            if(index < 0){
+                index = (this.players.length-1);
+            }
         }
         return index;
     }

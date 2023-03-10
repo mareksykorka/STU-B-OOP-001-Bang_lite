@@ -21,5 +21,6 @@ public abstract class Card {
         return name;
     }
 
+    //TODO: efekty presun do kariet
     public abstract boolean play(Player player, Table table, Game game);
 }
