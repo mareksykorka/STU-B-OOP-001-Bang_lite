@@ -6,4 +6,9 @@ public class Stagecoach extends Card {
     public Stagecoach() {
         super(CARD_NAME);
     }
+
+    @Override
+    public void play() {
+
+    }
 }

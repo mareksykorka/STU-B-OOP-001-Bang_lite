@@ -6,4 +6,9 @@ public class Prison extends Card {
     public Prison() {
         super(CARD_NAME);
     }
+
+    @Override
+    public void play() {
+
+    }
 }

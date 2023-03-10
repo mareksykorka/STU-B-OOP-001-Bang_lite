@@ -6,4 +6,9 @@ public class Dynamite extends Card {
     public Dynamite() {
         super(CARD_NAME);
     }
+
+    @Override
+    public void play() {
+
+    }
 }

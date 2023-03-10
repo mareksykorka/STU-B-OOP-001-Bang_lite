@@ -6,4 +6,9 @@ public class CatBalou extends Card {
     public CatBalou() {
         super(CARD_NAME);
     }
+
+    @Override
+    public void play() {
+
+    }
 }

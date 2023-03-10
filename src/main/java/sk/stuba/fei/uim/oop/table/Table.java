@@ -1,10 +1,9 @@
 package sk.stuba.fei.uim.oop.table;
 
 import sk.stuba.fei.uim.oop.cards.*;
+import sk.stuba.fei.uim.oop.player.Player;
 
-import javax.swing.plaf.basic.BasicOptionPaneUI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class Table {
@@ -37,18 +36,40 @@ public class Table {
         cards.add(new Prison());
         cards.add(new Prison());
 
-        System.out.println("---------------- All Cards ----------------");
-        for (Card card: cards) {
-            System.out.println(card.getName());
-        }
-        System.out.println("---------------- Shuffled Cards ----------------");
         Collections.shuffle(cards);
-        for (Card card: cards) {
-            System.out.println(card.getName());
-        }
 
         this.deck = cards;
         this.discardDeck = new ArrayList<Card>();
     }
 
+    public ArrayList<Card> drawCards(int numberOfCards) {
+        ArrayList<Card> outputCards = new ArrayList<Card>();
+        for (int i = 0; i < numberOfCards; i++){
+            if(deck.isEmpty()){
+                reffillDeck();
+            } else {
+                outputCards.add(deck.get(0));
+                deck.remove(0);
+            }
+        }
+        return outputCards;
+    }
+
+    public void discardCard(Card card) {
+        this.discardDeck.add(card);
+    }
+
+    public void discardCards(ArrayList<Card> cards) {
+        this.discardDeck.addAll(cards);
+    }
+
+    public void reffillDeck(){
+        if (!(discardDeck.isEmpty())) {
+            Collections.shuffle(this.discardDeck);
+            deck.addAll(discardDeck);
+            discardDeck.clear();
+        } else {
+            System.out.println("Vsetky balicky su prazdne.");
+        }
+    }
 }

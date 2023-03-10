@@ -11,9 +11,8 @@ public class ZKlavesnice {
         try {
             System.out.println(napis_pre_uzivatela);
             c = (char) zklavesnice.read();
-            //System.out.println("Nacital som " + c);
         } catch (Exception e) {
-            System.out.println("nepodarilo sa");
+            System.out.println("Unexpected data type, reading was not performed, Try again.");
             c = readChar(napis_pre_uzivatela);
         }
 
@@ -26,9 +25,8 @@ public class ZKlavesnice {
         BufferedReader zklavesnice = new BufferedReader(new InputStreamReader(System.in));
         try {	System.out.println(napis_pre_uzivatela);
             s = zklavesnice.readLine();
-            //System.out.println("Nacital som " + s);
         } catch (Exception e) {
-            System.out.println("nepodarilo sa");
+            System.out.println("Unexpected data type, reading was not performed, Try again.");
             s = readString(napis_pre_uzivatela);
         }
 
@@ -42,10 +40,9 @@ public class ZKlavesnice {
         BufferedReader zklavesnice = new BufferedReader(new InputStreamReader(System.in));
         try {	System.out.println(napis_pre_uzivatela);
             s = zklavesnice.readLine();
-            //System.out.println("Nacital som " + s);
             n = Integer.parseInt(s);
         } catch (Exception e) {
-            System.out.println("nepodarilo sa");
+            System.out.println("Unexpected data type, reading was not performed, Try again.");
             n = readInt(napis_pre_uzivatela);
         }
 
@@ -59,10 +56,9 @@ public class ZKlavesnice {
         BufferedReader zklavesnice = new BufferedReader(new InputStreamReader(System.in));
         try {	System.out.println(napis_pre_uzivatela);
             s = zklavesnice.readLine();
-            //System.out.println("Nacital som " + s);
             x = Double.parseDouble(s);
         } catch (Exception e) {
-            System.out.println("nepodarilo sa");
+            System.out.println("Unexpected data type, reading was not performed, Try again.");
             x = readDouble(napis_pre_uzivatela);
         }
 

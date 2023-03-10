@@ -6,4 +6,9 @@ public class Indians extends Card {
     public Indians() {
         super(CARD_NAME);
     }
+
+    @Override
+    public void play() {
+
+    }
 }

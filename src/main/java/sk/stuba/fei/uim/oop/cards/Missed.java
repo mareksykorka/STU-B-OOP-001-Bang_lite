@@ -6,4 +6,9 @@ public class Missed extends Card {
     public Missed() {
         super(CARD_NAME);
     }
+
+    @Override
+    public void play() {
+
+    }
 }

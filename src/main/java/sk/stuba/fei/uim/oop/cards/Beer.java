@@ -6,4 +6,9 @@ public class Beer extends Card {
     public Beer() {
         super(CARD_NAME);
     }
+
+    @Override
+    public void play() {
+
+    }
 }

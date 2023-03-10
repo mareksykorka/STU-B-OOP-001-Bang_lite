@@ -6,4 +6,9 @@ public class Bang extends Card {
     public Bang() {
         super(CARD_NAME);
     }
+
+    @Override
+    public void play() {
+
+    }
 }

@@ -6,4 +6,9 @@ public class Barrel extends Card {
     public Barrel() {
         super(CARD_NAME);
     }
+
+    @Override
+    public void play() {
+
+    }
 }
