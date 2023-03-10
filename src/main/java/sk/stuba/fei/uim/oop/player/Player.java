@@ -2,6 +2,7 @@ package sk.stuba.fei.uim.oop.player;
 
 import sk.stuba.fei.uim.oop.cards.Barrel;
 import sk.stuba.fei.uim.oop.cards.Card;
+import sk.stuba.fei.uim.oop.cards.Dynamite;
 import sk.stuba.fei.uim.oop.cards.Missed;
 import sk.stuba.fei.uim.oop.game.Game;
 import sk.stuba.fei.uim.oop.table.Table;
@@ -141,6 +142,20 @@ public class Player {
     public boolean receiveCatBalou(){
         return false;
     }
+    public void checkDynamit(Table table, Game game){
+        for (Card card:this.cardsOnTable) {
+            if (card instanceof Dynamite) {
+                if ((randomGenerator.nextInt(8) + 1) == 1) {
+                    this.removeLives(1);
+                    table.discardCard(this.removeCardOnTable(this.cardsOnHand.indexOf(card)));
+                }
+                Player prevPlayer = game.getPlayerByIndex(game.prevPlayer());
+                prevPlayer.setCardsOnTable(this.removeCardOnTable(this.cardsOnHand.indexOf(card)));
+            }
+        }
+    }
+
+
     private boolean checkBarrel() {
         for (Card card:this.cardsOnTable) {
             if(card instanceof Barrel){

@@ -13,6 +13,7 @@ public class Dynamite extends Card {
 
     @Override
     public boolean play(Player player, Table table, Game game) {
-        return false;
+        player.setCardsOnTable(this);
+        return true;
     }
 }

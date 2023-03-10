@@ -35,6 +35,7 @@ public class Game {
         while(this.getNumberOfAlivePlayers() > 1){
             if(this.activePlayer.isAlive()) {
                 // First Phase - Automatic
+                this.activePlayer.checkDynamit(table, this);
                 this.activePlayer.setCardsOnHand(this.table.drawCards(2));
                 // Second Phase
                 do {
@@ -110,6 +111,13 @@ public class Game {
             indexOfActivePlayer = 0;
         }
         activePlayer = players[indexOfActivePlayer];
+    }
+    public int prevPlayer(){
+        int index = indexOfActivePlayer-1;
+        if(index < 0){
+            index = (this.players.length-1);
+        }
+        return index;
     }
     private String getWinnerName() {
         String winner = "";
