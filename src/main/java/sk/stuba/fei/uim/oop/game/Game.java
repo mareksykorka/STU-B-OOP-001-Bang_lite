@@ -59,11 +59,16 @@ public class Game {
     }
 
     private void showPlayingField(){
+        System.out.print("\033[H\033[2J");
         System.out.println("Table:");
         for(int i = 0; i < this.players.length; i++){
             System.out.println((i+1) + ". " + players[i].getName() + " " + players[i].isAlive(Player.PrintType.FULL));
             players[i].showCardsOnTable();
         }
+        System.out.println("-------------------------------------------------------------------------------------");
+        System.out.println("Deck: " + table.getNumberOfCardsInDeck());
+        System.out.println("Discard: " + table.getNumberOfCardsInDiscardPile());
+        System.out.println("-------------------------------------------------------------------------------------");
         System.out.println(""+ activePlayer.getName() + "`s hand:");
         activePlayer.showCardsOnHand();
     }
@@ -118,23 +123,34 @@ public class Game {
     public Player getPlayerByIndex(int index) {
         return players[index];
     }
+
+    //TODO: Rework NextPlayer to better logic -- BROKEN
     private int nextPlayer(){
         int index = indexOfActivePlayer;
+        index++;
         while (!(getPlayerByIndex(index).isAlive())){
             index++;
             if(index >= this.players.length){
                 index = 0;
             }
         }
+        if(index >= this.players.length){
+            index = 0;
+        }
+        this.indexOfActivePlayer = index;
         return index;
     }
     public int prevPlayer(){
         int index = indexOfActivePlayer;
+        index--;
         while (!(getPlayerByIndex(index).isAlive())){
             index--;
             if(index < 0){
                 index = (this.players.length-1);
             }
+        }
+        if(index < 0){
+            index = (this.players.length-1);
         }
         return index;
     }

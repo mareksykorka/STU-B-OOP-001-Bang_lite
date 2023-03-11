@@ -12,7 +12,7 @@ public class CatBalou extends Card {
         super(CARD_NAME, Colour.BROWN, table, game);
     }
 
-    //TODO: Rework CatBalou to better logic
+    //TODO: Rework CatBalou to better logic -- BROKEN
     @Override
     public boolean play(Player player) {
         int targetIndex = this.choosePlayer(player);

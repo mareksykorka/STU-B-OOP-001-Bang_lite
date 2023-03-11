@@ -25,7 +25,8 @@ public class Prison extends Card {
             }
         }
         targetPlayer.setCardsOnTable(this);
-        return true;
+        player.removeCardOnHand(this);
+        return false;
     }
 
     @Override

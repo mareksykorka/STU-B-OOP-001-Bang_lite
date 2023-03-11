@@ -67,6 +67,13 @@ public class Table {
         this.discardPile.addAll(cards);
     }
 
+    public int getNumberOfCardsInDeck(){
+        return deck.size();
+    }
+    public int getNumberOfCardsInDiscardPile(){
+        return discardPile.size();
+    }
+
     public boolean reffillDeck(){
         if (!(discardPile.isEmpty())) {
             Collections.shuffle(this.discardPile);

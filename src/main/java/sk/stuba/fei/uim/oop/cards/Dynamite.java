@@ -20,7 +20,8 @@ public class Dynamite extends Card {
             }
         }
         player.setCardsOnTable(this);
-        return true;
+        player.removeCardOnHand(this);
+        return false;
     }
 
     @Override
