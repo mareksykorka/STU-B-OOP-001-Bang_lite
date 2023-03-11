@@ -12,7 +12,7 @@ public class CatBalou extends Card {
     }
 
     @Override
-    public boolean play(Player player, Table table, Game game) {
+    public boolean play(Player player) {
         return false;
     }
 

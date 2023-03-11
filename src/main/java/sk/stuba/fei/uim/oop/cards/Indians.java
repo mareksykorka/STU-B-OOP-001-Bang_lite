@@ -13,14 +13,14 @@ public class Indians extends Card {
 
     @Override
     public boolean play(Player player) {
-        for (int i = 0; i < game.getNumberOfAllPlayers(); i++) {
+        /*for (int i = 0; i < game.getNumberOfAllPlayers(); i++) {
             if(game.getPlayerByIndex(i).isAlive()){
                 Player target = game.getPlayerByIndex(i);
                 if(!(player.equals(target))){
                     target.receiveIndians(table);
                 }
             }
-        }
+        }*/
         return true;
     }
 
