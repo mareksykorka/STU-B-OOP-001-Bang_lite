@@ -51,6 +51,7 @@ public class Game {
                 } while (this.checkPlayerCards());
             }
             this.nextPlayer();
+            this.setActivePlayer();
         }
         System.out.println("The winner is " + this.getWinnerName());
     }
@@ -109,24 +110,26 @@ public class Game {
     public Player getActivePlayer(){
         return activePlayer;
     }
+    public void setActivePlayer(){
+        this.activePlayer = this.players[indexOfActivePlayer];
+    }
     public Player getPlayerByIndex(int index) {
         return players[index];
     }
-    private void nextPlayer(){
-        indexOfActivePlayer++;
-        if(indexOfActivePlayer >= this.players.length){
-            indexOfActivePlayer = 0;
+    private int nextPlayer(){
+        int index = indexOfActivePlayer;
+        while (!(getPlayerByIndex(index).isAlive())){
+            index++;
+            if(index >= this.players.length){
+                index = 0;
+            }
         }
-        activePlayer = players[indexOfActivePlayer];
+        return index;
     }
     public int prevPlayer(){
         int index = indexOfActivePlayer;
-        index-=1;
-        if(index < 0){
-            index = (this.players.length-1);
-        }
         while (!(getPlayerByIndex(index).isAlive())){
-            index-=1;
+            index--;
             if(index < 0){
                 index = (this.players.length-1);
             }
