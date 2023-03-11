@@ -35,7 +35,7 @@ public class Game {
         while(this.getNumberOfAlivePlayers() > 1){
             if(this.activePlayer.isAlive()) {
                 // First Phase - Automatic
-                //this.activePlayer.checkDynamit(table, this);
+                this.activePlayer.checkDynamit();
                 this.activePlayer.setCardsOnHand(this.table.drawCards(2));
                 // Second Phase
                 do {

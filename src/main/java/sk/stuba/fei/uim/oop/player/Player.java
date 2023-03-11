@@ -134,6 +134,16 @@ public class Player {
         }
     }
 
+    public void checkDynamit(){
+        for (Card card:this.cardsOnTable) {
+            if (card instanceof Dynamite) {
+                card.receivePlay(this);
+            }
+        }
+    }
+    public void checkPrison(){
+
+    }
 
     /*
     public boolean receiveIndians(Table table) {
@@ -162,16 +172,6 @@ public class Player {
         }
         return false;
     }
-
-    private boolean checkMissed(Table table) {
-        for (Card card:this.cardsOnHand) {
-            if(card instanceof Missed){
-                table.discardCard(this.removeCardOnHand(this.cardsOnHand.indexOf(card)));
-                return true;
-            }
-        }
-        return false;
-    }
     private boolean checkBang(Table table) {
         for (Card card:this.cardsOnHand) {
             if(card instanceof Bang){
@@ -180,7 +180,5 @@ public class Player {
             }
         }
         return false;
-    }
-
-*/
+    }*/
 }
