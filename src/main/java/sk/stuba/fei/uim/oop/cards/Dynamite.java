@@ -7,7 +7,7 @@ import sk.stuba.fei.uim.oop.table.Table;
 public class Dynamite extends Card {
     private static final String CARD_NAME = "Dynamite";
 
-    public Dynamite() {
+    public Dynamite(Table table, Game game) {
         super(CARD_NAME, Colour.BLUE);
     }
 

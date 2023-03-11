@@ -1,6 +1,7 @@
 package sk.stuba.fei.uim.oop.table;
 
 import sk.stuba.fei.uim.oop.cards.*;
+import sk.stuba.fei.uim.oop.game.Game;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,31 +10,31 @@ public class Table {
     private ArrayList<Card> deck;
     private ArrayList<Card> discardPile;
 
-    public Table() {
+    public Table(Game game) {
         ArrayList<Card> cards = new ArrayList<Card>();
         for (int i = 0; i < 30; i++) {
-            cards.add(new Bang());
+            cards.add(new Bang(this, game));
         }
         for (int i = 0; i < 15; i++) {
-            cards.add(new Missed());
+            cards.add(new Missed(this, game));
         }
         for (int i = 0; i < 8; i++) {
-            cards.add(new Beer());
+            cards.add(new Beer(this, game));
         }
         for (int i = 0; i < 6; i++) {
-            cards.add(new CatBalou());
+            cards.add(new CatBalou(this, game));
         }
         for (int i = 0; i < 4; i++) {
-            cards.add(new Stagecoach());
+            cards.add(new Stagecoach(this, game));
         }
-        cards.add(new Indians());
-        cards.add(new Indians());
-        cards.add(new Barrel());
-        cards.add(new Barrel());
-        cards.add(new Dynamite());
-        cards.add(new Prison());
-        cards.add(new Prison());
-        cards.add(new Prison());
+        cards.add(new Indians(this, game));
+        cards.add(new Indians(this, game));
+        cards.add(new Barrel(this, game));
+        cards.add(new Barrel(this, game));
+        cards.add(new Dynamite(this, game));
+        cards.add(new Prison(this, game));
+        cards.add(new Prison(this, game));
+        cards.add(new Prison(this, game));
 
         Collections.shuffle(cards);
 
@@ -53,13 +54,10 @@ public class Table {
         return outputCards;
     }
     private Card drawCards() {
-        Card outputCard;
         if(this.deck.isEmpty()) {
             return (this.reffillDeck() ? this.drawCards() : null);
         }
-        outputCard = deck.get(0);
-        this.deck.remove(0);
-        return outputCard;
+        return this.deck.remove(0);
     }
 
     public void discardCard(Card card) {

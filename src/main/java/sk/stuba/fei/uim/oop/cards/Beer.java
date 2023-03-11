@@ -7,7 +7,7 @@ import sk.stuba.fei.uim.oop.table.Table;
 public class Beer extends Card {
     private static final String CARD_NAME = "Beer";
 
-    public Beer() {
+    public Beer(Table table, Game game) {
         super(CARD_NAME, Colour.BROWN);
     }
 

@@ -20,7 +20,7 @@ public class Game {
                 System.out.println("You have entered a wrong number of players, Try Again.");
             }
         }
-        this.table = new Table();
+        this.table = new Table(this);
         this.indexOfActivePlayer = 0;
         this.players = new Player[playersCount];
         for(int i = 0; i < playersCount; i++){
@@ -35,7 +35,7 @@ public class Game {
         while(this.getNumberOfAlivePlayers() > 1){
             if(this.activePlayer.isAlive()) {
                 // First Phase - Automatic
-                this.activePlayer.checkDynamit(table, this);
+                //this.activePlayer.checkDynamit(table, this);
                 this.activePlayer.setCardsOnHand(this.table.drawCards(2));
                 // Second Phase
                 do {
@@ -58,7 +58,7 @@ public class Game {
     private void showPlayingField(){
         System.out.println("Table:");
         for(int i = 0; i < this.players.length; i++){
-            System.out.println((i+1) + ". " + players[i].getName() + " " + players[i].isAlive("Full"));
+            System.out.println((i+1) + ". " + players[i].getName() + " " + players[i].isAlive(Player.PrintType.FULL));
             players[i].showCardsOnTable();
         }
         System.out.println(""+ activePlayer.getName() + "`s hand:");
@@ -69,7 +69,7 @@ public class Game {
         if (input != 0) {
             input -= 1;
             if((input >= 0) && (input < this.activePlayer.getCardsOnHandNumber())){
-                this.activePlayer.useCard(input, this.table,this);
+                this.activePlayer.useCard(input, this.table);
             } else {
                 System.out.println("You don't have the card "+ (input+1) + "! Try Again!");
             }

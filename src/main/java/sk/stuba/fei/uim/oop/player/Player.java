@@ -12,30 +12,33 @@ public class Player {
     private int lives;
     private ArrayList<Card> cardsOnHand;
     private ArrayList<Card> cardsOnTable;
-    private Random randomGenerator;
+    public enum PrintType {
+        SIMPLE,
+        FULL
+    }
 
     public Player(String name) {
         this.name = name;
         this.lives = 4;
         this.cardsOnHand = new ArrayList<Card>();
         this.cardsOnTable = new ArrayList<Card>();
-        this.randomGenerator = new Random();
     }
 
     public String getName(){
         return this.name;
     }
 
+
+    // Methods working with lives - checking alive status, manipulating with lives
     public boolean isAlive(){
         return (this.lives > 0);
     }
-    //TODO: prerob input nasledujucej metody na pouzitelnejsi format
-    public String isAlive(String format){
+    public String isAlive(PrintType type){
         if(this.lives > 0) {
-            if (format.equals("Simple")) {
+            if (type == PrintType.SIMPLE) {
                 return " Is Alive ";
             }
-            if (format.equals("Full")) {
+            if (type == PrintType.FULL) {
                 return " Is Alive with " + this.lives + " lives.";
             }
         }
@@ -62,58 +65,25 @@ public class Player {
     }
 
 
+    // Methods working wiht cards on hand - setting, removing, showing or getting
     public void setCardsOnHand(ArrayList<Card> cards) {
         this.cardsOnHand.addAll(cards);
     }
     public void setCardsOnHand(Card card) {
         this.cardsOnHand.add(card);
     }
-    public ArrayList<Card> getCardsOnHand(){
-        return this.cardsOnHand;
-    }
-    public int getCardsOnHandNumber() {
-        return cardsOnHand.size();
-    }
     public Card removeCardOnHand(int indexOfCard){
-        Card card = this.cardsOnHand.get(indexOfCard);
-        return removeCardOnHand(card);
+        return removeCardOnHand(this.cardsOnHand.get(indexOfCard));
     }
     public Card removeCardOnHand(Card card){
         this.cardsOnHand.remove(card);
         return card;
     }
-
-
-    public void setCardsOnTable(ArrayList<Card> cards) {
-        this.cardsOnTable.addAll(cards);
+    public ArrayList<Card> getCardsOnHand(){
+        return this.cardsOnHand;
     }
-    public void setCardsOnTable(Card card) {
-        this.cardsOnTable.add(card);
-    }
-    public ArrayList<Card> getCardsOnTable(){
-        return this.cardsOnTable;
-    }
-    public int getCardsOnTableNumber() {
-        return cardsOnTable.size();
-    }
-    public Card removeCardOnTable(int indexOfCard){
-        Card card = this.cardsOnTable.get(indexOfCard);
-        return removeCardOnHand(card);
-    }
-    public Card removeCardOnTable(Card card){
-        this.cardsOnTable.remove(card);
-        return card;
-    }
-
-
-    public void showCardsOnTable() {
-        if(cardsOnTable.size() > 0){
-            for (int i = 0; i < cardsOnTable.size(); i++) {
-                System.out.println("\t"+ (i+1) + ". " + cardsOnTable.get(i).getName());
-            }
-        } else {
-            System.out.println("\tThis player does not have any active cards.");
-        }
+    public int getCardsOnHandNumber() {
+        return cardsOnHand.size();
     }
     public void showCardsOnHand() {
         if(cardsOnHand.size() > 0){
@@ -125,6 +95,47 @@ public class Player {
         }
     }
 
+
+    // Methods working wiht cards on table - setting, removing, showing or getting
+    public void setCardsOnTable(ArrayList<Card> cards) {
+        this.cardsOnTable.addAll(cards);
+    }
+    public void setCardsOnTable(Card card) {
+        this.cardsOnTable.add(card);
+    }
+    public Card removeCardOnTable(int indexOfCard){
+        return removeCardOnHand(this.cardsOnTable.get(indexOfCard));
+    }
+    public Card removeCardOnTable(Card card){
+        this.cardsOnTable.remove(card);
+        return card;
+    }
+    public ArrayList<Card> getCardsOnTable(){
+        return this.cardsOnTable;
+    }
+    public int getCardsOnTableNumber() {
+        return cardsOnTable.size();
+    }
+    public void showCardsOnTable() {
+        if(cardsOnTable.size() > 0){
+            for (int i = 0; i < cardsOnTable.size(); i++) {
+                System.out.println("\t"+ (i+1) + ". " + cardsOnTable.get(i).getName());
+            }
+        } else {
+            System.out.println("\tThis player does not have any active cards.");
+        }
+    }
+
+    public void useCard(int cardIndex, Table table) {
+        if(this.cardsOnHand.get(cardIndex).play(this)){
+            table.discardCard(this.removeCardOnHand(cardIndex));
+        } else {
+            System.out.println("The Card could not be played.");
+        }
+    }
+
+
+    /*
     public boolean receiveIndians(Table table) {
         if (checkBang(table)) {
             return false;
@@ -132,16 +143,7 @@ public class Player {
         this.removeLives(1);
         return true;
     }
-    public boolean receiveBang(Table table){
-        if(checkBarrel()){
-            return false;
-        }
-        if(checkMissed(table)){
-            return false;
-        }
-        this.removeLives(1);
-        return true;
-    }
+
     public boolean receiveCatBalou(){
         return false;
     }
@@ -161,14 +163,7 @@ public class Player {
         return false;
     }
     private boolean checkBarrel() {
-        for (Card card:this.cardsOnTable) {
-            if(card instanceof Barrel){
-                if ((randomGenerator.nextInt(4) + 1) == 1) {
-                    return true;
-                }
-            }
-        }
-        return false;
+
     }
     private boolean checkMissed(Table table) {
         for (Card card:this.cardsOnHand) {
@@ -189,12 +184,5 @@ public class Player {
         return false;
     }
 
-    public void useCard(int cardIndex, Table table, Game game)
-    {
-        if(this.cardsOnHand.get(cardIndex).play(this, table, game)){
-            table.discardCard(this.removeCardOnHand(cardIndex));
-        } else {
-            System.out.println("The Card could not be played.");
-        }
-    }
+*/
 }

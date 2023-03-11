@@ -7,13 +7,32 @@ import sk.stuba.fei.uim.oop.table.Table;
 public class Barrel extends Card {
     private static final String CARD_NAME = "Barrel";
 
-    public Barrel() {
-        super(CARD_NAME, Colour.BLUE);
+    public Barrel(Table table, Game game) {
+        super(CARD_NAME, Colour.BLUE, table, game);
     }
 
     @Override
-    public boolean play(Player player, Table table, Game game) {
+    public boolean play(Player player) {
+        for (Card card:player.getCardsOnTable()) {
+            if(card instanceof Barrel)
+            {
+                System.out.println("You can not have two blue cards of the same type on the table at once!");
+                return false;
+            }
+        }
         player.setCardsOnTable(this);
         return true;
+    }
+
+    @Override
+    public boolean receivePlay(Player player) {
+        for (Card card:player.getCardsOnTable()) {
+            if(card instanceof Barrel){
+                if ((randomGenerator.nextInt(4) + 1) == 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
