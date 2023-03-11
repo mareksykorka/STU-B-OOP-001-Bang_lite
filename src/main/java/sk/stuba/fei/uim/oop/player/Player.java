@@ -98,7 +98,7 @@ public class Player {
     }
 
 
-    // Methods working wiht cards on table - setting, removing, showing or getting
+    // Methods working with cards on table - setting, removing, showing or getting
     public void setCardsOnTable(ArrayList<Card> cards) {
         this.cardsOnTable.addAll(cards);
     }
@@ -128,6 +128,7 @@ public class Player {
         }
     }
 
+
     public void useCard(int cardIndex, Table table) {
         if(this.cardsOnHand.get(cardIndex).play(this)){
             table.discardCard(this.removeCardOnHand(cardIndex));
@@ -151,41 +152,4 @@ public class Player {
         }
         return false;
     }
-
-    /*
-    public boolean receiveIndians(Table table) {
-        if (checkBang(table)) {
-            return false;
-        }
-        this.removeLives(1);
-        return true;
-    }
-
-    public boolean receiveCatBalou(){
-        return false;
-    }
-    public boolean checkDynamit(Table table, Game game){
-        for (Card card:this.cardsOnTable) {
-            if (card instanceof Dynamite) {
-                if ((randomGenerator.nextInt(8) + 1) == 1) {
-                    this.removeLives(3);
-                    table.discardCard(this.removeCardOnTable(this.cardsOnTable.indexOf(card)));
-                    return true;
-                }
-                Player prevPlayer = game.getPlayerByIndex(game.prevPlayer());
-                prevPlayer.setCardsOnTable(this.removeCardOnTable(card));
-                return false;
-            }
-        }
-        return false;
-    }
-    private boolean checkBang(Table table) {
-        for (Card card:this.cardsOnHand) {
-            if(card instanceof Bang){
-                table.discardCard(this.removeCardOnHand(this.cardsOnHand.indexOf(card)));
-                return true;
-            }
-        }
-        return false;
-    }*/
 }

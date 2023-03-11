@@ -147,4 +147,6 @@ public class Game {
         }
         return winner;
     }
+
+    //TODO: Implement Check when someone dies so he returns all his cards to the discard pile
 }
