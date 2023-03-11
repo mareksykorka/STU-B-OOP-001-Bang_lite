@@ -8,12 +8,17 @@ public class Stagecoach extends Card {
     private static final String CARD_NAME = "Stagecoach";
 
     public Stagecoach(Table table, Game game) {
-        super(CARD_NAME, Colour.BROWN);
+        super(CARD_NAME, Colour.BROWN, table, game);
     }
 
     @Override
-    public boolean play(Player player, Table table, Game game) {
+    public boolean play(Player player) {
         player.setCardsOnHand(table.drawCards(2));
         return true;
+    }
+
+    @Override
+    public boolean receivePlay(Player player) {
+        return false;
     }
 }

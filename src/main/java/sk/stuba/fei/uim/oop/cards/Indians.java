@@ -8,11 +8,11 @@ public class Indians extends Card {
     private static final String CARD_NAME = "Indians";
 
     public Indians(Table table, Game game) {
-        super(CARD_NAME, Colour.BROWN);
+        super(CARD_NAME, Colour.BROWN, table, game);
     }
 
     @Override
-    public boolean play(Player player, Table table, Game game) {
+    public boolean play(Player player) {
         for (int i = 0; i < game.getNumberOfAllPlayers(); i++) {
             if(game.getPlayerByIndex(i).isAlive()){
                 Player target = game.getPlayerByIndex(i);
@@ -22,5 +22,10 @@ public class Indians extends Card {
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean receivePlay(Player player) {
+        return false;
     }
 }

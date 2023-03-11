@@ -8,11 +8,16 @@ public class Prison extends Card {
     private static final String CARD_NAME = "Prison";
 
     public Prison(Table table, Game game) {
-        super(CARD_NAME, Colour.BLUE);
+        super(CARD_NAME, Colour.BLUE, table, game);
     }
 
     @Override
-    public boolean play(Player player, Table table, Game game) {
+    public boolean play(Player player) {
+        return false;
+    }
+
+    @Override
+    public boolean receivePlay(Player player) {
         return false;
     }
 }

@@ -162,9 +162,7 @@ public class Player {
         }
         return false;
     }
-    private boolean checkBarrel() {
 
-    }
     private boolean checkMissed(Table table) {
         for (Card card:this.cardsOnHand) {
             if(card instanceof Missed){

@@ -26,12 +26,8 @@ public class Barrel extends Card {
 
     @Override
     public boolean receivePlay(Player player) {
-        for (Card card:player.getCardsOnTable()) {
-            if(card instanceof Barrel){
-                if ((randomGenerator.nextInt(4) + 1) == 1) {
-                    return true;
-                }
-            }
+        if ((randomGenerator.nextInt(4) + 1) == 1) {
+            return true;
         }
         return false;
     }

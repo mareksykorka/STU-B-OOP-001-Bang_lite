@@ -8,12 +8,17 @@ public class Dynamite extends Card {
     private static final String CARD_NAME = "Dynamite";
 
     public Dynamite(Table table, Game game) {
-        super(CARD_NAME, Colour.BLUE);
+        super(CARD_NAME, Colour.BLUE, table, game);
     }
 
     @Override
     public boolean play(Player player, Table table, Game game) {
         player.setCardsOnTable(this);
         return true;
+    }
+
+    @Override
+    public boolean receivePlay(Player player) {
+        return false;
     }
 }
