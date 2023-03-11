@@ -62,6 +62,8 @@ public class Player {
     }
     private void removeLives(){
         lives--;
+        if(lives < 0)
+            lives = 0;
     }
 
 
@@ -141,8 +143,13 @@ public class Player {
             }
         }
     }
-    public void checkPrison(){
-
+    public boolean checkPrison(){
+        for (Card card:this.cardsOnTable) {
+            if (card instanceof Prison) {
+                return card.receivePlay(this);
+            }
+        }
+        return false;
     }
 
     /*

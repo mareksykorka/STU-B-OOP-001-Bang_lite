@@ -33,22 +33,24 @@ public class Game {
 
     private void gameLoop(){
         while(this.getNumberOfAlivePlayers() > 1){
+            // First Phase - Automatic
+            this.activePlayer.checkDynamit();
             if(this.activePlayer.isAlive()) {
-                // First Phase - Automatic
-                this.activePlayer.checkDynamit();
-                this.activePlayer.setCardsOnHand(this.table.drawCards(2));
-                // Second Phase
-                do {
-                    if(!(this.getNumberOfAlivePlayers() > 1))
-                        break;
-                    showPlayingField();
-                } while (this.askForAction());
-                // Third phase
-                do {
-                    if(!(this.getNumberOfAlivePlayers() > 1))
-                        break;
-                    showPlayingField();
-                } while (this.checkPlayerCards());
+                if(!this.activePlayer.checkPrison()){
+                    this.activePlayer.setCardsOnHand(this.table.drawCards(2));
+                    // Second Phase
+                    do {
+                        if(!(this.getNumberOfAlivePlayers() > 1))
+                            break;
+                        showPlayingField();
+                    } while (this.askForAction());
+                    // Third phase
+                    do {
+                        if(!(this.getNumberOfAlivePlayers() > 1))
+                            break;
+                        showPlayingField();
+                    } while (this.checkPlayerCards());
+                }
             }
             this.nextPlayer();
             this.setActivePlayer();

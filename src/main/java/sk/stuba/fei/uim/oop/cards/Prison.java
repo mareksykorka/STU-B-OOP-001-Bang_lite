@@ -13,11 +13,28 @@ public class Prison extends Card {
 
     @Override
     public boolean play(Player player) {
-        return false;
+        int targetIndex = this.choosePlayer(player);
+        if(targetIndex == -1) {
+            return false;
+        }
+        Player targetPlayer = game.getPlayerByIndex(targetIndex);
+        for (Card card:targetPlayer.getCardsOnTable()) {
+            if(card instanceof Prison) {
+                System.out.println("Players can not have two blue cards of the same type on the table at once!");
+                return false;
+            }
+        }
+        targetPlayer.setCardsOnTable(this);
+        return true;
     }
 
     @Override
     public boolean receivePlay(Player player) {
-        return false;
+        boolean returnVal = true;
+        if ((randomGenerator.nextInt(4) + 1) == 1) {
+            returnVal = false;
+        }
+        table.discardCard(player.removeCardOnTable(this));
+        return returnVal;
     }
 }

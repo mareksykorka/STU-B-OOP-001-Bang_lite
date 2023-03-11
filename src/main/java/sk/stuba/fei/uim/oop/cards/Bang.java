@@ -20,14 +20,12 @@ public class Bang extends Card {
         }
         Player targetPlayer = game.getPlayerByIndex(targetIndex);
         for (Card card:targetPlayer.getCardsOnTable()) {
-            if(card instanceof Barrel)
-            {
+            if(card instanceof Barrel) {
                 return card.receivePlay(targetPlayer);
             }
         }
         for (Card card:targetPlayer.getCardsOnHand()) {
-            if(card instanceof Missed)
-            {
+            if(card instanceof Missed) {
                 return card.receivePlay(targetPlayer);
             }
         }
@@ -37,6 +35,7 @@ public class Bang extends Card {
 
     @Override
     public boolean receivePlay(Player player) {
-        return false;
+        table.discardCard(player.removeCardOnHand(this));
+        return true;
     }
 }

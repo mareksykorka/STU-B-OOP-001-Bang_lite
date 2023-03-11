@@ -13,15 +13,20 @@ public class Indians extends Card {
 
     @Override
     public boolean play(Player player) {
-        /*for (int i = 0; i < game.getNumberOfAllPlayers(); i++) {
+        boolean returnVal = false;
+        for (int i = 0; i < game.getNumberOfAllPlayers(); i++) {
             if(game.getPlayerByIndex(i).isAlive()){
-                Player target = game.getPlayerByIndex(i);
-                if(!(player.equals(target))){
-                    target.receiveIndians(table);
+                Player targetPlayer = game.getPlayerByIndex(i);
+                if(!(player.equals(targetPlayer))){
+                    for (Card card:targetPlayer.getCardsOnHand()) {
+                        if(card instanceof Bang) {
+                            returnVal = card.receivePlay(targetPlayer);
+                        }
+                    }
                 }
             }
-        }*/
-        return true;
+        }
+        return returnVal;
     }
 
     @Override
