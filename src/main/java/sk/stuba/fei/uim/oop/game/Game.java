@@ -7,17 +7,24 @@ import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 import java.util.ArrayList;
 
 public class Game {
-    private Player[] players;
+    private final Player[] players;
     private Player activePlayer;
     private int indexOfActivePlayer;
     private Table table;
 
     public Game() {
+        System.out.println("══════════════════ BANG \"Lite\" ══════════════════\n" +
+                            "Welcome to the BANG \"Lite\",\n" +
+                            "It is simplified version of the card game BANG,\n" +
+                            "the players are in the wild west, they all fight\n" +
+                            "against each other. Goal of the game is to be the\n" +
+                            "last one alive.\n" +
+                            "═════════════════════════════════════════════════");
         int playersCount = 0;
         while(playersCount < 2 || playersCount  > 4){
-            playersCount = ZKlavesnice.readInt("Enter the number of players (2 -> 4):");
+            playersCount = ZKlavesnice.readInt("How many players will be playing ? (2-4)");
             if(playersCount < 2 || playersCount  > 4){
-                System.out.println("You have entered a wrong number of players, Try Again.");
+                System.out.println("You've entered a wrong number of players, Try Again.");
             }
         }
         this.table = new Table(this);
@@ -28,6 +35,7 @@ public class Game {
             this.players[i].setCardsOnHand(table.drawCards(4));
         }
         this.activePlayer = players[indexOfActivePlayer];
+        System.out.println("══════════════════ BANG \"Lite\" ══════════════════\n");
         this.gameLoop();
     }
 
@@ -52,8 +60,7 @@ public class Game {
                     } while (this.checkPlayerCards());
                 }
             }
-            this.nextPlayer();
-            this.setActivePlayer();
+            this.nextActivePlayer();
         }
         System.out.println("The winner is " + this.getWinnerName());
     }
@@ -99,6 +106,7 @@ public class Game {
         return false;
     }
 
+
     public int getNumberOfAlivePlayers(){
         int alivePlayers = 0;
         for (Player player:players) {
@@ -111,52 +119,60 @@ public class Game {
     public int getNumberOfAllPlayers(){
         return players.length;
     }
+    // TODO: See if usefull.
     public int getIndexOfActivePlayer() {
         return indexOfActivePlayer;
-    }
-    public Player getActivePlayer(){
-        return activePlayer;
-    }
-    public void setActivePlayer(){
-        this.activePlayer = this.players[indexOfActivePlayer];
     }
     public Player getPlayerByIndex(int index) {
         return players[index];
     }
 
-    //TODO: Rework NextPlayer to better logic -- BROKEN
-    private int nextPlayer(){
-        int index = indexOfActivePlayer;
-        index++;
-        while (!(getPlayerByIndex(index).isAlive())){
+
+    public int nextPlayer(int index){
+        Player nextPlayer;
+
+        do {
             index++;
-            if(index >= this.players.length){
+            if(index >= this.getNumberOfAllPlayers()){
                 index = 0;
             }
-        }
-        if(index >= this.players.length){
-            index = 0;
-        }
-        this.indexOfActivePlayer = index;
+            nextPlayer = this.players[index];
+        } while (!(nextPlayer.isAlive()));
+
         return index;
     }
-    public int prevPlayer(){
-        int index = indexOfActivePlayer;
-        index--;
-        while (!(getPlayerByIndex(index).isAlive())){
+    public int nextPlayer() {
+        return nextPlayer(this.indexOfActivePlayer);
+    }
+    private void nextActivePlayer(){
+        indexOfActivePlayer = nextPlayer();
+        this.activePlayer = this.players[indexOfActivePlayer];
+    }
+    public int prevPlayer(int index){
+        Player prevPlayer;
+
+        do {
             index--;
-            if(index < 0){
-                index = (this.players.length-1);
+            if(index <= 0){
+                index = (this.getNumberOfAllPlayers()-1);
             }
-        }
-        if(index < 0){
-            index = (this.players.length-1);
-        }
+            prevPlayer = this.players[index];
+        } while (!(prevPlayer.isAlive()));
+
         return index;
+    }
+    public int prevPlayer() {
+        return prevPlayer(this.indexOfActivePlayer);
+    }
+
+
+    public void playerDeath(Player player){
+        this.table.discardCards(player.removeCardOnTable());
+        this.table.discardCards(player.removeCardOnHand());
     }
     private String getWinnerName() {
         String winner = "";
-        for (Player player:players) {
+        for (Player player : this.players) {
             if(player.isAlive()) {
                 winner = player.getName();
             }

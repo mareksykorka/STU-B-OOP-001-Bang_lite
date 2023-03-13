@@ -27,8 +27,9 @@ public class Dynamite extends Card {
     @Override
     public boolean receivePlay(Player player) {
         if ((randomGenerator.nextInt(8) + 1) == 1) {
-            player.removeLives(3);
-            table.discardCard(player.removeCardOnTable(this));
+            if(!player.removeLives(3)){
+                game.playerDeath(player);
+            }
             return true;
         }
         Player prevPlayer = game.getPlayerByIndex(game.prevPlayer());

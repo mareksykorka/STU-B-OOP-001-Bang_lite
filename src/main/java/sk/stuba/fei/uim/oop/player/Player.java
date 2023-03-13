@@ -55,10 +55,11 @@ public class Player {
     private void addLives(){
         lives++;
     }
-    public void removeLives(int numberOfLives){
+    public boolean removeLives(int numberOfLives){
         for (int i = 0; i < numberOfLives; i++) {
             removeLives();
         }
+        return this.isAlive();
     }
     private void removeLives(){
         lives--;
@@ -67,7 +68,7 @@ public class Player {
     }
 
 
-    // Methods working wiht cards on hand - setting, removing, showing or getting
+    // Methods working with cards on hand - setting, removing, showing or getting
     public void setCardsOnHand(ArrayList<Card> cards) {
         this.cardsOnHand.addAll(cards);
     }
@@ -80,6 +81,12 @@ public class Player {
     public Card removeCardOnHand(Card card){
         this.cardsOnHand.remove(card);
         return card;
+    }
+    public ArrayList<Card> removeCardOnHand(){
+        ArrayList<Card> returnArr = new ArrayList<Card>();
+        returnArr.addAll(this.cardsOnHand);
+        this.cardsOnHand.clear();
+        return returnArr;
     }
     public ArrayList<Card> getCardsOnHand(){
         return this.cardsOnHand;
@@ -111,6 +118,12 @@ public class Player {
     public Card removeCardOnTable(Card card){
         this.cardsOnTable.remove(card);
         return card;
+    }
+    public ArrayList<Card> removeCardOnTable(){
+        ArrayList<Card> returnArr = new ArrayList<Card>();
+        returnArr.addAll(this.cardsOnTable);
+        this.cardsOnTable.clear();
+        return returnArr;
     }
     public ArrayList<Card> getCardsOnTable(){
         return this.cardsOnTable;

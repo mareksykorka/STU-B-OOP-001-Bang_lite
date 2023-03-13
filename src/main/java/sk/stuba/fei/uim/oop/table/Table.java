@@ -47,6 +47,7 @@ public class Table {
         Card newCard;
         for (int i = 0; i < numberOfCards; i++){
             if((newCard = this.drawCards()) == null) {
+                System.out.println("There are no more cards left on the table,\nneither in the deck nor in the discard pile.");
                 break;
             }
             outputCards.add(newCard);
@@ -68,22 +69,20 @@ public class Table {
     }
 
     public int getNumberOfCardsInDeck(){
-        return deck.size();
+        return this.deck.size();
     }
     public int getNumberOfCardsInDiscardPile(){
-        return discardPile.size();
+        return this.discardPile.size();
     }
 
-    public boolean reffillDeck(){
-        if (!(discardPile.isEmpty())) {
+    private boolean reffillDeck(){
+        if (!(this.discardPile.isEmpty())) {
             Collections.shuffle(this.discardPile);
-            System.out.println("Reffiling deck from the discard pile.");
-            deck.addAll(discardPile);
-            discardPile.clear();
+            System.out.println("Refiling deck from the discard pile.");
+            this.deck.addAll(this.discardPile);
+            this.discardPile.clear();
             return true;
         }
-
-        System.out.println("There are no more cards left on the table, neither in the deck nor in the discard pile.");
         return false;
     }
 }

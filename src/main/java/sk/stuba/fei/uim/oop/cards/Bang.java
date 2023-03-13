@@ -29,7 +29,9 @@ public class Bang extends Card {
                 return card.receivePlay(targetPlayer);
             }
         }
-        targetPlayer.removeLives(1);
+        if(!targetPlayer.removeLives(1)){
+            game.playerDeath(targetPlayer);
+        }
         return true;
     }
 
