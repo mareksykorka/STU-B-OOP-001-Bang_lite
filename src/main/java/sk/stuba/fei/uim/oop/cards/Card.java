@@ -28,8 +28,21 @@ public abstract class Card {
     }
 
     public String getName() {
+        if(this.cardColour == Colour.BROWN){
+            return "\u001B[33m" + name + "\u001B[0m";
+        }
+        if(this.cardColour == Colour.BLUE){
+            return "\u001B[34m" + name + "\u001B[0m";
+        }
         return name;
     }
+
+    //TODO: Implement CLI if playable
+    /*
+    public String getPlayable(){
+
+    }*/
+
 
     protected int choosePlayer(Player player){
         int input = ZKlavesnice.readInt("Who is the target ?");

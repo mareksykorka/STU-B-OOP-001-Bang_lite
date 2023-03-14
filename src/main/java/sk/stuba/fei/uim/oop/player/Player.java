@@ -36,13 +36,20 @@ public class Player {
     public String isAlive(PrintType type){
         if(this.lives > 0) {
             if (type == PrintType.SIMPLE) {
-                return " Is Alive ";
+                return "" + this.lives;
             }
             if (type == PrintType.FULL) {
-                return " Is Alive with " + this.lives + " lives.";
+                String outString = "\u001B[31m";
+                for (int i = 0; i < this.lives; i++) {
+                    outString += "\u2764";
+                }
+                outString += " ("+this.lives+")";
+                outString += "\u001B[0m";
+
+                return ("\u001B[32mALIVE " + outString);
             }
         }
-        return " Is Dead ";
+        return "\u001B[37mDead\u001B[0m";
     }
     public boolean isTurnEndAllowed() {
         return (cardsOnHand.size() <= lives);
@@ -134,10 +141,10 @@ public class Player {
     public void showCardsOnTable() {
         if(cardsOnTable.size() > 0){
             for (int i = 0; i < cardsOnTable.size(); i++) {
-                System.out.println("\t"+ (i+1) + ". " + cardsOnTable.get(i).getName());
+                System.out.println("\t" + (i+1) + ". " + cardsOnTable.get(i).getName());
             }
         } else {
-            System.out.println("\tThis player does not have any active cards.");
+            System.out.println("\tNo active cards.");
         }
     }
 

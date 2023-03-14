@@ -31,7 +31,7 @@ public class Game {
         this.indexOfActivePlayer = 0;
         this.players = new Player[playersCount];
         for(int i = 0; i < playersCount; i++){
-            this.players[i] = new Player(ZKlavesnice.readString("What is the name of Player No."+(i+1)));
+            this.players[i] = new Player(ZKlavesnice.readString("What is the name of Player No."+(i+1)).trim());
             this.players[i].setCardsOnHand(table.drawCards(4));
         }
         this.activePlayer = players[indexOfActivePlayer];
@@ -66,19 +66,23 @@ public class Game {
         System.out.println("The winner is " + this.getWinnerName());
     }
 
-    //TODO: Rework CLI printout
     private void showPlayingField(){
-        System.out.print("\033[H\033[2J");
-        System.out.println("Table:");
+        System.out.println("═════════════════════ TABLE ═════════════════════");
         for(int i = 0; i < this.players.length; i++){
-            System.out.println((i+1) + ". " + players[i].getName() + " " + players[i].isAlive(Player.PrintType.FULL));
+            System.out.println((i+1) + ". " + this.players[i].getName() + " " +
+                                this.players[i].isAlive(Player.PrintType.FULL));
+            System.out.println("\t--- Hand ---");
+            System.out.println("\tNo. cards on hand: " + players[i].getCardsOnHandNumber());
+            System.out.println("\t--- Table ---");
             players[i].showCardsOnTable();
         }
-        System.out.println("-------------------------------------------------------------------------------------");
+        System.out.println("═════════════════════ STATUS ════════════════════");
         System.out.println("Deck: " + table.getNumberOfCardsInDeck());
         System.out.println("Discard: " + table.getNumberOfCardsInDiscardPile());
-        System.out.println("-------------------------------------------------------------------------------------");
-        System.out.println(""+ activePlayer.getName() + "`s hand:");
+        System.out.println("═════════════════════ PLAYER ════════════════════");
+        System.out.println("\u001B[1mActive player: " + activePlayer.getName() + "\n" +
+                            "Lives: " + activePlayer.isAlive(Player.PrintType.SIMPLE) +
+                            "\u001B[0m");
         activePlayer.showCardsOnHand();
     }
     private boolean askForAction() {
