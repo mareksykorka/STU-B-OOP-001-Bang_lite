@@ -7,7 +7,7 @@ import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 import java.util.ArrayList;
 
 public class Game {
-    private final Player[] players;
+    private final Player[] players; //Je final v pohode ?
     private Player activePlayer;
     private int indexOfActivePlayer;
     private Table table;
@@ -39,6 +39,7 @@ public class Game {
         this.gameLoop();
     }
 
+    //TODO: Rework Game Loop - Break it into pieces
     private void gameLoop(){
         while(this.getNumberOfAlivePlayers() > 1){
             // First Phase - Automatic
@@ -65,6 +66,7 @@ public class Game {
         System.out.println("The winner is " + this.getWinnerName());
     }
 
+    //TODO: Rework CLI printout
     private void showPlayingField(){
         System.out.print("\033[H\033[2J");
         System.out.println("Table:");
@@ -92,6 +94,7 @@ public class Game {
         }
         return false;
     }
+    //TODO: rework check with isInstanceof not instance of
     private boolean checkPlayerCards() {
         if(!(activePlayer.isTurnEndAllowed())) {
             int input = ZKlavesnice.readInt("What card do you want to throw away?");
@@ -119,7 +122,7 @@ public class Game {
     public int getNumberOfAllPlayers(){
         return players.length;
     }
-    // TODO: See if usefull.
+    // TODO: See decluter code from useless methods.
     public int getIndexOfActivePlayer() {
         return indexOfActivePlayer;
     }
@@ -179,6 +182,4 @@ public class Game {
         }
         return winner;
     }
-
-    //TODO: Implement Check when someone dies so he returns all his cards to the discard pile
 }

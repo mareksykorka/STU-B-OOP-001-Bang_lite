@@ -141,7 +141,7 @@ public class Player {
         }
     }
 
-
+    //TODO:Rework ... the throwing of a card into discard pile should be done in the card itself... let this be just a simple void
     public void useCard(int cardIndex, Table table) {
         if(this.cardsOnHand.get(cardIndex).play(this)){
             table.discardCard(this.removeCardOnHand(cardIndex));
@@ -150,6 +150,7 @@ public class Player {
         }
     }
 
+    //TODO:Rework Checks for cards.
     public void checkDynamit(){
         for (Card card:this.cardsOnTable) {
             if (card instanceof Dynamite) {
