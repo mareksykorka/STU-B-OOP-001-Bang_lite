@@ -1,5 +1,6 @@
 package sk.stuba.fei.uim.oop.game;
 
+import sk.stuba.fei.uim.oop.cards.*;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.table.Table;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
@@ -43,9 +44,9 @@ public class Game {
     private void gameLoop(){
         while(this.getNumberOfAlivePlayers() > 1){
             // First Phase - Automatic
-            this.activePlayer.checkDynamit();
+            this.activePlayer.checkCardTable(Dynamite.class);
             if(this.activePlayer.isAlive()) {
-                if(!this.activePlayer.checkPrison()){
+                if(!this.activePlayer.checkCardTable(Prison.class)){
                     this.activePlayer.setCardsOnHand(this.table.drawCards(2));
                     // Second Phase
                     do {
@@ -55,8 +56,6 @@ public class Game {
                     } while (this.askForAction());
                     // Third phase
                     do {
-                        if(!(this.getNumberOfAlivePlayers() > 1))
-                            break;
                         showPlayingField();
                     } while (this.checkPlayerCards());
                 }
@@ -113,7 +112,6 @@ public class Game {
         }
         return false;
     }
-
 
     public int getNumberOfAlivePlayers(){
         int alivePlayers = 0;

@@ -13,6 +13,7 @@ public class Indians extends Card {
 
     @Override
     public boolean play(Player player) {
+        /*
         boolean returnVal = false;
         for (int i = 0; i < game.getNumberOfAllPlayers(); i++) {
             if(game.getPlayerByIndex(i).isAlive()){
@@ -26,7 +27,8 @@ public class Indians extends Card {
                 }
             }
         }
-        return returnVal;
+        return returnVal;*/
+        return false;
     }
 
     @Override

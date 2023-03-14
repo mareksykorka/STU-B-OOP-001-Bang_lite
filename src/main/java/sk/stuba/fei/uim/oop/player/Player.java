@@ -108,6 +108,14 @@ public class Player {
             System.out.println("\tYou don't have any cards.");
         }
     }
+    public boolean checkCardHand(Class<? extends Card> cardType){
+        for (Card card:this.cardsOnHand) {
+            if(cardType.isInstance(card)) {
+                return card.receivePlay(this);
+            }
+        }
+        return false;
+    }
 
     // Methods working with cards on table - setting, removing, showing or getting
     public void setCardsOnTable(ArrayList<Card> cards) {
@@ -144,6 +152,14 @@ public class Player {
             System.out.println("\tNo active cards.");
         }
     }
+    public boolean checkCardTable(Class<? extends Card> cardType){
+        for (Card card:this.cardsOnTable) {
+            if(cardType.isInstance(card)) {
+                return card.receivePlay(this);
+            }
+        }
+        return false;
+    }
 
     //TODO:Rework ... the throwing of a card into discard pile should be done in the card itself... let this be just a simple void
     public void useCard(int cardIndex, Table table) {
@@ -152,22 +168,5 @@ public class Player {
         } else {
             System.out.println("The Card could not be played.");
         }
-    }
-
-    //TODO:Rework Checks for cards.
-    public void checkDynamit(){
-        for (Card card:this.cardsOnTable) {
-            if (card instanceof Dynamite) {
-                card.receivePlay(this);
-            }
-        }
-    }
-    public boolean checkPrison(){
-        for (Card card:this.cardsOnTable) {
-            if (card instanceof Prison) {
-                return card.receivePlay(this);
-            }
-        }
-        return false;
     }
 }

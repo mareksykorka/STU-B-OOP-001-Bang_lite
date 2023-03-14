@@ -19,15 +19,11 @@ public class Bang extends Card {
             return false;
         }
         Player targetPlayer = game.getPlayerByIndex(targetIndex);
-        for (Card card:targetPlayer.getCardsOnTable()) {
-            if(card instanceof Barrel) {
-                return card.receivePlay(targetPlayer);
-            }
+        if(!targetPlayer.checkCardTable(Barrel.class)) {
+            return true;
         }
-        for (Card card:targetPlayer.getCardsOnHand()) {
-            if(card instanceof Missed) {
-                return card.receivePlay(targetPlayer);
-            }
+        if(targetPlayer.checkCardHand(Missed.class)) {
+            return true;
         }
         if(!targetPlayer.removeLives(1)){
             game.playerDeath(targetPlayer);
