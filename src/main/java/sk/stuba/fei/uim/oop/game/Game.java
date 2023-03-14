@@ -71,6 +71,7 @@ public class Game {
         for(int i = 0; i < this.players.length; i++){
             System.out.println((i+1) + ". " + this.players[i].getName() + " " +
                                 this.players[i].isAlive(Player.PrintType.FULL));
+            //TODO: Better Player card status printout
             System.out.println("\t--- Hand ---");
             System.out.println("\tNo. cards on hand: " + players[i].getCardsOnHandNumber());
             System.out.println("\t--- Table ---");

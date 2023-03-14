@@ -28,7 +28,6 @@ public class Player {
         return this.name;
     }
 
-
     // Methods working with lives - checking alive status, manipulating with lives
     public boolean isAlive(){
         return (this.lives > 0);
@@ -74,7 +73,6 @@ public class Player {
             lives = 0;
     }
 
-
     // Methods working with cards on hand - setting, removing, showing or getting
     public void setCardsOnHand(ArrayList<Card> cards) {
         this.cardsOnHand.addAll(cards);
@@ -110,7 +108,6 @@ public class Player {
             System.out.println("\tYou don't have any cards.");
         }
     }
-
 
     // Methods working with cards on table - setting, removing, showing or getting
     public void setCardsOnTable(ArrayList<Card> cards) {
