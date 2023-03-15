@@ -42,14 +42,8 @@ public class Bang extends Card {
 
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
-
-        /*
-        @Override
-        public boolean receivePlay(Player player) {
-            table.discardCard(player.removeCardOnHand(this));
-            System.out.println("INDIANS evaded by BANG");
-            return true;
-        }*/
-        return false;
+        deck.discardCard(targetPlayer.removeCardOnHand(this));
+        System.out.println("INDIANS evaded by BANG");
+        return true;
     }
 }
