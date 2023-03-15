@@ -1,6 +1,7 @@
 package sk.stuba.fei.uim.oop.cards;
 
 import sk.stuba.fei.uim.oop.deck.Deck;
+import sk.stuba.fei.uim.oop.game.Game;
 import sk.stuba.fei.uim.oop.player.Player;
 
 import java.util.ArrayList;
@@ -9,10 +10,12 @@ import java.util.Random;
 public class Dynamite extends Card {
     private static final String CARD_NAME = "Dynamite";
     private Random randomGenerator;
+    private final Game game;
 
-    public Dynamite() {
+    public Dynamite(Game game) {
         super(CARD_NAME, Colour.BLUE);
         this.randomGenerator = new Random();
+        this.game = game;
     }
 
     @Override
@@ -35,9 +38,9 @@ public class Dynamite extends Card {
             deck.discardCard(targetPlayer.removeCardOnTable(this));
             return true;
         }
-        /*System.out.println("DYNAMIT moving.");
-        Player prevPlayer = game.getPlayerByIndex(game.prevPlayer());
-        prevPlayer.setCardsOnTable(player.removeCardOnTable(this));*/
+        System.out.println("DYNAMIT moving.");
+        Player prevPlayer = this.game.prevPlayer();
+        prevPlayer.setCardsOnTable(targetPlayer.removeCardOnTable(this));
         return false;
     }
 

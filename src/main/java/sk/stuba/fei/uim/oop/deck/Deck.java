@@ -1,6 +1,7 @@
 package sk.stuba.fei.uim.oop.deck;
 
 import sk.stuba.fei.uim.oop.cards.*;
+import sk.stuba.fei.uim.oop.game.Game;
 import sk.stuba.fei.uim.oop.player.Player;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ public class Deck {
     private ArrayList<Card> deck;
     private ArrayList<Card> discardPile;
 
-    public Deck() {
+    public Deck(Game game) {
         ArrayList<Card> cards = new ArrayList<Card>();
         for (int i = 0; i < 30; i++) {
             cards.add(new Bang());
@@ -31,7 +32,7 @@ public class Deck {
         cards.add(new Indians());
         cards.add(new Barrel());
         cards.add(new Barrel());
-        cards.add(new Dynamite());
+        cards.add(new Dynamite(game));
         cards.add(new Prison());
         cards.add(new Prison());
         cards.add(new Prison());

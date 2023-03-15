@@ -24,7 +24,7 @@ public class Game {
                 System.out.println("You've entered a wrong number of players, Try Again.");
             }
         }
-        this.deck = new Deck();
+        this.deck = new Deck(this);
 
         ArrayList<Player> newPlayers = new ArrayList<>();
         for(int i = 0; i < playersCount; i++){
