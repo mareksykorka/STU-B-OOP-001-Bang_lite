@@ -13,11 +13,9 @@ public class Dynamite extends Card {
 
     @Override
     public boolean play(Player player) {
-        for (Card card:player.getCardsOnTable()) {
-            if(card instanceof Dynamite) {
-                System.out.println("You can not have two blue cards of the same type on the table at once!");
-                return false;
-            }
+        if(player.checkCardTable(Dynamite.class, false)) {
+            System.out.println("You can not have two blue cards of the same type on the table at once!");
+            return false;
         }
         player.setCardsOnTable(this);
         player.removeCardOnHand(this);

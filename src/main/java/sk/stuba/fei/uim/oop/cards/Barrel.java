@@ -13,15 +13,11 @@ public class Barrel extends Card {
 
     @Override
     public boolean play(Player player) {
-        for (Card card:player.getCardsOnTable()) {
-            if(card instanceof Barrel)
-            {
-                System.out.println("You can not have two blue cards of the same type on the table at once!");
-                return false;
-            }
+        if(player.checkCardTable(Barrel.class, false)){
+            System.out.println("You can not have two blue cards of the same type on the table at once!");
+            return false;
         }
-        player.setCardsOnTable(this);
-        player.removeCardOnHand(this);
+        player.setCardsOnTable(player.removeCardOnHand(this));
         return false;
     }
 

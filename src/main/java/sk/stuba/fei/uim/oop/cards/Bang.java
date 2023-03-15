@@ -19,7 +19,7 @@ public class Bang extends Card {
             return false;
         }
         Player targetPlayer = game.getPlayerByIndex(targetIndex);
-        if(!targetPlayer.checkCardTable(Barrel.class)) {
+        if(targetPlayer.checkCardTable(Barrel.class, true)) {
             return true;
         }
         if(targetPlayer.checkCardHand(Missed.class)) {

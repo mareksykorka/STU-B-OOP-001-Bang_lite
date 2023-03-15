@@ -18,15 +18,12 @@ public class Prison extends Card {
             return false;
         }
         Player targetPlayer = game.getPlayerByIndex(targetIndex);
-        for (Card card:targetPlayer.getCardsOnTable()) {
-            if(card instanceof Prison) {
-                System.out.println("Players can not have two blue cards of the same type on the table at once!");
-                return false;
-            }
+        if(targetPlayer.checkCardTable(Prison.class, false)){
+            System.out.println("You can not have two blue cards of the same type on the table at once!");
+            return false;
         }
-        targetPlayer.setCardsOnTable(this);
-        player.removeCardOnHand(this);
-        return false;
+        player.setCardsOnTable(player.removeCardOnHand(this));
+        return true;
     }
 
     @Override

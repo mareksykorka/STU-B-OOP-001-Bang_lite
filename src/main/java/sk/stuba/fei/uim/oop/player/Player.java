@@ -152,10 +152,14 @@ public class Player {
             System.out.println("\tNo active cards.");
         }
     }
-    public boolean checkCardTable(Class<? extends Card> cardType){
+    public boolean checkCardTable(Class<? extends Card> cardType, boolean play){
         for (Card card:this.cardsOnTable) {
             if(cardType.isInstance(card)) {
-                return card.receivePlay(this);
+                if(play){
+                    return card.receivePlay(this);
+                } else {
+                    return true;
+                }
             }
         }
         return false;

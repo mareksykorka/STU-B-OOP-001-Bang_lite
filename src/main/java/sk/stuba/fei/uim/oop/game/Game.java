@@ -44,20 +44,18 @@ public class Game {
     private void gameLoop(){
         while(this.getNumberOfAlivePlayers() > 1){
             // First Phase - Automatic
-            this.activePlayer.checkCardTable(Dynamite.class);
+            this.activePlayer.checkCardTable(Dynamite.class, true);
             if(this.activePlayer.isAlive()) {
-                if(!this.activePlayer.checkCardTable(Prison.class)){
+                if(!this.activePlayer.checkCardTable(Prison.class, true)){
                     this.activePlayer.setCardsOnHand(this.table.drawCards(2));
                     // Second Phase
                     do {
-                        if(!(this.getNumberOfAlivePlayers() > 1))
-                            break;
                         showPlayingField();
-                    } while (this.askForAction());
+                    } while ((this.getNumberOfAlivePlayers() > 1) && this.askForAction());
                     // Third phase
                     do {
                         showPlayingField();
-                    } while (this.checkPlayerCards());
+                    } while ((this.getNumberOfAlivePlayers() > 1) && this.checkPlayerCards());
                 }
             }
             this.nextActivePlayer();
@@ -98,7 +96,6 @@ public class Game {
         }
         return false;
     }
-    //TODO: rework check with isInstanceof not instance of
     private boolean checkPlayerCards() {
         if(!(activePlayer.isTurnEndAllowed())) {
             int input = ZKlavesnice.readInt("What card do you want to throw away?");
