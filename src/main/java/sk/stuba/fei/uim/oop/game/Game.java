@@ -65,6 +65,7 @@ public class Game {
             }
         }
         System.out.println("═════════════════════ STATUS ════════════════════");
+        System.out.println("Debug check:" + this.debugCheck());
         System.out.println("Deck: " + deck.getNumberOfCardsInDeck());
         System.out.println("Discard: " + deck.getNumberOfCardsInDiscardPile());
         System.out.println("═════════════════════ PLAYER ════════════════════");
@@ -72,6 +73,15 @@ public class Game {
                             "Lives: " + activePlayer.aliveStatus() + TxtModif.ANSI_RESET);
         this.activePlayer.showCardsOnHand();
     }
+
+    private int debugCheck() {
+        int returnVal = this.deck.getNumberOfCardsInDeck() + this.deck.getNumberOfCardsInDiscardPile();
+        for (Player player:this.players) {
+            returnVal += player.getCardsOnHandNumber() + player.getCardsOnTableNumber();
+        }
+        return returnVal;
+    }
+
     private void playCards() {
         int input;
         do {

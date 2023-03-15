@@ -15,41 +15,39 @@ public class Prison extends Card {
     }
 
     @Override
-    public boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
-        return false;
+    public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
+        ArrayList<Player> playablePlayers = new ArrayList<Player>();
+        for (Player player:enemyPlayers) {
+            if(!player.checkCardTable(Prison.class)){
+                playablePlayers.add(player);
+            }
+        }
+        Player targetPlayer = chooseTarget(playablePlayers);
+        targetPlayer.setCardsOnTable(activePlayer.removeCardOnHand(this));
+        return true;
+    }
+
+    private Player chooseTarget(ArrayList<Player> playablePlayers) {
+        if(playablePlayers.size() == 1){
+            return playablePlayers.get(0);
+        }
+        System.out.println("═════════════════ CHOOSE TARGET ═════════════════");
+        for(int i = 0; i < playablePlayers.size(); i++) {
+            System.out.println((i + 1) + ". " + playablePlayers.get(i).getName() + " " +
+                    playablePlayers.get(i).aliveStatus());
+        }
+        return playablePlayers.get(this.pickIndex("Select player you want to use the BANG on", playablePlayers.size()));
     }
 
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
-        return false;
-    }
+        deck.discardCard(targetPlayer.removeCardOnTable(this));
 
-    /*@Override
-    public boolean play(Player player) {
-        int targetIndex = this.choosePlayer(player);
-        if(targetIndex == -1) {
-            return false;
-        }
-        Player targetPlayer = game.getPlayerByIndex(targetIndex);
-        for (Card card:player.getCardsOnTable()) {
-            if(card instanceof Prison) {
-                System.out.println("You can not have two blue cards of the same type on the table at once!");
-                return false;
-            }
-        }
-        targetPlayer.setCardsOnTable(player.removeCardOnHand(this));
-        return false;
-    }
-
-    @Override
-    public boolean receivePlay(Player player) {
-        boolean returnVal = true;
         if ((randomGenerator.nextInt(4) + 1) == 1) {
             System.out.println("PRISON escaped.");
-            returnVal = false;
+            return true;
         }
         System.out.println("PRISON NOT escaped.");
-        table.discardCard(player.removeCardOnTable(this));
-        return returnVal;
-    }*/
+        return false;
+    }
 }

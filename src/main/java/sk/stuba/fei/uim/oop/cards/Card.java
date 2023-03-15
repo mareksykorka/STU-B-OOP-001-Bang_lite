@@ -15,7 +15,6 @@ public abstract class Card {
     }
     protected Colour cardColour;
 
-
     public Card(String name, Colour colour) {
         this.name = name;
         this.cardColour = colour;

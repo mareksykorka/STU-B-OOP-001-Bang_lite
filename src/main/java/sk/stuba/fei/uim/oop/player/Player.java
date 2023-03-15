@@ -149,25 +149,30 @@ public class Player {
 
 
     public boolean checkCardHand(Class cardType, Deck deck){
-        //TODO: Neviem co vlastne returnujem.
         for (Card card:this.cardsOnHand) {
             if(cardType.isInstance(card)) {
                 return card.receivePlay(this, deck);
             }
         }
-        return false;
+        return true;
     }
     public boolean checkCardTable(Class cardType, Deck deck){
-        //TODO: Neviem co vlastne returnujem.
         for (Card card:this.cardsOnTable) {
             if(cardType.isInstance(card)) {
                 return card.receivePlay(this, deck);
             }
         }
+        return true;
+    }
+    public boolean checkCardTable(Class cardType){
+        for (Card card:this.cardsOnTable) {
+            if(cardType.isInstance(card)) {
+                return true;
+            }
+        }
         return false;
     }
     public void useCard(int cardIndex, ArrayList<Player> enemyPlayers, Deck deck) {
-        //TODO: Neviem co vlastne returnujem.
         this.cardsOnHand.get(cardIndex).play(this, enemyPlayers, deck);
     }
 }

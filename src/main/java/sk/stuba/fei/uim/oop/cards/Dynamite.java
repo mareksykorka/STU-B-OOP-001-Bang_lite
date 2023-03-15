@@ -17,40 +17,28 @@ public class Dynamite extends Card {
 
     @Override
     public boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
+        if (activePlayer.checkCardTable(Dynamite.class,deck)) {
+            System.out.println("You can not have two blue cards of the same type on the table at once!");
+            return false;
+        }
+        activePlayer.setCardsOnTable(activePlayer.removeCardOnHand(this));
         return false;
     }
 
+    //TODO:Dynamite moving
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
-        return false;
-    }
-
-    /*@Override
-    public boolean play(Player player) {
-        for (Card card:player.getCardsOnTable()) {
-            if(card instanceof Dynamite) {
-                System.out.println("You can not have two blue cards of the same type on the table at once!");
-                return false;
-            }
-        }
-        player.setCardsOnTable(this);
-        player.removeCardOnHand(this);
-        return false;
-    }
-
-    @Override
-    public boolean receivePlay(Player player) {
         if ((randomGenerator.nextInt(8) + 1) == 1) {
             System.out.println("DYNAMITE exploded.");
-            if(!player.removeLives(3)){
-                game.playerDeath(player);
-            }
-            table.discardCard(player.removeCardOnTable(this));
+            targetPlayer.removeLives(3);
+
+            deck.discardCard(targetPlayer.removeCardOnTable(this));
             return true;
         }
-        System.out.println("DYNAMIT moving.");
+        /*System.out.println("DYNAMIT moving.");
         Player prevPlayer = game.getPlayerByIndex(game.prevPlayer());
-        prevPlayer.setCardsOnTable(player.removeCardOnTable(this));
+        prevPlayer.setCardsOnTable(player.removeCardOnTable(this));*/
         return false;
-    }*/
+    }
+
 }

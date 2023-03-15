@@ -16,7 +16,7 @@ public class Bang extends Card {
     @Override
     public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
         deck.discardCard(activePlayer.removeCardOnHand(this));
-        Player targetPlayer = chooseTarget(activePlayer, enemyPlayers);
+        Player targetPlayer = chooseTarget(enemyPlayers);
         if(targetPlayer.checkCardTable(Barrel.class, deck)){
             return true;
         }
@@ -27,7 +27,7 @@ public class Bang extends Card {
         return true;
     }
 
-    private Player chooseTarget(Player activePlayer, ArrayList<Player> enemyPlayers) {
+    private Player chooseTarget(ArrayList<Player> enemyPlayers) {
         if(enemyPlayers.size() == 1){
             return enemyPlayers.get(0);
         }
