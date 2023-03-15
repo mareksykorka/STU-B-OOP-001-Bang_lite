@@ -40,7 +40,7 @@ public class Game {
     private void gameLoop(){
         while(this.getNumberOfAlivePlayers() > 1){
             this.activePlayer.checkCardTable(Dynamite.class, this.deck);
-            if(this.activePlayer.isAlive() /*&& this.activePlayer.checkCardTable(Prison.class, this.deck)*/){
+            if(this.activePlayer.isAlive() && this.activePlayer.checkCardTable(Prison.class, this.deck)){
                 this.activePlayer.setCardsOnHand(this.deck.drawCards(2));
                 this.playCards();
                 this.throwCards();

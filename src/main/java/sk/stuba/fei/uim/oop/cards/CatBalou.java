@@ -20,7 +20,7 @@ public class CatBalou extends Card {
 
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
-        return false;
+        return true;
     }
 
     //TODO: Rework CatBalou to better logic -- BROKEN
@@ -60,10 +60,5 @@ public class CatBalou extends Card {
         }
         return false;
 
-    }
-
-    @Override
-    public boolean receivePlay(Player player) {
-        return false;
     }*/
 }

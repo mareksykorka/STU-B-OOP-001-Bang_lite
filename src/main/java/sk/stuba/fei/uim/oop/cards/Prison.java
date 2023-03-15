@@ -22,6 +22,9 @@ public class Prison extends Card {
                 playablePlayers.add(player);
             }
         }
+        if(playablePlayers.size() == 0){
+            return false;
+        }
         Player targetPlayer = chooseTarget(playablePlayers);
         targetPlayer.setCardsOnTable(activePlayer.removeCardOnHand(this));
         return true;

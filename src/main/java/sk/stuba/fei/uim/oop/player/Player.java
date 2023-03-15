@@ -154,7 +154,7 @@ public class Player {
                 return card.receivePlay(this, deck);
             }
         }
-        return true;
+        return false;
     }
     public boolean checkCardTable(Class cardType, Deck deck){
         for (Card card:this.cardsOnTable) {
@@ -162,7 +162,10 @@ public class Player {
                 return card.receivePlay(this, deck);
             }
         }
-        return true;
+        if(cardType == Prison.class){
+            return true;
+        }
+        return false;
     }
     public boolean checkCardTable(Class cardType){
         for (Card card:this.cardsOnTable) {
