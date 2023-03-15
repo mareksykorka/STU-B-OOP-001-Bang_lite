@@ -24,6 +24,7 @@ public class Missed extends Card {
     @Override
     public boolean receivePlay(Player player) {
         table.discardCard(player.removeCardOnHand(this));
+        System.out.println("BANG evaded by MISSED");
         return true;
     }
 }

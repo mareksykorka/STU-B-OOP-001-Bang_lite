@@ -44,9 +44,12 @@ public class Game {
     private void gameLoop(){
         while(this.getNumberOfAlivePlayers() > 1){
             // First Phase - Automatic
-            this.activePlayer.checkCardTable(Dynamite.class, true);
+            this.activePlayer.checkCardTable(Dynamite.class,true);
+            //this.activePlayer.checkDynamit();
+            //this.activePlayer.checkCardTable(Dynamite.class, true);
             if(this.activePlayer.isAlive()) {
-                if(!this.activePlayer.checkCardTable(Prison.class, true)){
+                //if(!this.activePlayer.checkCardTable(Prison.class, true)){
+                if(!this.activePlayer.checkPrison()){
                     this.activePlayer.setCardsOnHand(this.table.drawCards(2));
                     // Second Phase
                     do {
@@ -120,14 +123,14 @@ public class Game {
         return alivePlayers;
     }
     public int getNumberOfAllPlayers(){
-        return players.length;
+        return this.players.length;
     }
     // TODO: See decluter code from useless methods.
     public int getIndexOfActivePlayer() {
-        return indexOfActivePlayer;
+        return this.indexOfActivePlayer;
     }
     public Player getPlayerByIndex(int index) {
-        return players[index];
+        return this.players[index];
     }
 
 

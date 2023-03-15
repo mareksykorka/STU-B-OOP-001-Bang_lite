@@ -18,9 +18,11 @@ public class Prison extends Card {
             return false;
         }
         Player targetPlayer = game.getPlayerByIndex(targetIndex);
-        if(targetPlayer.checkCardTable(Prison.class, false)){
-            System.out.println("You can not have two blue cards of the same type on the table at once!");
-            return false;
+        for (Card card:player.getCardsOnTable()) {
+            if(card instanceof Prison) {
+                System.out.println("You can not have two blue cards of the same type on the table at once!");
+                return false;
+            }
         }
         targetPlayer.setCardsOnTable(player.removeCardOnHand(this));
         return false;
@@ -30,8 +32,10 @@ public class Prison extends Card {
     public boolean receivePlay(Player player) {
         boolean returnVal = true;
         if ((randomGenerator.nextInt(4) + 1) == 1) {
+            System.out.println("PRISON escaped.");
             returnVal = false;
         }
+        System.out.println("PRISON NOT escaped.");
         table.discardCard(player.removeCardOnTable(this));
         return returnVal;
     }

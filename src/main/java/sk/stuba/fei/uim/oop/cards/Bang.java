@@ -19,11 +19,16 @@ public class Bang extends Card {
             return false;
         }
         Player targetPlayer = game.getPlayerByIndex(targetIndex);
-        if(targetPlayer.checkCardTable(Barrel.class, true)) {
-            return true;
+        for (Card card:targetPlayer.getCardsOnTable()) {
+            if(card instanceof Barrel) {
+                if(card.receivePlay(targetPlayer))
+                    return true;
+            }
         }
-        if(targetPlayer.checkCardHand(Missed.class)) {
-            return true;
+        for (Card card:targetPlayer.getCardsOnHand()) {
+            if(card instanceof Missed) {
+                return card.receivePlay(targetPlayer);
+            }
         }
         if(!targetPlayer.removeLives(1)){
             game.playerDeath(targetPlayer);
@@ -34,6 +39,7 @@ public class Bang extends Card {
     @Override
     public boolean receivePlay(Player player) {
         table.discardCard(player.removeCardOnHand(this));
+        System.out.println("INDIANS evaded by BANG");
         return true;
     }
 }

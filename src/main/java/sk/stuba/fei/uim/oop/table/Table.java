@@ -13,7 +13,7 @@ public class Table {
     public Table(Game game) {
         ArrayList<Card> cards = new ArrayList<Card>();
         for (int i = 0; i < 30; i++) {
-            cards.add(new Bang(this, game));
+            cards.add(new Dynamite(this, game));
         }
         for (int i = 0; i < 15; i++) {
             cards.add(new Missed(this, game));
@@ -22,7 +22,7 @@ public class Table {
             cards.add(new Beer(this, game));
         }
         for (int i = 0; i < 6; i++) {
-            //cards.add(new CatBalou(this, game));
+            cards.add(new CatBalou(this, game));
         }
         for (int i = 0; i < 4; i++) {
             cards.add(new Stagecoach(this, game));

@@ -4,6 +4,8 @@ import sk.stuba.fei.uim.oop.game.Game;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.table.Table;
 
+import java.util.ArrayList;
+
 public class Indians extends Card {
     private static final String CARD_NAME = "Indians";
 
@@ -16,10 +18,15 @@ public class Indians extends Card {
         for (int i = 0; i < game.getNumberOfAllPlayers(); i++) {
             Player targetPlayer = game.getPlayerByIndex(i);
             if(targetPlayer.isAlive() && !(targetPlayer.equals(player))){
-                if(!(targetPlayer.checkCardHand(Bang.class))){
-                    if(!targetPlayer.removeLives(1)){
-                        game.playerDeath(targetPlayer);
+                ArrayList<Card> iteratingList = new ArrayList<Card>();
+                iteratingList.addAll(targetPlayer.getCardsOnHand());
+                for (Card card:iteratingList) {
+                    if(card instanceof Bang) {
+                        card.receivePlay(targetPlayer);
                     }
+                }
+                if(!targetPlayer.removeLives(1)){
+                    game.playerDeath(targetPlayer);
                 }
             }
         }

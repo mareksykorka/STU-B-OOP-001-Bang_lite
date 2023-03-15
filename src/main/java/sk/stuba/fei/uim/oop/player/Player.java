@@ -108,14 +108,14 @@ public class Player {
             System.out.println("\tYou don't have any cards.");
         }
     }
-    public boolean checkCardHand(Class<? extends Card> cardType){
+    /*public boolean checkCardHand(Class<? extends Card> cardType){
         for (Card card:this.cardsOnHand) {
             if(cardType.isInstance(card)) {
                 return card.receivePlay(this);
             }
         }
         return false;
-    }
+    }*/
 
     // Methods working with cards on table - setting, removing, showing or getting
     public void setCardsOnTable(ArrayList<Card> cards) {
@@ -152,7 +152,8 @@ public class Player {
             System.out.println("\tNo active cards.");
         }
     }
-    public boolean checkCardTable(Class<? extends Card> cardType, boolean play){
+
+    public boolean checkCardTable(Class cardType, boolean play){
         for (Card card:this.cardsOnTable) {
             if(cardType.isInstance(card)) {
                 if(play){
@@ -160,6 +161,28 @@ public class Player {
                 } else {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    //TODO:Rework Checks for cards.
+    public void checkDynamit(){
+
+        this.checkCardTable(Dynamite.class,true);
+
+        ArrayList<Card> iteratingList = new ArrayList<Card>();
+        iteratingList.addAll(this.cardsOnTable);
+        for (Card card:iteratingList) {
+            if (card instanceof Dynamite) {
+                card.receivePlay(this);
+            }
+        }
+    }
+    public boolean checkPrison(){
+        for (Card card:this.cardsOnTable) {
+            if (card instanceof Prison) {
+                return card.receivePlay(this);
             }
         }
         return false;

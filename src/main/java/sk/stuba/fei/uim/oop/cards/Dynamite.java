@@ -13,9 +13,11 @@ public class Dynamite extends Card {
 
     @Override
     public boolean play(Player player) {
-        if(player.checkCardTable(Dynamite.class, false)) {
-            System.out.println("You can not have two blue cards of the same type on the table at once!");
-            return false;
+        for (Card card:player.getCardsOnTable()) {
+            if(card instanceof Dynamite) {
+                System.out.println("You can not have two blue cards of the same type on the table at once!");
+                return false;
+            }
         }
         player.setCardsOnTable(this);
         player.removeCardOnHand(this);
@@ -25,12 +27,14 @@ public class Dynamite extends Card {
     @Override
     public boolean receivePlay(Player player) {
         if ((randomGenerator.nextInt(8) + 1) == 1) {
+            System.out.println("DYNAMITE exploded.");
             if(!player.removeLives(3)){
                 game.playerDeath(player);
             }
             table.discardCard(player.removeCardOnTable(this));
             return true;
         }
+        System.out.println("DYNAMIT moving.");
         Player prevPlayer = game.getPlayerByIndex(game.prevPlayer());
         prevPlayer.setCardsOnTable(player.removeCardOnTable(this));
         return false;

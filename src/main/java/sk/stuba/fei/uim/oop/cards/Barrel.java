@@ -13,9 +13,12 @@ public class Barrel extends Card {
 
     @Override
     public boolean play(Player player) {
-        if(player.checkCardTable(Barrel.class, false)){
-            System.out.println("You can not have two blue cards of the same type on the table at once!");
-            return false;
+        for (Card card:player.getCardsOnTable()) {
+            if(card instanceof Barrel)
+            {
+                System.out.println("You can not have two blue cards of the same type on the table at once!");
+                return false;
+            }
         }
         player.setCardsOnTable(player.removeCardOnHand(this));
         return false;
@@ -24,8 +27,10 @@ public class Barrel extends Card {
     @Override
     public boolean receivePlay(Player player) {
         if ((randomGenerator.nextInt(4) + 1) == 1) {
+            System.out.println("BANG evaded by BARREL.");
             return true;
         }
+        System.out.println("BARREL not effective.");
         return false;
     }
 }
