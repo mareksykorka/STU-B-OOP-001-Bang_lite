@@ -149,6 +149,7 @@ public class Player {
 
 
     public boolean checkCardHand(Class cardType, Deck deck){
+        //TODO: Neviem co vlastne returnujem.
         for (Card card:this.cardsOnHand) {
             if(cardType.isInstance(card)) {
                 return card.receivePlay(this, deck);
@@ -157,6 +158,7 @@ public class Player {
         return false;
     }
     public boolean checkCardTable(Class cardType, Deck deck){
+        //TODO: Neviem co vlastne returnujem.
         for (Card card:this.cardsOnTable) {
             if(cardType.isInstance(card)) {
                 return card.receivePlay(this, deck);
@@ -165,10 +167,7 @@ public class Player {
         return false;
     }
     public void useCard(int cardIndex, ArrayList<Player> alivePlayers, Deck deck) {
-        if(this.cardsOnHand.get(cardIndex).play(this, alivePlayers, deck)){
-            deck.discardCard(this.removeCardOnHand(cardIndex));
-        } else {
-            System.out.println("The Card could not be played.");
-        }
+        //TODO: Neviem co vlastne returnujem.
+        this.cardsOnHand.get(cardIndex).play(this, alivePlayers, deck);
     }
 }
