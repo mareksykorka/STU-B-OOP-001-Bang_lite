@@ -1,17 +1,30 @@
 package sk.stuba.fei.uim.oop.cards;
 
-import sk.stuba.fei.uim.oop.game.Game;
+import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.player.Player;
-import sk.stuba.fei.uim.oop.table.Table;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Prison extends Card {
     private static final String CARD_NAME = "Prison";
-
-    public Prison(Table table, Game game) {
-        super(CARD_NAME, Colour.BLUE, table, game);
+    private Random randomGenerator;
+    public Prison() {
+        super(CARD_NAME, Colour.BLUE);
+        this.randomGenerator = new Random();
     }
 
     @Override
+    public boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
+        return false;
+    }
+
+    @Override
+    public boolean receivePlay(Player targetPlayer, Deck deck) {
+        return false;
+    }
+
+    /*@Override
     public boolean play(Player player) {
         int targetIndex = this.choosePlayer(player);
         if(targetIndex == -1) {
@@ -38,5 +51,5 @@ public class Prison extends Card {
         System.out.println("PRISON NOT escaped.");
         table.discardCard(player.removeCardOnTable(this));
         return returnVal;
-    }
+    }*/
 }

@@ -1,18 +1,18 @@
 package sk.stuba.fei.uim.oop.cards;
 
-import sk.stuba.fei.uim.oop.game.Game;
+import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.player.Player;
-import sk.stuba.fei.uim.oop.table.Table;
-import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
+
+import java.util.ArrayList;
 
 public class Bang extends Card {
     private static final String CARD_NAME = "Bang";
 
-    public Bang(Table table, Game game) {
-        super(CARD_NAME, Colour.BROWN, table, game);
+    public Bang() {
+        super(CARD_NAME, Colour.BROWN);
     }
 
-    @Override
+    /*@Override
     public boolean play(Player player) {
         int targetIndex = this.choosePlayer(player);
         if(targetIndex == -1) {
@@ -41,5 +41,15 @@ public class Bang extends Card {
         table.discardCard(player.removeCardOnHand(this));
         System.out.println("INDIANS evaded by BANG");
         return true;
+    }*/
+
+    @Override
+    public boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
+        return false;
+    }
+
+    @Override
+    public boolean receivePlay(Player targetPlayer, Deck deck) {
+        return false;
     }
 }

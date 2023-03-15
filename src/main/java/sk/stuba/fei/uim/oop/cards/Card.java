@@ -1,10 +1,10 @@
 package sk.stuba.fei.uim.oop.cards;
 
-import sk.stuba.fei.uim.oop.game.Game;
+import sk.stuba.fei.uim.oop.utility.*;
 import sk.stuba.fei.uim.oop.player.Player;
-import sk.stuba.fei.uim.oop.table.Table;
-import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
+import sk.stuba.fei.uim.oop.deck.Deck;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class Card {
@@ -15,24 +15,18 @@ public abstract class Card {
     }
     protected Colour cardColour;
 
-    Game game;
-    Table table;
-    Random randomGenerator;
 
-    public Card(String name, Colour colour, Table table, Game game) {
+    public Card(String name, Colour colour) {
         this.name = name;
         this.cardColour = colour;
-        this.table = table;
-        this.game = game;
-        this.randomGenerator = new Random();
     }
 
     public String getName() {
         if(this.cardColour == Colour.BROWN){
-            return "\u001B[33m" + name + "\u001B[0m";
+            return TxtModif.ANSI_DARK_YELLOW + name + TxtModif.ANSI_RESET;
         }
         if(this.cardColour == Colour.BLUE){
-            return "\u001B[34m" + name + "\u001B[0m";
+            return TxtModif.ANSI_DARK_BLUE + name + TxtModif.ANSI_RESET;
         }
         return name;
     }
@@ -44,7 +38,7 @@ public abstract class Card {
     }*/
 
 
-    protected int choosePlayer(Player player){
+   /* protected int choosePlayer(Player player){
         int input = ZKlavesnice.readInt("Who is the target ?");
         input -= 1;
         if((input >= 0) && (input < this.game.getNumberOfAllPlayers())){
@@ -61,9 +55,9 @@ public abstract class Card {
         }
         System.out.println("There is no such player.");
         return -1;
-    }
+    }*/
 
-    public abstract boolean play(Player player);
+    public abstract boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck);
 
-    public abstract boolean receivePlay(Player player);
+    public abstract boolean receivePlay(Player targetPlayer, Deck deck);
 }

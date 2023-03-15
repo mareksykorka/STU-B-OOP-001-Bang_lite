@@ -1,19 +1,28 @@
 package sk.stuba.fei.uim.oop.cards;
 
-import sk.stuba.fei.uim.oop.game.Game;
+import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.player.Player;
-import sk.stuba.fei.uim.oop.table.Table;
 
 import java.util.ArrayList;
 
 public class Indians extends Card {
     private static final String CARD_NAME = "Indians";
 
-    public Indians(Table table, Game game) {
-        super(CARD_NAME, Colour.BROWN, table, game);
+    public Indians() {
+        super(CARD_NAME, Colour.BROWN);
     }
 
     @Override
+    public boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
+        return false;
+    }
+
+    @Override
+    public boolean receivePlay(Player targetPlayer, Deck deck) {
+        return false;
+    }
+
+    /*@Override
     public boolean play(Player player) {
         for (int i = 0; i < game.getNumberOfAllPlayers(); i++) {
             Player targetPlayer = game.getPlayerByIndex(i);
@@ -36,5 +45,5 @@ public class Indians extends Card {
     @Override
     public boolean receivePlay(Player player) {
         return false;
-    }
+    }*/
 }

@@ -1,85 +1,82 @@
 package sk.stuba.fei.uim.oop.player;
 
 import sk.stuba.fei.uim.oop.cards.*;
-import sk.stuba.fei.uim.oop.game.Game;
-import sk.stuba.fei.uim.oop.table.Table;
+import sk.stuba.fei.uim.oop.deck.Deck;
+import sk.stuba.fei.uim.oop.utility.TxtModif;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Player {
     private final String name;
     private int lives;
     private ArrayList<Card> cardsOnHand;
     private ArrayList<Card> cardsOnTable;
-    public enum PrintType {
-        SIMPLE,
-        FULL
-    }
+    private Deck deck;
 
-    public Player(String name) {
+    public Player(String name, Deck deck) {
         this.name = name;
         this.lives = 4;
         this.cardsOnHand = new ArrayList<Card>();
         this.cardsOnTable = new ArrayList<Card>();
+        this.deck = deck;
     }
+
 
     public String getName(){
-        return this.name;
+        return TxtModif.ANSI_BOLD + this.name + TxtModif.ANSI_RESET;
     }
 
-    // Methods working with lives - checking alive status, manipulating with lives
+
     public boolean isAlive(){
         return (this.lives > 0);
     }
-    public String isAlive(PrintType type){
+    public String aliveStatus(){
         if(this.lives > 0) {
-            if (type == PrintType.SIMPLE) {
-                return "" + this.lives;
+            String outString = TxtModif.ANSI_DARK_GREEN + "ALIVE " + TxtModif.ANSI_DARK_RED;
+            for (int i = 0; i < this.lives; i++) {
+                outString += TxtModif.UNICODE_HEART;
             }
-            if (type == PrintType.FULL) {
-                String outString = "\u001B[31m";
-                for (int i = 0; i < this.lives; i++) {
-                    outString += "\u2764";
-                }
-                outString += " ("+this.lives+")";
-                outString += "\u001B[0m";
-
-                return ("\u001B[32mALIVE " + outString);
-            }
+            outString += " (" + this.lives + ")" + TxtModif.ANSI_RESET;
+            return outString;
         }
-        return "\u001B[37mDead\u001B[0m";
+        return TxtModif.ANSI_BRIGHT_BLACK + "DEAD" + TxtModif.ANSI_RESET;
     }
     public boolean isTurnEndAllowed() {
-        return (cardsOnHand.size() <= lives);
+        return (this.cardsOnHand.size() <= this.lives);
     }
+
     public void addLives(int numberOfLives){
         for (int i = 0; i < numberOfLives; i++) {
-            addLives();
+            this.addLives();
         }
     }
     private void addLives(){
-        lives++;
+        this.lives++;
     }
+
     public boolean removeLives(int numberOfLives){
         for (int i = 0; i < numberOfLives; i++) {
-            removeLives();
+            this.removeLives();
         }
         return this.isAlive();
     }
     private void removeLives(){
-        lives--;
-        if(lives < 0)
-            lives = 0;
+        this.lives--;
+        if(this.lives <= 0) {
+            this.lives = 0;
+            this.deck.playerDeath(this);
+        }
     }
 
-    // Methods working with cards on hand - setting, removing, showing or getting
+
+
     public void setCardsOnHand(ArrayList<Card> cards) {
         this.cardsOnHand.addAll(cards);
     }
     public void setCardsOnHand(Card card) {
         this.cardsOnHand.add(card);
     }
+
     public Card removeCardOnHand(int indexOfCard){
         return removeCardOnHand(this.cardsOnHand.get(indexOfCard));
     }
@@ -93,39 +90,34 @@ public class Player {
         this.cardsOnHand.clear();
         return returnArr;
     }
+
     public ArrayList<Card> getCardsOnHand(){
         return this.cardsOnHand;
     }
     public int getCardsOnHandNumber() {
-        return cardsOnHand.size();
+        return this.cardsOnHand.size();
     }
     public void showCardsOnHand() {
-        if(cardsOnHand.size() > 0){
-            for (int i = 0; i < cardsOnHand.size(); i++) {
-                System.out.println("\t"+ (i+1) + ". " + cardsOnHand.get(i).getName());
+        if(this.getCardsOnHandNumber() > 0){
+            for (int i = 0; i < this.getCardsOnHandNumber(); i++) {
+                System.out.println("\t"+ (i+1) + ". " + this.cardsOnHand.get(i).getName());
             }
         } else {
             System.out.println("\tYou don't have any cards.");
         }
     }
-    /*public boolean checkCardHand(Class<? extends Card> cardType){
-        for (Card card:this.cardsOnHand) {
-            if(cardType.isInstance(card)) {
-                return card.receivePlay(this);
-            }
-        }
-        return false;
-    }*/
 
-    // Methods working with cards on table - setting, removing, showing or getting
+
+
     public void setCardsOnTable(ArrayList<Card> cards) {
         this.cardsOnTable.addAll(cards);
     }
     public void setCardsOnTable(Card card) {
         this.cardsOnTable.add(card);
     }
+
     public Card removeCardOnTable(int indexOfCard){
-        return removeCardOnHand(this.cardsOnTable.get(indexOfCard));
+        return this.removeCardOnHand(this.cardsOnTable.get(indexOfCard));
     }
     public Card removeCardOnTable(Card card){
         this.cardsOnTable.remove(card);
@@ -137,60 +129,44 @@ public class Player {
         this.cardsOnTable.clear();
         return returnArr;
     }
+
     public ArrayList<Card> getCardsOnTable(){
         return this.cardsOnTable;
     }
     public int getCardsOnTableNumber() {
-        return cardsOnTable.size();
+        return this.cardsOnTable.size();
     }
     public void showCardsOnTable() {
-        if(cardsOnTable.size() > 0){
-            for (int i = 0; i < cardsOnTable.size(); i++) {
-                System.out.println("\t" + (i+1) + ". " + cardsOnTable.get(i).getName());
+        if(this.getCardsOnTableNumber() > 0){
+            for (int i = 0; i < this.getCardsOnTableNumber(); i++) {
+                System.out.println("\t" + (i+1) + ". " + this.cardsOnTable.get(i).getName());
             }
         } else {
             System.out.println("\tNo active cards.");
         }
     }
 
-    public boolean checkCardTable(Class cardType, boolean play){
+
+
+    public boolean checkCardHand(Class cardType, Deck deck){
+        for (Card card:this.cardsOnHand) {
+            if(cardType.isInstance(card)) {
+                return card.receivePlay(this, deck);
+            }
+        }
+        return false;
+    }
+    public boolean checkCardTable(Class cardType, Deck deck){
         for (Card card:this.cardsOnTable) {
             if(cardType.isInstance(card)) {
-                if(play){
-                    return card.receivePlay(this);
-                } else {
-                    return true;
-                }
+                return card.receivePlay(this, deck);
             }
         }
         return false;
     }
-
-    //TODO:Rework Checks for cards.
-    public void checkDynamit(){
-
-        this.checkCardTable(Dynamite.class,true);
-
-        ArrayList<Card> iteratingList = new ArrayList<Card>();
-        iteratingList.addAll(this.cardsOnTable);
-        for (Card card:iteratingList) {
-            if (card instanceof Dynamite) {
-                card.receivePlay(this);
-            }
-        }
-    }
-    public boolean checkPrison(){
-        for (Card card:this.cardsOnTable) {
-            if (card instanceof Prison) {
-                return card.receivePlay(this);
-            }
-        }
-        return false;
-    }
-
-    public void useCard(int cardIndex, Table table) {
-        if(this.cardsOnHand.get(cardIndex).play(this)){
-            table.discardCard(this.removeCardOnHand(cardIndex));
+    public void useCard(int cardIndex, ArrayList<Player> alivePlayers, Deck deck) {
+        if(this.cardsOnHand.get(cardIndex).play(this, alivePlayers, deck)){
+            deck.discardCard(this.removeCardOnHand(cardIndex));
         } else {
             System.out.println("The Card could not be played.");
         }

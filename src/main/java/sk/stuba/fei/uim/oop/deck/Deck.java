@@ -1,40 +1,40 @@
-package sk.stuba.fei.uim.oop.table;
+package sk.stuba.fei.uim.oop.deck;
 
 import sk.stuba.fei.uim.oop.cards.*;
-import sk.stuba.fei.uim.oop.game.Game;
+import sk.stuba.fei.uim.oop.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Table {
+public class Deck {
     private ArrayList<Card> deck;
     private ArrayList<Card> discardPile;
 
-    public Table(Game game) {
+    public Deck() {
         ArrayList<Card> cards = new ArrayList<Card>();
         for (int i = 0; i < 30; i++) {
-            cards.add(new Dynamite(this, game));
+            cards.add(new Bang());
         }
         for (int i = 0; i < 15; i++) {
-            cards.add(new Missed(this, game));
+            cards.add(new Missed());
         }
         for (int i = 0; i < 8; i++) {
-            cards.add(new Beer(this, game));
+            cards.add(new Beer());
         }
         for (int i = 0; i < 6; i++) {
-            cards.add(new CatBalou(this, game));
+            cards.add(new CatBalou());
         }
         for (int i = 0; i < 4; i++) {
-            cards.add(new Stagecoach(this, game));
+            cards.add(new Stagecoach());
         }
-        cards.add(new Indians(this, game));
-        cards.add(new Indians(this, game));
-        cards.add(new Barrel(this, game));
-        cards.add(new Barrel(this, game));
-        cards.add(new Dynamite(this, game));
-        cards.add(new Prison(this, game));
-        cards.add(new Prison(this, game));
-        cards.add(new Prison(this, game));
+        cards.add(new Indians());
+        cards.add(new Indians());
+        cards.add(new Barrel());
+        cards.add(new Barrel());
+        cards.add(new Dynamite());
+        cards.add(new Prison());
+        cards.add(new Prison());
+        cards.add(new Prison());
 
         Collections.shuffle(cards);
 
@@ -60,11 +60,21 @@ public class Table {
         }
         return this.deck.remove(0);
     }
+    private boolean reffillDeck(){
+        if (!(this.discardPile.isEmpty())) {
+            Collections.shuffle(this.discardPile);
+            System.out.println("Refiling deck from the discard pile.");
+            this.deck.addAll(this.discardPile);
+            this.discardPile.clear();
+            return true;
+        }
+        return false;
+    }
 
     public void discardCard(Card card) {
         this.discardPile.add(card);
     }
-    public void discardCards(ArrayList<Card> cards) {
+    public void discardCard(ArrayList<Card> cards) {
         this.discardPile.addAll(cards);
     }
 
@@ -75,14 +85,8 @@ public class Table {
         return this.discardPile.size();
     }
 
-    private boolean reffillDeck(){
-        if (!(this.discardPile.isEmpty())) {
-            Collections.shuffle(this.discardPile);
-            System.out.println("Refiling deck from the discard pile.");
-            this.deck.addAll(this.discardPile);
-            this.discardPile.clear();
-            return true;
-        }
-        return false;
+    public void playerDeath(Player player){
+        this.discardCard(player.removeCardOnTable());
+        this.discardCard(player.removeCardOnHand());
     }
 }
