@@ -166,8 +166,8 @@ public class Player {
         }
         return false;
     }
-    public void useCard(int cardIndex, ArrayList<Player> alivePlayers, Deck deck) {
+    public void useCard(int cardIndex, ArrayList<Player> enemyPlayers, Deck deck) {
         //TODO: Neviem co vlastne returnujem.
-        this.cardsOnHand.get(cardIndex).play(this, alivePlayers, deck);
+        this.cardsOnHand.get(cardIndex).play(this, enemyPlayers, deck);
     }
 }

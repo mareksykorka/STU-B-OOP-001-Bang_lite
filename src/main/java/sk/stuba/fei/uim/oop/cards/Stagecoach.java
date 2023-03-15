@@ -13,9 +13,9 @@ public class Stagecoach extends Card {
     }
 
     @Override
-    public boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
-        activePlayer.setCardsOnHand(deck.drawCards(2));
+    public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
         deck.discardCard(activePlayer.removeCardOnHand(this));
+        activePlayer.setCardsOnHand(deck.drawCards(2));
         return true;
     }
 
@@ -23,15 +23,4 @@ public class Stagecoach extends Card {
     public boolean receivePlay(Player targetPlayer, Deck deck) {
         return true;
     }
-
-    /*@Override
-    public boolean play(Player player) {
-        player.setCardsOnHand(table.drawCards(2));
-        return true;
-    }
-
-    @Override
-    public boolean receivePlay(Player player) {
-        return false;
-    }*/
 }

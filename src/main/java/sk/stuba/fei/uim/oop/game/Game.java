@@ -51,6 +51,7 @@ public class Game {
     }
 
     private void showPlayingField(){
+        System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         System.out.println("═════════════════════ TABLE ═════════════════════");
         for(int i = 0; i < this.getNumberOfAllPlayers(); i++){
             System.out.println((i+1) + ". " + this.players.get(i).getName() + " " +
@@ -79,7 +80,7 @@ public class Game {
             input = ZKlavesnice.readInt("What card you want to play? If you want to end your turn just write '0'.");
             if (input != 0) {
                 if(((input-1) >= 0) && ((input-1) < this.activePlayer.getCardsOnHandNumber())){
-                    this.activePlayer.useCard((input-1), this.getAlivePlayers(), this.deck);
+                    this.activePlayer.useCard((input-1), this.getEnemyPlayers(), this.deck);
                 } else {
                     System.out.println("You don't have the card " + input + "! Try Again!");
                 }
@@ -99,17 +100,23 @@ public class Game {
         }
     }
 
-    public ArrayList<Player> getAlivePlayers(){
+    public ArrayList<Player> getEnemyPlayers(){
         ArrayList<Player> alivePlayers = new ArrayList<>();
         for (Player player: this.players) {
-            if(player.isAlive()) {
+            if(player.isAlive() && !player.equals(this.activePlayer)) {
                 alivePlayers.add(player);
             }
         }
         return alivePlayers;
     }
     public int getNumberOfAlivePlayers(){
-        return this.getAlivePlayers().size();
+        ArrayList<Player> alivePlayers = new ArrayList<>();
+        for (Player player: this.players) {
+            if(player.isAlive()) {
+                alivePlayers.add(player);
+            }
+        }
+        return alivePlayers.size();
     }
     public int getNumberOfAllPlayers(){
         return this.players.size();

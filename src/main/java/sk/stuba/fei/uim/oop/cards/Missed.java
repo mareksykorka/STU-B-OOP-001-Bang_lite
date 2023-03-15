@@ -15,27 +15,13 @@ public class Missed extends Card {
 
     @Override
     public boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
-        return false;
-    }
-
-    /*@Override
-    public boolean play(Player player) {
-        char input = ZKlavesnice.readChar("You can not play " + this.getName() + ". Do you want to throw it away into discard pile? (Y/N)");
-        if(input == 'Y' || input == 'y'){
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean receivePlay(Player player) {
-        table.discardCard(player.removeCardOnHand(this));
+        deck.discardCard(targetPlayer.removeCardOnHand(this));
         System.out.println("BANG evaded by MISSED");
         return true;
-    }*/
+    }
 }

@@ -32,32 +32,21 @@ public abstract class Card {
     }
 
     //TODO: Implement CLI if playable
-    /*
-    public String getPlayable(){
 
-    }*/
-
-
-   /* protected int choosePlayer(Player player){
-        int input = ZKlavesnice.readInt("Who is the target ?");
-        input -= 1;
-        if((input >= 0) && (input < this.game.getNumberOfAllPlayers())){
-            if(input != game.getIndexOfActivePlayer()) {
-                Player target = game.getPlayerByIndex(input);
-                if(target.isAlive()){
-                    return input;
-                }
-                System.out.println("You can not target dead players!");
-                return -1;
-            }
-            System.out.println("You can not target yourself!");
-            return -1;
-        }
-        System.out.println("There is no such player.");
-        return -1;
-    }*/
-
-    public abstract boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck);
+    public abstract boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck);
 
     public abstract boolean receivePlay(Player targetPlayer, Deck deck);
+
+    public int pickIndex(String message, int max){
+        return this.pickIndex(message, 1, max);
+    }
+
+    public int pickIndex(String message, int min, int max){
+        int input;
+        do {
+            input = ZKlavesnice.readInt(message + "("+min+"-"+max+"):");
+        } while (input < min || input > max);
+
+        return input-1;
+    }
 }
