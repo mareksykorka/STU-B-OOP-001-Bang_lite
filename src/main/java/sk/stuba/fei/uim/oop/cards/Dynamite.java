@@ -28,6 +28,7 @@ public class Dynamite extends Card {
             if(!player.removeLives(3)){
                 game.playerDeath(player);
             }
+            table.discardCard(player.removeCardOnTable(this));
             return true;
         }
         Player prevPlayer = game.getPlayerByIndex(game.prevPlayer());

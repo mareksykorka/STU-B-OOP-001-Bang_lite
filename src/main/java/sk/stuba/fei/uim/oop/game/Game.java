@@ -156,7 +156,7 @@ public class Game {
 
         do {
             index--;
-            if(index <= 0){
+            if(index < 0){
                 index = (this.getNumberOfAllPlayers()-1);
             }
             prevPlayer = this.players[index];
@@ -167,6 +167,8 @@ public class Game {
     public int prevPlayer() {
         return prevPlayer(this.indexOfActivePlayer);
     }
+
+    //TODO: General load index from Keyboard in range
 
 
     public void playerDeath(Player player){

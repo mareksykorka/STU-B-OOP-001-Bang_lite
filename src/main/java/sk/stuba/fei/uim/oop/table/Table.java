@@ -22,7 +22,7 @@ public class Table {
             cards.add(new Beer(this, game));
         }
         for (int i = 0; i < 6; i++) {
-            cards.add(new CatBalou(this, game));
+            //cards.add(new CatBalou(this, game));
         }
         for (int i = 0; i < 4; i++) {
             cards.add(new Stagecoach(this, game));

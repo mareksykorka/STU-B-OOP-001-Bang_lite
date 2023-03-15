@@ -22,8 +22,8 @@ public class Prison extends Card {
             System.out.println("You can not have two blue cards of the same type on the table at once!");
             return false;
         }
-        player.setCardsOnTable(player.removeCardOnHand(this));
-        return true;
+        targetPlayer.setCardsOnTable(player.removeCardOnHand(this));
+        return false;
     }
 
     @Override

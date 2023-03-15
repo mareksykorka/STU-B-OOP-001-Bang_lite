@@ -165,7 +165,6 @@ public class Player {
         return false;
     }
 
-    //TODO:Rework ... the throwing of a card into discard pile should be done in the card itself... let this be just a simple void
     public void useCard(int cardIndex, Table table) {
         if(this.cardsOnHand.get(cardIndex).play(this)){
             table.discardCard(this.removeCardOnHand(cardIndex));
