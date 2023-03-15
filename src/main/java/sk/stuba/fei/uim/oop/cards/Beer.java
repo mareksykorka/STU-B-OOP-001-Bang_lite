@@ -16,7 +16,7 @@ public class Beer extends Card {
     public boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
         activePlayer.addLives(1);
         deck.discardCard(activePlayer.removeCardOnHand(this));
-        return false;
+        return true;
     }
 
     @Override

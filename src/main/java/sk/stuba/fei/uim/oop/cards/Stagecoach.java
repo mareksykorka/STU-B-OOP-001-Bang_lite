@@ -14,12 +14,14 @@ public class Stagecoach extends Card {
 
     @Override
     public boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
-        return false;
+        activePlayer.setCardsOnHand(deck.drawCards(2));
+        deck.discardCard(activePlayer.removeCardOnHand(this));
+        return true;
     }
 
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
-        return false;
+        return true;
     }
 
     /*@Override
