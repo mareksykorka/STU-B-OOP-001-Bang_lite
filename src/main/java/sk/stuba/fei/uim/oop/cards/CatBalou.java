@@ -14,51 +14,61 @@ public class CatBalou extends Card {
     }
 
     @Override
-    public boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
-        return false;
+    public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
+        ArrayList<Player> playablePlayers = new ArrayList<Player>();
+        for (Player player:enemyPlayers) {
+            if((!player.getCardsOnHand().isEmpty()) || (!player.getCardsOnTable().isEmpty())){
+                playablePlayers.add(player);
+            }
+        }
+        if(playablePlayers.isEmpty()){
+            System.out.println("You can not play this card.");
+            return false;
+        }
+
+        Player targetPlayer = this.chooseTarget(playablePlayers);
+
+        ArrayList<Card> targetTable = targetPlayer.getCardsOnTable();
+        ArrayList<Card> targetHand = targetPlayer.getCardsOnHand();
+
+        System.out.println("══════════════════ CHOOSE CARD ══════════════════");
+        if(targetTable.isEmpty()) {
+            deck.discardCard(targetPlayer.removeCardOnHand(this.pickCard(targetPlayer.getCardsOnHand())));
+        } else if(targetHand.isEmpty()) {
+            deck.discardCard(targetPlayer.removeCardOnTable(this.pickCard(targetPlayer.getCardsOnTable())));
+        } else {
+            char charInput = ZKlavesnice.readChar("Do you want to pick a card from " + targetPlayer.getName() + "'s Hand or Table ? (T)able/(H)and");
+            if(Character.toLowerCase(charInput) == 'h'){
+                deck.discardCard(targetPlayer.removeCardOnHand(this.pickCard(targetPlayer.getCardsOnHand())));
+            } else if(charInput == 'T' || charInput == 't'){
+                deck.discardCard(targetPlayer.removeCardOnTable(this.pickCard(targetPlayer.getCardsOnTable())));
+            } else {
+                return false;
+            }
+        }
+        deck.discardCard(activePlayer.removeCardOnHand(this));
+        return true;
+    }
+
+    private Card pickCard(ArrayList<Card> cards) {
+        return cards.get(this.pickIndex("What card do you want to throw away?", cards.size()));
+    }
+
+    private Player chooseTarget(ArrayList<Player> playablePlayers) {
+        if(playablePlayers.size() == 1){
+            return playablePlayers.get(0);
+        }
+        System.out.println("═════════════════ CHOOSE TARGET ═════════════════");
+
+        for(int i = 0; i < playablePlayers.size(); i++){
+            System.out.println((i+1) + ". " + playablePlayers.get(i).getName() + " Cards on hand: " +
+                    playablePlayers.get(i).getCardsOnHandNumber()+ " Cards on table: " + playablePlayers.get(i).getCardsOnTableNumber());
+        }
+        return playablePlayers.get(this.pickIndex("Select player which`s card you want to discard.", playablePlayers.size()));
     }
 
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
         return true;
     }
-
-    //TODO: Rework CatBalou to better logic -- BROKEN
-    /*@Override
-    public boolean play(Player player) {
-        int targetIndex = this.choosePlayer(player);
-        if(targetIndex == -1) {
-            return false;
-        }
-        Player targetPlayer = game.getPlayerByIndex(targetIndex);
-        char charInput = ZKlavesnice.readChar("Do you want to pick a card from "+ targetPlayer.getName() + "'s Hand or Table ? (T)able/(H)and");
-        if(charInput == 'H' || charInput == 'h'){
-            int intInput = -1;
-            while (!(intInput >= 0 && intInput < targetPlayer.getCardsOnHandNumber())) {
-                intInput =  ZKlavesnice.readInt("Pick a card you wanna pick. " + targetPlayer.getName() + " has " + targetPlayer.getCardsOnHandNumber() + "cards on hand.");
-                intInput--;
-                if((intInput >= 0) && (intInput < targetPlayer.getCardsOnHandNumber())){
-                    table.discardCard(targetPlayer.removeCardOnHand(intInput));
-                } else {
-                    System.out.println("Player does not have the card "+ (intInput+1) + "! Try Again!");
-                }
-            }
-            return true;
-        }
-        if(charInput == 'T' || charInput == 't'){
-            int intInput = -1;
-            while (!(intInput >= 0 && intInput < targetPlayer.getCardsOnTableNumber())) {
-                intInput =  ZKlavesnice.readInt("Pick a card you wanna pick. " + targetPlayer.getName() + " has " + targetPlayer.getCardsOnTableNumber() + "cards on hand.");
-                intInput--;
-                if((intInput >= 0) && (intInput < targetPlayer.getCardsOnTableNumber())){
-                    table.discardCard(targetPlayer.removeCardOnTable(intInput));
-                } else {
-                    System.out.println("Player does not have the card "+ (intInput+1) + "! Try Again!");
-                }
-            }
-            return true;
-        }
-        return false;
-
-    }*/
 }

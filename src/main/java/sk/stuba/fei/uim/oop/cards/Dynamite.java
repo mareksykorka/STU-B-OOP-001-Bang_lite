@@ -43,5 +43,4 @@ public class Dynamite extends Card {
         prevPlayer.setCardsOnTable(targetPlayer.removeCardOnTable(this));
         return false;
     }
-
 }

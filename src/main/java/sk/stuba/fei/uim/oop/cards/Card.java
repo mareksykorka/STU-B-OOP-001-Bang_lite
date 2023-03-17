@@ -41,6 +41,10 @@ public abstract class Card {
     }
 
     public int pickIndex(String message, int min, int max){
+        if(min == max) {
+            return max-1;
+        }
+
         int input;
         do {
             input = ZKlavesnice.readInt(message + "("+min+"-"+max+"):");
