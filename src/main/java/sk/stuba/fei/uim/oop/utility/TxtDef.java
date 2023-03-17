@@ -1,11 +1,11 @@
 package sk.stuba.fei.uim.oop.utility;
 
-public class TxtModif {
+public class TxtDef {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BOLD = "\u001B[1m";
     public static final String ANSI_UNDERLINE = "\u001B[4m";
     public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_BRIGHT_BLACK = "\u001B[90m";
+    public static final String ANSI_GREY = "\u001B[90m";
     public static final String ANSI_DARK_RED = "\u001B[31m";
     public static final String ANSI_BRIGHT_RED = "\u001B[91m";
     public static final String ANSI_DARK_GREEN = "\u001B[32m";
@@ -21,4 +21,8 @@ public class TxtModif {
     public static final String ANSI_WHITE = "\u001B[37m";
 
     public static final String UNICODE_HEART = "\u2764";
+
+    public static final String CLI_INFO = "(i) ";
+    public static final String CLI_WARNING = "(!) ";
+    public static final String CLI_CLS = "\n\n\n\n\n\n\n\n\n\n";
 }

@@ -2,6 +2,7 @@ package sk.stuba.fei.uim.oop.cards;
 
 import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.player.Player;
+import sk.stuba.fei.uim.oop.utility.TxtDef;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
@@ -17,12 +18,14 @@ public class Bang extends Card {
     public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
         deck.discardCard(activePlayer.removeCardOnHand(this));
         Player targetPlayer = chooseTarget(enemyPlayers);
+        this.printGameStatus();
         if(targetPlayer.checkCardTable(Barrel.class, deck)){
             return true;
         }
         if(targetPlayer.checkCardHand(Missed.class, deck)){
             return true;
         }
+        System.out.println(TxtDef.CLI_INFO + targetPlayer.getName() + "-> Life lost.");
         targetPlayer.removeLives(1);
         return true;
     }
@@ -34,16 +37,15 @@ public class Bang extends Card {
 
         System.out.println("═════════════════ CHOOSE TARGET ═════════════════");
         for(int i = 0; i < enemyPlayers.size(); i++) {
-            System.out.println((i + 1) + ". " + enemyPlayers.get(i).getName() + " " +
-                    enemyPlayers.get(i).aliveStatus());
+            System.out.println((i + 1) + ". " + enemyPlayers.get(i).getName() + " " + enemyPlayers.get(i).aliveStatus());
         }
-        return enemyPlayers.get(this.pickIndex("Select player you want to use the BANG on", enemyPlayers.size()));
+        return enemyPlayers.get(this.pickIndex("Select player you want to use the BANG on ", enemyPlayers.size()));
     }
 
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
         deck.discardCard(targetPlayer.removeCardOnHand(this));
-        System.out.println("INDIANS evaded by BANG");
+        System.out.println(TxtDef.CLI_INFO + targetPlayer.getName() + "-> INDIANS evaded by " + this.getName());
         return true;
     }
 }

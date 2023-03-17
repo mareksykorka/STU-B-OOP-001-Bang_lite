@@ -5,7 +5,6 @@ import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.deck.Deck;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public abstract class Card {
     private String name;
@@ -22,25 +21,23 @@ public abstract class Card {
 
     public String getName() {
         if(this.cardColour == Colour.BROWN){
-            return TxtModif.ANSI_DARK_YELLOW + name + TxtModif.ANSI_RESET;
+            return TxtDef.ANSI_DARK_YELLOW + name + TxtDef.ANSI_RESET;
         }
         if(this.cardColour == Colour.BLUE){
-            return TxtModif.ANSI_DARK_BLUE + name + TxtModif.ANSI_RESET;
+            return TxtDef.ANSI_DARK_BLUE + name + TxtDef.ANSI_RESET;
         }
         return name;
     }
-
-    //TODO: Implement CLI if playable
 
     public abstract boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck);
 
     public abstract boolean receivePlay(Player targetPlayer, Deck deck);
 
-    public int pickIndex(String message, int max){
+    protected int pickIndex(String message, int max){
         return this.pickIndex(message, 1, max);
     }
 
-    public int pickIndex(String message, int min, int max){
+    protected int pickIndex(String message, int min, int max){
         if(min == max) {
             return max-1;
         }
@@ -51,5 +48,16 @@ public abstract class Card {
         } while (input < min || input > max);
 
         return input-1;
+    }
+
+    protected void printGameStatus(String status){
+        System.out.println(TxtDef.CLI_CLS);
+        System.out.println("══════════════════ GAME STATUS ══════════════════");
+        System.out.println(status);
+    }
+
+    protected void printGameStatus(){
+        System.out.println(TxtDef.CLI_CLS);
+        System.out.println("══════════════════ GAME STATUS ══════════════════");
     }
 }

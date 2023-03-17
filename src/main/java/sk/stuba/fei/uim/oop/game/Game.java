@@ -1,8 +1,8 @@
 package sk.stuba.fei.uim.oop.game;
 
 import sk.stuba.fei.uim.oop.utility.*;
-import sk.stuba.fei.uim.oop.deck.Deck;
-import sk.stuba.fei.uim.oop.player.Player;
+import sk.stuba.fei.uim.oop.deck.*;
+import sk.stuba.fei.uim.oop.player.*;
 import sk.stuba.fei.uim.oop.cards.*;
 
 import java.util.ArrayList;
@@ -32,7 +32,6 @@ public class Game {
             newPlayers.get(i).setCardsOnHand(this.deck.drawCards(4));
         }
         this.players = new ArrayList<>(newPlayers);
-        //this.players.addAll(newPlayers);
         this.activePlayer = players.get(0);
         this.gameLoop();
     }
@@ -49,15 +48,18 @@ public class Game {
             }
             this.activePlayer = this.nextPlayer();
         }
-        System.out.println("The winner is " + this.getWinnerName());
+        System.out.println(TxtDef.CLI_CLS+TxtDef.CLI_CLS+TxtDef.CLI_CLS);
+        this.showPlayingField();
+        System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "═════════════════════ WINNER ════════════════════");
+        System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "The winner is " + this.getWinnerName());
     }
 
     private void showPlayingField(){
+        this.debugCheck();
         System.out.println("═════════════════════ TABLE ═════════════════════");
         for(int i = 0; i < this.getNumberOfAllPlayers(); i++){
-            System.out.println((i+1) + ". " + this.players.get(i).getName() + " " +
-                    this.players.get(i).aliveStatus());
-
+            System.out.println(TxtDef.ANSI_BOLD + (i+1) + ". " + this.players.get(i).getName() +
+                    TxtDef.ANSI_BOLD + " " + this.players.get(i).aliveStatus());
             if(this.players.get(i).isAlive()){
                 System.out.println("\t--- Hand ---");
                 System.out.println("\tCards on hand: " + this.players.get(i).getCardsOnHandNumber());
@@ -65,22 +67,25 @@ public class Game {
                 this.players.get(i).showCardsOnTable();
             }
         }
-        System.out.println("═════════════════════ STATUS ════════════════════");
-        System.out.println("Debug check:" + this.debugCheck());
-        System.out.println("Deck: " + deck.getNumberOfCardsInDeck());
-        System.out.println("Discard: " + deck.getNumberOfCardsInDiscardPile());
-        System.out.println("═════════════════════ PLAYER ════════════════════");
-        System.out.println(TxtModif.ANSI_BOLD + "Active player: " + activePlayer.getName() + "\n" +
-                            "Lives: " + activePlayer.aliveStatus() + TxtModif.ANSI_RESET);
+        System.out.println("═════════════════ ACTIVE PLAYER ═════════════════");
+        System.out.println(TxtDef.ANSI_BOLD + "Active player is: " + activePlayer.getName() + " " + TxtDef.ANSI_RESET +
+                activePlayer.aliveStatus() + TxtDef.ANSI_RESET);
+        System.out.println("You have these cards on the hand:");
         this.activePlayer.showCardsOnHand();
     }
 
-    private int debugCheck() {
+    private void debugCheck() {
         int returnVal = this.deck.getNumberOfCardsInDeck() + this.deck.getNumberOfCardsInDiscardPile();
         for (Player player:this.players) {
             returnVal += player.getCardsOnHandNumber() + player.getCardsOnTableNumber();
         }
-        return returnVal;
+
+        if(returnVal != 71) {
+            System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_RED + "══════════════════════ DEBUG ════════════════════");
+            System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_RED +  "Debug check: " + returnVal +
+                    " Deck: " + deck.getNumberOfCardsInDeck() +
+                    " Discard pile: " + deck.getNumberOfCardsInDiscardPile());
+        }
     }
 
     private void playCards() {
@@ -94,7 +99,11 @@ public class Game {
                     this.activePlayer.useCard((input-1), this.getEnemyPlayers(), this.deck);
                 } else {
                     System.out.println("You don't have the card " + input + "! Try Again!");
+                    System.out.println(TxtDef.CLI_CLS);
                 }
+            }
+            if(input == 0){
+                System.out.println(TxtDef.CLI_CLS);
             }
         } while ((this.getNumberOfAlivePlayers() > 1) && (input!=0) && (this.activePlayer.getCardsOnHandNumber()!=0));
     }
@@ -104,6 +113,7 @@ public class Game {
 
             int input = ZKlavesnice.readInt("What card do you want to throw away?");
             if (((input - 1) >= 0) && ((input - 1) < this.activePlayer.getCardsOnHandNumber())) {
+                System.out.println(TxtDef.CLI_CLS);
                 this.deck.discardCard(this.activePlayer.removeCardOnHand((input - 1)));
             } else {
                 System.out.println("You don't have the card " + (input) + "! Try Again!");

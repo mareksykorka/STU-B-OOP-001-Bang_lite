@@ -2,12 +2,12 @@ package sk.stuba.fei.uim.oop.player;
 
 import sk.stuba.fei.uim.oop.cards.*;
 import sk.stuba.fei.uim.oop.deck.Deck;
-import sk.stuba.fei.uim.oop.utility.TxtModif;
+import sk.stuba.fei.uim.oop.utility.TxtDef;
 
 import java.util.ArrayList;
 
 public class Player {
-    private final String name;
+    private String name;
     private int lives;
     private ArrayList<Card> cardsOnHand;
     private ArrayList<Card> cardsOnTable;
@@ -21,25 +21,24 @@ public class Player {
         this.deck = deck;
     }
 
-
     public String getName(){
-        return TxtModif.ANSI_BOLD + this.name + TxtModif.ANSI_RESET;
+        return TxtDef.ANSI_BOLD + ((this.isAlive())?(TxtDef.ANSI_DARK_PURPLE):(TxtDef.ANSI_GREY)) + "'" +
+                this.name + "'" + TxtDef.ANSI_RESET;
     }
-
 
     public boolean isAlive(){
         return (this.lives > 0);
     }
     public String aliveStatus(){
         if(this.lives > 0) {
-            String outString = TxtModif.ANSI_DARK_GREEN + "ALIVE " + TxtModif.ANSI_DARK_RED;
+            String outString = TxtDef.ANSI_DARK_GREEN + "ALIVE " + TxtDef.ANSI_DARK_RED;
             for (int i = 0; i < this.lives; i++) {
-                outString += TxtModif.UNICODE_HEART;
+                outString += TxtDef.UNICODE_HEART;
             }
-            outString += " (" + this.lives + ")" + TxtModif.ANSI_RESET;
+            outString += " (" + this.lives + ")" + TxtDef.ANSI_RESET;
             return outString;
         }
-        return TxtModif.ANSI_BRIGHT_BLACK + "DEAD" + TxtModif.ANSI_RESET;
+        return TxtDef.ANSI_GREY + "DEAD" + TxtDef.ANSI_RESET;
     }
     public boolean isTurnEndAllowed() {
         return (this.cardsOnHand.size() <= this.lives);

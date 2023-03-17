@@ -2,6 +2,7 @@ package sk.stuba.fei.uim.oop.cards;
 
 import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.player.Player;
+import sk.stuba.fei.uim.oop.utility.TxtDef;
 import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
@@ -31,18 +32,22 @@ public class CatBalou extends Card {
         ArrayList<Card> targetTable = targetPlayer.getCardsOnTable();
         ArrayList<Card> targetHand = targetPlayer.getCardsOnHand();
 
-        System.out.println("══════════════════ CHOOSE CARD ══════════════════");
         if(targetTable.isEmpty()) {
             deck.discardCard(targetPlayer.removeCardOnHand(this.pickCard(targetPlayer.getCardsOnHand())));
+            this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " +  " Lost card.");
         } else if(targetHand.isEmpty()) {
             deck.discardCard(targetPlayer.removeCardOnTable(this.pickCard(targetPlayer.getCardsOnTable())));
+            this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " +  " Lost card.");
         } else {
             char charInput = ZKlavesnice.readChar("Do you want to pick a card from " + targetPlayer.getName() + "'s Hand or Table ? (T)able/(H)and");
             if(Character.toLowerCase(charInput) == 'h'){
                 deck.discardCard(targetPlayer.removeCardOnHand(this.pickCard(targetPlayer.getCardsOnHand())));
+                this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " +  " Lost card.");
             } else if(charInput == 'T' || charInput == 't'){
                 deck.discardCard(targetPlayer.removeCardOnTable(this.pickCard(targetPlayer.getCardsOnTable())));
+                this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " +  " Lost card.");
             } else {
+                this.printGameStatus(TxtDef.CLI_WARNING + activePlayer.getName() + "-> " + this.getName() + " can't be played now!");
                 return false;
             }
         }

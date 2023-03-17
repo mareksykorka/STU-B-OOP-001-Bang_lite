@@ -2,6 +2,7 @@ package sk.stuba.fei.uim.oop.cards;
 
 import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.player.Player;
+import sk.stuba.fei.uim.oop.utility.TxtDef;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,9 +24,11 @@ public class Prison extends Card {
             }
         }
         if(playablePlayers.size() == 0){
+            this.printGameStatus(TxtDef.CLI_WARNING + activePlayer.getName() + "-> " + this.getName() + " can't be played now!");
             return false;
         }
         Player targetPlayer = chooseTarget(playablePlayers);
+        this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> Went to " + this.getName() + ".");
         targetPlayer.setCardsOnTable(activePlayer.removeCardOnHand(this));
         return true;
     }
@@ -47,10 +50,10 @@ public class Prison extends Card {
         deck.discardCard(targetPlayer.removeCardOnTable(this));
 
         if ((randomGenerator.nextInt(4) + 1) == 1) {
-            System.out.println("PRISON escaped.");
+            this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + this.getName() + " escaped.");
             return true;
         }
-        System.out.println("PRISON NOT escaped.");
+        this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + this.getName() + " not escaped.");
         return false;
     }
 }
