@@ -16,7 +16,7 @@ public class CatBalou extends Card {
 
     @Override
     public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
-        ArrayList<Player> playablePlayers = new ArrayList<Player>();
+        ArrayList<Player> playablePlayers = new ArrayList<>();
         for (Player player:enemyPlayers) {
             if((!player.getCardsOnHand().isEmpty()) || (!player.getCardsOnTable().isEmpty())){
                 playablePlayers.add(player);

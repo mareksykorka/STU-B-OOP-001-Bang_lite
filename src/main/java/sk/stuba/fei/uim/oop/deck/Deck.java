@@ -16,7 +16,7 @@ public class Deck {
 
     public Deck(Game game) {
         Random randomGenerator = new Random();
-        ArrayList<Card> cards = new ArrayList<Card>();
+        ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
             cards.add(new Bang());
         }
@@ -44,16 +44,24 @@ public class Deck {
         Collections.shuffle(cards);
 
         this.deck = cards;
-        this.discardPile = new ArrayList<Card>();
+        this.discardPile = new ArrayList<>();
         this.statusMessage = "";
     }
 
-    public ArrayList<Card> drawCards(int numberOfCards) {
-        ArrayList<Card> outputCards = new ArrayList<Card>();
+    public String getStatusMessage() {
+        String outString = this.statusMessage;
+        this.statusMessage = "";
+        return outString;
+    }
+    public void setStatusMessage(String message) {
+        this.statusMessage += message + "\n";
+    }
 
-        for (int i = 0; i < numberOfCards; i++){
+    public ArrayList<Card> drawCards(int numberOfCards) {
+        ArrayList<Card> outputCards = new ArrayList<>();
+        for (int i = 0; i < numberOfCards; i++) {
             if(this.deck.isEmpty()) {
-                if(this.reffillDeck()){
+                if(this.reffillDeck()) {
                     outputCards.add(this.deck.remove(0));
                 } else {
                     break;
@@ -64,9 +72,9 @@ public class Deck {
         }
         return outputCards;
     }
-    private boolean reffillDeck(){
+    private boolean reffillDeck() {
         if (!(this.discardPile.isEmpty())) {
-            this.setStatusMessage(TxtDef.CLI_WARNING + "Refilling deck, from the discard pile." + TxtDef.ANSI_RESET);
+            this.setStatusMessage(TxtDef.ANSI_BOLD + TxtDef.CLI_INFO + "Refilling deck, from the discard pile." + TxtDef.ANSI_RESET);
             Collections.shuffle(this.discardPile);
             this.deck.addAll(this.discardPile);
             this.discardPile.clear();
@@ -76,33 +84,14 @@ public class Deck {
                 "There are no more cards in deck nor discard pile." + TxtDef.ANSI_RESET);
         return false;
     }
-
     public void discardCard(Card card) {
         this.discardPile.add(card);
     }
     public void discardCard(ArrayList<Card> cards) {
         this.discardPile.addAll(cards);
     }
-
-    public void playerDeath(Player player){
+    public void playerDeath(Player player) {
         this.discardCard(player.removeCardOnTable());
         this.discardCard(player.removeCardsOnHand());
     }
-
-    public void setStatusMessage(String message){
-        this.statusMessage += message + "\n";
-    }
-    public String getStatusMessage(){
-        String outString = this.statusMessage;
-        this.statusMessage = "";
-        return outString;
-    }
-
-        // Debug Only
-        public int getNumberOfCardsInDeck(){
-            return this.deck.size();
-        }
-        public int getNumberOfCardsInDiscardPile(){
-            return this.discardPile.size();
-        }
 }

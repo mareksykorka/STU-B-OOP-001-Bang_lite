@@ -17,7 +17,7 @@ public class Prison extends Card {
 
     @Override
     public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
-        ArrayList<Player> playablePlayers = new ArrayList<Player>();
+        ArrayList<Player> playablePlayers = new ArrayList<>();
         for (Player player:enemyPlayers) {
             if(!player.checkCardTable(Prison.class)){
                 playablePlayers.add(player);
@@ -32,7 +32,7 @@ public class Prison extends Card {
         for(int i = 0; i < playablePlayers.size(); i++) {
             options += (i + 1) + ". " + playablePlayers.get(i).getName() + " " + playablePlayers.get(i).isAliveToString() + "\n";
         }
-        Player targetPlayer = this.chooseTarget(enemyPlayers, options, "Who will go to " + this.getName() + " ");
+        Player targetPlayer = this.chooseTarget(playablePlayers, options, "Who will go to " + this.getName() + " ");
         targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> Went to " + this.getName() + ".");
         targetPlayer.setCardsOnTable(activePlayer.removeCardsOnHand(this));
         return true;

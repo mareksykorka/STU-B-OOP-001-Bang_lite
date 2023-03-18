@@ -20,33 +20,31 @@ public abstract class Card {
     }
 
     public String getName() {
-        if(this.cardColour == Colour.BROWN){
+        if(this.cardColour == Colour.BROWN) {
             return TxtDef.ANSI_DARK_YELLOW + name + TxtDef.ANSI_RESET;
         }
-        if(this.cardColour == Colour.BLUE){
+        if(this.cardColour == Colour.BLUE) {
             return TxtDef.ANSI_DARK_BLUE + name + TxtDef.ANSI_RESET;
         }
         return name;
     }
 
     public abstract boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck);
-
     public abstract boolean receivePlay(Player targetPlayer, Deck deck);
 
     protected Player chooseTarget(ArrayList<Player> playablePLayers, String options, String question) {
         System.out.println("═════════════════ CHOOSE TARGET ═════════════════");
-        if(playablePLayers.size() == 1){
+        if(playablePLayers.size() == 1) {
             System.out.println("You have only one enemy player - automatically choosing player " + playablePLayers.get(0).getName());
             return playablePLayers.get(0);
         }
         System.out.print(options);
         return playablePLayers.get(this.pickIndex(question, playablePLayers.size()));
     }
-
-    protected int pickIndex(String message, int max){
+    protected int pickIndex(String message, int max) {
         return this.pickIndex(message, 1, max);
     }
-    protected int pickIndex(String message, int min, int max){
+    protected int pickIndex(String message, int min, int max) {
         if(min == max) {
             return max-1;
         }
