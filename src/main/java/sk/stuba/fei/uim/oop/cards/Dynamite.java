@@ -22,29 +22,28 @@ public class Dynamite extends Card {
     @Override
     public boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
         if (activePlayer.checkCardTable(Dynamite.class,deck)) {
-            activePlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + "-> You can not have two " +
-                    this.getName() + "on the table at once!");
+            activePlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + " -> You can not have two " +
+                    this.getName() + "'s on the table at once!");
             return false;
         }
-        activePlayer.setStatusMessage(TxtDef.CLI_INFO + activePlayer.getName() + "-> " + this.getName() + " placed on table.");
+        activePlayer.setStatusMessage(TxtDef.CLI_INFO + activePlayer.getName() + " -> " + this.getName() + " placed on table.");
         activePlayer.setCardsOnTable(activePlayer.removeCardsOnHand(this));
         return false;
     }
-
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
         if ((randomGenerator.nextInt(8)) == 0) {
             deck.discardCard(targetPlayer.removeCardOnTable(this));
-            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + this.getName() + " exploded.");
-            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + "3 Lives lost.");
+            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " + this.getName() + " exploded.");
+            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " + "3 Lives lost.");
             targetPlayer.removeLives(3);
             if(!targetPlayer.isAlive()){
-                targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> Died, Killed by " + this.getName() + ".");
+                targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Died, Killed by " + this.getName() + ".");
             }
             return true;
         }
         Player prevPlayer = this.game.prevPlayer();
-        targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + this.getName() + " moving to " + prevPlayer.getName());
+        targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " + this.getName() + " moving to " + prevPlayer.getName());
         prevPlayer.setCardsOnTable(targetPlayer.removeCardOnTable(this));
         return false;
     }

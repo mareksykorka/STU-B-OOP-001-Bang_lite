@@ -153,7 +153,7 @@ public class Player {
         }
         return false;
     }
-    public boolean checkCardTable(Class cardType){
+    public boolean checkCardTable(Class cardType) {
         for (Card card:this.cardsOnTable) {
             if(cardType.isInstance(card)) {
                 return true;

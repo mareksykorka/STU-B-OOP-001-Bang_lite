@@ -18,17 +18,16 @@ public class Indians extends Card {
         deck.discardCard(activePlayer.removeCardsOnHand(this));
         for (Player targetPlayer:enemyPlayers) {
             if(!targetPlayer.checkCardHand(Bang.class,deck)) {
-                targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> Life lost.");
+                targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Life lost.");
                 targetPlayer.removeLives(1);
                 if(!targetPlayer.isAlive()){
-                    targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> Died, Killed by " +
+                    targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Died, Killed by " +
                             activePlayer.getName() + "'s "+ this.getName() + ".");
                 }
             }
         }
         return true;
     }
-
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
         return true;

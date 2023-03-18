@@ -19,12 +19,12 @@ public class Prison extends Card {
     public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
         ArrayList<Player> playablePlayers = new ArrayList<>();
         for (Player player:enemyPlayers) {
-            if(!player.checkCardTable(Prison.class)){
+            if(!player.checkCardTable(Prison.class)) {
                 playablePlayers.add(player);
             }
         }
-        if(playablePlayers.isEmpty()){
-            activePlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + "-> " + this.getName() + " can't be played now!");
+        if(playablePlayers.isEmpty()) {
+            activePlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + " -> " + this.getName() + " can't be played now!");
             return false;
         }
 
@@ -33,19 +33,18 @@ public class Prison extends Card {
             options += (i + 1) + ". " + playablePlayers.get(i).getName() + " " + playablePlayers.get(i).isAliveToString() + "\n";
         }
         Player targetPlayer = this.chooseTarget(playablePlayers, options, "Who will go to " + this.getName() + " ");
-        targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> Went to " + this.getName() + ".");
+        targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Went to " + this.getName() + ".");
         targetPlayer.setCardsOnTable(activePlayer.removeCardsOnHand(this));
         return true;
     }
-
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
         deck.discardCard(targetPlayer.removeCardOnTable(this));
         if ((randomGenerator.nextInt(4) + 1) == 1) {
-            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + this.getName() + " escaped.");
+            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " + this.getName() + " escaped.");
             return true;
         }
-        targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + this.getName() + " not escaped. Skipping turn.");
+        targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " + this.getName() + " not escaped. Skipping turn.");
         return false;
     }
 }
