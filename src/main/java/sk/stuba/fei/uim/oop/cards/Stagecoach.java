@@ -15,8 +15,8 @@ public class Stagecoach extends Card {
 
     @Override
     public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
-        this.printGameStatus(TxtDef.CLI_INFO + activePlayer.getName() + "-> Two cards drawn.");
-        deck.discardCard(activePlayer.removeCardOnHand(this));
+        deck.discardCard(activePlayer.removeCardsOnHand(this));
+        activePlayer.setStatusMessage(TxtDef.CLI_INFO + activePlayer.getName() + "-> Two cards drawn.");
         activePlayer.setCardsOnHand(deck.drawCards(2));
         return true;
     }

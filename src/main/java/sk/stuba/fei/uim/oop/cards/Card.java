@@ -33,10 +33,19 @@ public abstract class Card {
 
     public abstract boolean receivePlay(Player targetPlayer, Deck deck);
 
+    protected Player chooseTarget(ArrayList<Player> playablePLayers, String options, String question) {
+        System.out.println("═════════════════ CHOOSE TARGET ═════════════════");
+        if(playablePLayers.size() == 1){
+            System.out.println("You have only one enemy player - automatically choosing player " + playablePLayers.get(0).getName());
+            return playablePLayers.get(0);
+        }
+        System.out.print(options);
+        return playablePLayers.get(this.pickIndex(question, playablePLayers.size()));
+    }
+
     protected int pickIndex(String message, int max){
         return this.pickIndex(message, 1, max);
     }
-
     protected int pickIndex(String message, int min, int max){
         if(min == max) {
             return max-1;
@@ -48,16 +57,5 @@ public abstract class Card {
         } while (input < min || input > max);
 
         return input-1;
-    }
-
-    protected void printGameStatus(String status){
-        System.out.println(TxtDef.CLI_CLS);
-        System.out.println("══════════════════ GAME STATUS ══════════════════");
-        System.out.println(status);
-    }
-
-    protected void printGameStatus(){
-        System.out.println(TxtDef.CLI_CLS);
-        System.out.println("══════════════════ GAME STATUS ══════════════════");
     }
 }

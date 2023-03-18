@@ -23,53 +23,50 @@ public class CatBalou extends Card {
             }
         }
         if(playablePlayers.isEmpty()){
-            System.out.println("You can not play this card.");
+            activePlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + "-> " + this.getName() + " can't be played now!");
             return false;
         }
 
-        Player targetPlayer = this.chooseTarget(playablePlayers);
+        String options = "";
+        for(int i = 0; i < playablePlayers.size(); i++){
+            options += ((i+1) + ". " + playablePlayers.get(i).getName() + " Cards on hand: " +
+                    playablePlayers.get(i).getCardsOnHandNumber()+ " Cards on table: " +
+                    playablePlayers.get(i).getCardsOnTableNumber()) + "\n";
+        }
+        Player targetPlayer = this.chooseTarget(playablePlayers, options,"Select player which`s card you want to discard");
 
         ArrayList<Card> targetTable = targetPlayer.getCardsOnTable();
         ArrayList<Card> targetHand = targetPlayer.getCardsOnHand();
 
         if(targetTable.isEmpty()) {
-            deck.discardCard(targetPlayer.removeCardOnHand(this.pickCard(targetPlayer.getCardsOnHand())));
-            this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " +  " Lost card.");
+            deck.discardCard(targetPlayer.removeCardsOnHand(this.pickCard(targetPlayer.getCardsOnHand())));
+            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " +  " Lost card.");
         } else if(targetHand.isEmpty()) {
             deck.discardCard(targetPlayer.removeCardOnTable(this.pickCard(targetPlayer.getCardsOnTable())));
-            this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " +  " Lost card.");
+            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " +  " Lost card.");
         } else {
             char charInput = ZKlavesnice.readChar("Do you want to pick a card from " + targetPlayer.getName() + "'s Hand or Table ? (T)able/(H)and");
             if(Character.toLowerCase(charInput) == 'h'){
-                deck.discardCard(targetPlayer.removeCardOnHand(this.pickCard(targetPlayer.getCardsOnHand())));
-                this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " +  " Lost card.");
+                deck.discardCard(targetPlayer.removeCardsOnHand(this.pickCard(targetPlayer.getCardsOnHand())));
+                targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " +  " Lost card.");
             } else if(charInput == 'T' || charInput == 't'){
                 deck.discardCard(targetPlayer.removeCardOnTable(this.pickCard(targetPlayer.getCardsOnTable())));
-                this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " +  " Lost card.");
+                targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " +  " Lost card.");
             } else {
-                this.printGameStatus(TxtDef.CLI_WARNING + activePlayer.getName() + "-> " + this.getName() + " can't be played now!");
+                targetPlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + "-> " + this.getName() + " can't be played now!");
                 return false;
             }
         }
-        deck.discardCard(activePlayer.removeCardOnHand(this));
+        deck.discardCard(activePlayer.removeCardsOnHand(this));
         return true;
     }
 
     private Card pickCard(ArrayList<Card> cards) {
+        if(cards.size() == 1){
+            System.out.println("You have only one option - automatically choosing card.");
+            return cards.get(0);
+        }
         return cards.get(this.pickIndex("What card do you want to throw away?", cards.size()));
-    }
-
-    private Player chooseTarget(ArrayList<Player> playablePlayers) {
-        if(playablePlayers.size() == 1){
-            return playablePlayers.get(0);
-        }
-        System.out.println("═════════════════ CHOOSE TARGET ═════════════════");
-
-        for(int i = 0; i < playablePlayers.size(); i++){
-            System.out.println((i+1) + ". " + playablePlayers.get(i).getName() + " Cards on hand: " +
-                    playablePlayers.get(i).getCardsOnHandNumber()+ " Cards on table: " + playablePlayers.get(i).getCardsOnTableNumber());
-        }
-        return playablePlayers.get(this.pickIndex("Select player which`s card you want to discard.", playablePlayers.size()));
     }
 
     @Override

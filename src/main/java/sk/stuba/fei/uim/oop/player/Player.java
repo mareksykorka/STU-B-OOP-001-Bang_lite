@@ -12,6 +12,7 @@ public class Player {
     private ArrayList<Card> cardsOnHand;
     private ArrayList<Card> cardsOnTable;
     private Deck deck;
+    private String statusMessage;
 
     public Player(String name, Deck deck) {
         this.name = name;
@@ -19,6 +20,7 @@ public class Player {
         this.cardsOnHand = new ArrayList<Card>();
         this.cardsOnTable = new ArrayList<Card>();
         this.deck = deck;
+        this.statusMessage = "";
     }
 
     public String getName(){
@@ -29,7 +31,7 @@ public class Player {
     public boolean isAlive(){
         return (this.lives > 0);
     }
-    public String aliveStatus(){
+    public String isAliveToString(){
         if(this.lives > 0) {
             String outString = TxtDef.ANSI_DARK_GREEN + "ALIVE " + TxtDef.ANSI_DARK_RED;
             for (int i = 0; i < this.lives; i++) {
@@ -43,31 +45,20 @@ public class Player {
     public boolean isTurnEndAllowed() {
         return (this.cardsOnHand.size() <= this.lives);
     }
-
     public void addLives(int numberOfLives){
         for (int i = 0; i < numberOfLives; i++) {
-            this.addLives();
+            this.lives++;
         }
     }
-    private void addLives(){
-        this.lives++;
-    }
-
-    public boolean removeLives(int numberOfLives){
+    public void removeLives(int numberOfLives){
         for (int i = 0; i < numberOfLives; i++) {
-            this.removeLives();
-        }
-        return this.isAlive();
-    }
-    private void removeLives(){
-        this.lives--;
-        if(this.lives <= 0) {
-            this.lives = 0;
-            this.deck.playerDeath(this);
+            this.lives--;
+            if(this.lives <= 0) {
+                this.lives = 0;
+                this.deck.playerDeath(this);
+            }
         }
     }
-
-
 
     public void setCardsOnHand(ArrayList<Card> cards) {
         this.cardsOnHand.addAll(cards);
@@ -75,48 +66,39 @@ public class Player {
     public void setCardsOnHand(Card card) {
         this.cardsOnHand.add(card);
     }
-
-    public Card removeCardOnHand(int indexOfCard){
-        return removeCardOnHand(this.cardsOnHand.get(indexOfCard));
-    }
-    public Card removeCardOnHand(Card card){
+    public Card removeCardsOnHand(Card card){
         this.cardsOnHand.remove(card);
         return card;
     }
-    public ArrayList<Card> removeCardOnHand(){
+    public ArrayList<Card> removeCardsOnHand(){
         ArrayList<Card> returnArr = new ArrayList<Card>();
         returnArr.addAll(this.cardsOnHand);
         this.cardsOnHand.clear();
         return returnArr;
     }
-
     public ArrayList<Card> getCardsOnHand(){
         return this.cardsOnHand;
     }
     public int getCardsOnHandNumber() {
         return this.cardsOnHand.size();
     }
-    public void showCardsOnHand() {
+    public String cardsOnHandToString() {
+        String outString = "";
         if(this.getCardsOnHandNumber() > 0){
             for (int i = 0; i < this.getCardsOnHandNumber(); i++) {
-                System.out.println("\t"+ (i+1) + ". " + this.cardsOnHand.get(i).getName());
+                outString += "\t" + (i+1) + ". " + this.cardsOnHand.get(i).getName() + "\n";
             }
         } else {
-            System.out.println("\tYou don't have any cards.");
+            outString += "\tYou don't have any cards." + "\n";
         }
+        return outString;
     }
-
-
 
     public void setCardsOnTable(ArrayList<Card> cards) {
         this.cardsOnTable.addAll(cards);
     }
     public void setCardsOnTable(Card card) {
         this.cardsOnTable.add(card);
-    }
-
-    public Card removeCardOnTable(int indexOfCard){
-        return this.removeCardOnHand(this.cardsOnTable.get(indexOfCard));
     }
     public Card removeCardOnTable(Card card){
         this.cardsOnTable.remove(card);
@@ -128,25 +110,36 @@ public class Player {
         this.cardsOnTable.clear();
         return returnArr;
     }
-
     public ArrayList<Card> getCardsOnTable(){
         return this.cardsOnTable;
     }
     public int getCardsOnTableNumber() {
         return this.cardsOnTable.size();
     }
-    public void showCardsOnTable() {
+    public String showCardsOnTable() {
+        String outString = "";
         if(this.getCardsOnTableNumber() > 0){
             for (int i = 0; i < this.getCardsOnTableNumber(); i++) {
-                System.out.println("\t" + (i+1) + ". " + this.cardsOnTable.get(i).getName());
+                outString += "\t" + (i+1) + ". " + this.cardsOnTable.get(i).getName()  + "\n";
             }
         } else {
-            System.out.println("\tNo active cards.");
+            outString += "\tNo active cards.\n";
         }
+        return outString;
     }
 
 
+    public void setStatusMessage(String message){
+        this.statusMessage += message + "\n";
+    }
+    public String getStatusMessage(){
+        String outString = this.statusMessage;
+        this.statusMessage = "";
+        return outString;
+    }
 
+
+    //TODO: Rewrite
     public boolean checkCardHand(Class cardType, Deck deck){
         for (Card card:this.cardsOnHand) {
             if(cardType.isInstance(card)) {

@@ -11,30 +11,30 @@ public class Barrel extends Card {
     private static final String CARD_NAME = "Barrel";
     private Random randomGenerator;
 
-    public Barrel() {
+    public Barrel(Random randomGenerator) {
         super(CARD_NAME, Colour.BLUE);
-        this.randomGenerator = new Random();
+        this.randomGenerator = randomGenerator;
     }
 
     @Override
     public boolean play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
         if (activePlayer.checkCardTable(Barrel.class)) {
-            this.printGameStatus(TxtDef.CLI_WARNING + activePlayer.getName() + "-> You can not have two " +
+            activePlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + "-> You can not have two " +
                     this.getName() + "on the table at once!");
             return false;
         }
-        this.printGameStatus(TxtDef.CLI_INFO + activePlayer.getName() + "-> " + this.getName() + " placed on table.");
-        activePlayer.setCardsOnTable(activePlayer.removeCardOnHand(this));
+        activePlayer.setStatusMessage(TxtDef.CLI_INFO + activePlayer.getName() + "-> " + this.getName() + " placed on table.");
+        activePlayer.setCardsOnTable(activePlayer.removeCardsOnHand(this));
         return false;
     }
 
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
         if (((randomGenerator.nextInt(4) + 1) == 1)) {
-            System.out.println(TxtDef.CLI_INFO + targetPlayer.getName() + "-> BANG evaded by " + this.getName());
+            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> BANG evaded by " + this.getName());
             return true;
         }
-        System.out.println(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + this.getName() + " not effective." );
+        targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + this.getName() + " not effective." );
         return false;
     }
 }

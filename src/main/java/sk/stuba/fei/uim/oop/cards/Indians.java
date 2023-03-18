@@ -15,12 +15,15 @@ public class Indians extends Card {
 
     @Override
     public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
-        deck.discardCard(activePlayer.removeCardOnHand(this));
-        this.printGameStatus();
+        deck.discardCard(activePlayer.removeCardsOnHand(this));
         for (Player targetPlayer:enemyPlayers) {
             if(!targetPlayer.checkCardHand(Bang.class,deck)) {
-                System.out.println(TxtDef.CLI_INFO + targetPlayer.getName() + "-> Life lost.");
+                targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> Life lost.");
                 targetPlayer.removeLives(1);
+                if(!targetPlayer.isAlive()){
+                    targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> Died, Killed by " +
+                            activePlayer.getName() + "'s "+ this.getName() + ".");
+                }
             }
         }
         return true;

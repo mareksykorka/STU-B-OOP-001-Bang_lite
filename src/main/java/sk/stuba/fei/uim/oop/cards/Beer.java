@@ -15,8 +15,8 @@ public class Beer extends Card {
 
     @Override
     public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
-        this.printGameStatus(TxtDef.CLI_INFO + activePlayer.getName() + "-> Life gained.");
-        deck.discardCard(activePlayer.removeCardOnHand(this));
+        deck.discardCard(activePlayer.removeCardsOnHand(this));
+        activePlayer.setStatusMessage(TxtDef.CLI_INFO + activePlayer.getName() + "-> Life gained.");
         activePlayer.addLives(1);
         return true;
     }

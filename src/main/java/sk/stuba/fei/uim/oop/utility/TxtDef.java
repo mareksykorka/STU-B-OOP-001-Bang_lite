@@ -20,9 +20,10 @@ public class TxtDef {
     public static final String ANSI_BRIGHT_CYAN = "\u001B[96m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    public static final String UNICODE_HEART = "\u2764";
+    public static final String UNICODE_HEART = "❤";
+    
 
     public static final String CLI_INFO = "(i) ";
     public static final String CLI_WARNING = "(!) ";
-    public static final String CLI_CLS = "\n\n\n\n\n\n\n\n\n\n";
+    public static final String CLI_CLS = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 }

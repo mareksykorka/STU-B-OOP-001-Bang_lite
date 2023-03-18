@@ -3,15 +3,19 @@ package sk.stuba.fei.uim.oop.deck;
 import sk.stuba.fei.uim.oop.cards.*;
 import sk.stuba.fei.uim.oop.game.Game;
 import sk.stuba.fei.uim.oop.player.Player;
+import sk.stuba.fei.uim.oop.utility.TxtDef;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Deck {
     private ArrayList<Card> deck;
     private ArrayList<Card> discardPile;
+    private String statusMessage;
 
     public Deck(Game game) {
+        Random randomGenerator = new Random();
         ArrayList<Card> cards = new ArrayList<Card>();
         for (int i = 0; i < 30; i++) {
             cards.add(new Bang());
@@ -30,45 +34,46 @@ public class Deck {
         }
         cards.add(new Indians());
         cards.add(new Indians());
-        cards.add(new Barrel());
-        cards.add(new Barrel());
-        cards.add(new Dynamite(game));
-        cards.add(new Prison());
-        cards.add(new Prison());
-        cards.add(new Prison());
+        cards.add(new Barrel(randomGenerator));
+        cards.add(new Barrel(randomGenerator));
+        cards.add(new Dynamite(randomGenerator, game));
+        cards.add(new Prison(randomGenerator));
+        cards.add(new Prison(randomGenerator));
+        cards.add(new Prison(randomGenerator));
 
         Collections.shuffle(cards);
 
         this.deck = cards;
         this.discardPile = new ArrayList<Card>();
+        this.statusMessage = "";
     }
 
     public ArrayList<Card> drawCards(int numberOfCards) {
         ArrayList<Card> outputCards = new ArrayList<Card>();
-        Card newCard;
+
         for (int i = 0; i < numberOfCards; i++){
-            if((newCard = this.drawCards()) == null) {
-                System.out.println("There are no more cards left on the table,\nneither in the deck nor in the discard pile.");
-                break;
+            if(this.deck.isEmpty()) {
+                if(this.reffillDeck()){
+                    outputCards.add(this.deck.remove(0));
+                } else {
+                    break;
+                }
+            } else {
+                outputCards.add(this.deck.remove(0));
             }
-            outputCards.add(newCard);
         }
         return outputCards;
     }
-    private Card drawCards() {
-        if(this.deck.isEmpty()) {
-            return (this.reffillDeck() ? this.drawCards() : null);
-        }
-        return this.deck.remove(0);
-    }
     private boolean reffillDeck(){
         if (!(this.discardPile.isEmpty())) {
+            this.setStatusMessage(TxtDef.CLI_WARNING + "Refilling deck, from the discard pile." + TxtDef.ANSI_RESET);
             Collections.shuffle(this.discardPile);
-            System.out.println("Refiling deck from the discard pile.");
             this.deck.addAll(this.discardPile);
             this.discardPile.clear();
             return true;
         }
+        this.setStatusMessage(TxtDef.ANSI_BRIGHT_RED + TxtDef.ANSI_BOLD + TxtDef.CLI_WARNING +
+                "There are no more cards in deck nor discard pile." + TxtDef.ANSI_RESET);
         return false;
     }
 
@@ -79,15 +84,25 @@ public class Deck {
         this.discardPile.addAll(cards);
     }
 
-    public int getNumberOfCardsInDeck(){
-        return this.deck.size();
-    }
-    public int getNumberOfCardsInDiscardPile(){
-        return this.discardPile.size();
-    }
-
     public void playerDeath(Player player){
         this.discardCard(player.removeCardOnTable());
-        this.discardCard(player.removeCardOnHand());
+        this.discardCard(player.removeCardsOnHand());
     }
+
+    public void setStatusMessage(String message){
+        this.statusMessage += message + "\n";
+    }
+    public String getStatusMessage(){
+        String outString = this.statusMessage;
+        this.statusMessage = "";
+        return outString;
+    }
+
+        // Debug Only
+        public int getNumberOfCardsInDeck(){
+            return this.deck.size();
+        }
+        public int getNumberOfCardsInDiscardPile(){
+            return this.discardPile.size();
+        }
 }

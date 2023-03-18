@@ -10,9 +10,9 @@ import java.util.Random;
 public class Prison extends Card {
     private static final String CARD_NAME = "Prison";
     private Random randomGenerator;
-    public Prison() {
+    public Prison(Random randomGenerator) {
         super(CARD_NAME, Colour.BLUE);
-        this.randomGenerator = new Random();
+        this.randomGenerator = randomGenerator;
     }
 
     @Override
@@ -23,37 +23,29 @@ public class Prison extends Card {
                 playablePlayers.add(player);
             }
         }
-        if(playablePlayers.size() == 0){
-            this.printGameStatus(TxtDef.CLI_WARNING + activePlayer.getName() + "-> " + this.getName() + " can't be played now!");
+        if(playablePlayers.isEmpty()){
+            activePlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + "-> " + this.getName() + " can't be played now!");
             return false;
         }
-        Player targetPlayer = chooseTarget(playablePlayers);
-        this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> Went to " + this.getName() + ".");
-        targetPlayer.setCardsOnTable(activePlayer.removeCardOnHand(this));
-        return true;
-    }
 
-    private Player chooseTarget(ArrayList<Player> playablePlayers) {
-        if(playablePlayers.size() == 1){
-            return playablePlayers.get(0);
-        }
-        System.out.println("═════════════════ CHOOSE TARGET ═════════════════");
+        String options = "";
         for(int i = 0; i < playablePlayers.size(); i++) {
-            System.out.println((i + 1) + ". " + playablePlayers.get(i).getName() + " " +
-                    playablePlayers.get(i).aliveStatus());
+            options += (i + 1) + ". " + playablePlayers.get(i).getName() + " " + playablePlayers.get(i).isAliveToString() + "\n";
         }
-        return playablePlayers.get(this.pickIndex("Select player you want to use the BANG on", playablePlayers.size()));
+        Player targetPlayer = this.chooseTarget(enemyPlayers, options, "Who will go to " + this.getName() + " ");
+        targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> Went to " + this.getName() + ".");
+        targetPlayer.setCardsOnTable(activePlayer.removeCardsOnHand(this));
+        return true;
     }
 
     @Override
     public boolean receivePlay(Player targetPlayer, Deck deck) {
         deck.discardCard(targetPlayer.removeCardOnTable(this));
-
         if ((randomGenerator.nextInt(4) + 1) == 1) {
-            this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + this.getName() + " escaped.");
+            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + this.getName() + " escaped.");
             return true;
         }
-        this.printGameStatus(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + this.getName() + " not escaped.");
+        targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + "-> " + this.getName() + " not escaped. Skipping turn.");
         return false;
     }
 }
