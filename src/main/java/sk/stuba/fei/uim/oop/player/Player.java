@@ -71,9 +71,6 @@ public class Player {
     public void setCardsOnHand(ArrayList<Card> cards) {
         this.cardsOnHand.addAll(cards);
     }
-    public void setCardsOnHand(Card card) {
-        this.cardsOnHand.add(card);
-    }
     public Card removeCardsOnHand(Card card) {
         this.cardsOnHand.remove(card);
         return card;
@@ -101,9 +98,6 @@ public class Player {
         return outString;
     }
 
-    public void setCardsOnTable(ArrayList<Card> cards) {
-        this.cardsOnTable.addAll(cards);
-    }
     public void setCardsOnTable(Card card) {
         this.cardsOnTable.add(card);
     }

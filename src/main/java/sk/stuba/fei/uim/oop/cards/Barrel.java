@@ -12,8 +12,13 @@ public class Barrel extends Card {
     private Random randomGenerator;
 
     public Barrel(Random randomGenerator) {
-        super(CARD_NAME, Colour.BLUE);
+        super(CARD_NAME);
         this.randomGenerator = randomGenerator;
+    }
+
+    @Override
+    public String getName() {
+        return TxtDef.ANSI_DARK_BLUE + super.getName() + TxtDef.ANSI_RESET;
     }
 
     @Override

@@ -10,7 +10,12 @@ public class Bang extends Card {
     private static final String CARD_NAME = "Bang";
 
     public Bang() {
-        super(CARD_NAME, Colour.BROWN);
+        super(CARD_NAME);
+    }
+
+    @Override
+    public String getName() {
+        return TxtDef.ANSI_DARK_YELLOW + super.getName() + TxtDef.ANSI_RESET;
     }
 
     @Override

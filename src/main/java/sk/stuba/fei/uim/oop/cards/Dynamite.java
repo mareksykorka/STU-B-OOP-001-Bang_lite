@@ -14,9 +14,14 @@ public class Dynamite extends Card {
     private final Game game;
 
     public Dynamite(Random randomGenerator, Game game) {
-        super(CARD_NAME, Colour.BLUE);
+        super(CARD_NAME);
         this.randomGenerator = randomGenerator;
         this.game = game;
+    }
+
+    @Override
+    public String getName() {
+        return TxtDef.ANSI_DARK_BLUE + super.getName() + TxtDef.ANSI_RESET;
     }
 
     @Override

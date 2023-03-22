@@ -11,7 +11,12 @@ public class CatBalou extends Card {
     private static final String CARD_NAME = "CatBalou";
 
     public CatBalou() {
-        super(CARD_NAME, Colour.BROWN);
+        super(CARD_NAME);
+    }
+
+    @Override
+    public String getName() {
+        return TxtDef.ANSI_DARK_YELLOW + super.getName() + TxtDef.ANSI_RESET;
     }
 
     @Override

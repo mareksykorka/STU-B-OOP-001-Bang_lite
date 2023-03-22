@@ -8,24 +8,12 @@ import java.util.ArrayList;
 
 public abstract class Card {
     private String name;
-    protected enum Colour {
-        BLUE,
-        BROWN
-    }
-    protected Colour cardColour;
 
-    public Card(String name, Colour colour) {
+    public Card(String name) {
         this.name = name;
-        this.cardColour = colour;
     }
 
     public String getName() {
-        if(this.cardColour == Colour.BROWN) {
-            return TxtDef.ANSI_DARK_YELLOW + name + TxtDef.ANSI_RESET;
-        }
-        if(this.cardColour == Colour.BLUE) {
-            return TxtDef.ANSI_DARK_BLUE + name + TxtDef.ANSI_RESET;
-        }
         return name;
     }
 

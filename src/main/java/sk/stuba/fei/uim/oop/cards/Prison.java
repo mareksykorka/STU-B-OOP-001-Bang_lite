@@ -11,8 +11,13 @@ public class Prison extends Card {
     private static final String CARD_NAME = "Prison";
     private Random randomGenerator;
     public Prison(Random randomGenerator) {
-        super(CARD_NAME, Colour.BLUE);
+        super(CARD_NAME);
         this.randomGenerator = randomGenerator;
+    }
+
+    @Override
+    public String getName() {
+        return TxtDef.ANSI_DARK_BLUE + super.getName() + TxtDef.ANSI_RESET;
     }
 
     @Override

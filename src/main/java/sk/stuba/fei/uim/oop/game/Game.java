@@ -57,15 +57,6 @@ public class Game {
     private int getNumberOfAllPlayers() {
         return this.players.size();
     }
-    private String getWinnerName() {
-        String winner = "";
-        for (Player player : this.players) {
-            if(player.isAlive()) {
-                winner = player.getName();
-            }
-        }
-        return winner;
-    }
 
     private void gameLoop() {
         while(this.getNumberOfAlivePlayers() > 1) {
@@ -80,9 +71,7 @@ public class Game {
             this.activePlayer = this.nextPlayer();
         }
         this.showPlayingField();
-        System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "═════════════════════ WINNER ════════════════════");
-        System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "The winner is " + this.getWinnerName());
-        System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "═════════════════════ WINNER ════════════════════");
+        this.showWinner();
     }
 
     private void showPlayingField() {
@@ -114,6 +103,7 @@ public class Game {
             input = ZKlavesnice.readInt("What card you want to play? If you want to end your turn just write '0'.");
             if (input != 0) {
                 if(((input-1) >= 0) && ((input-1) < this.activePlayer.getCardsOnHandNumber())) {
+
                     this.activePlayer.useCard((input-1), this.getEnemyPlayers(), this.deck);
                 } else {
                     deck.setStatusMessage(TxtDef.CLI_WARNING + "You don't have the card " + input + "! Try Again!");
@@ -133,6 +123,17 @@ public class Game {
                 }
             }
         }
+    }
+    private void showWinner() {
+        String winner = "";
+        for (Player player : this.players) {
+            if(player.isAlive()) {
+                winner = player.getName();
+            }
+        }
+        System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "═════════════════════ WINNER ════════════════════");
+        System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "The winner is " + winner);
+        System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "═════════════════════ WINNER ════════════════════");
     }
 
     public Player nextPlayer() {
