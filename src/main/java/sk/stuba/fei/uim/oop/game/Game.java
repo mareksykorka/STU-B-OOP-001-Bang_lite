@@ -1,9 +1,10 @@
 package sk.stuba.fei.uim.oop.game;
 
+import sk.stuba.fei.uim.oop.cards.blue.Dynamite;
+import sk.stuba.fei.uim.oop.cards.blue.Prison;
 import sk.stuba.fei.uim.oop.utility.*;
 import sk.stuba.fei.uim.oop.deck.*;
 import sk.stuba.fei.uim.oop.player.*;
-import sk.stuba.fei.uim.oop.cards.*;
 
 import java.util.ArrayList;
 
@@ -60,15 +61,15 @@ public class Game {
 
     private void gameLoop() {
         while(this.getNumberOfAlivePlayers() > 1) {
-            this.activePlayer.checkCardTable(Dynamite.class, this.deck);
+            this.activePlayer.checkCardTable(Dynamite.class, this.players, this.deck);
             if(this.activePlayer.isAlive()) {
-                if(this.activePlayer.checkCardTable(Prison.class, this.deck)) {
+                if(!this.activePlayer.checkCardTable(Prison.class, this.players, this.deck)) {
                     this.activePlayer.setCardsOnHand(this.deck.drawCards(2));
                     this.playCards();
                     this.throwCards();
                 }
             }
-            this.activePlayer = this.nextPlayer();
+            this.activePlayer = this.activePlayer.nextPlayer(this.players);
         }
         this.showPlayingField();
         this.showWinner();
@@ -80,6 +81,7 @@ public class Game {
             System.out.print(player.getStatusMessage());
         }
         System.out.print(this.deck.getStatusMessage());
+        this.debugCheck();
         System.out.println("═════════════════════ TABLE ═════════════════════");
         for(int i = 0; i < this.getNumberOfAllPlayers(); i++) {
             System.out.println(TxtDef.ANSI_BOLD + (i+1) + ". " + this.players.get(i).getName() +
@@ -136,32 +138,17 @@ public class Game {
         System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "═════════════════════ WINNER ════════════════════");
     }
 
-    public Player nextPlayer() {
-        int index = this.players.indexOf(this.activePlayer);
-        Player nextPlayer;
+    private void debugCheck() {
+        int sumOfAllCards = this.deck.getNumberOfCardsInDeck() + this.deck.getNumberOfCardsInDiscardPile();
+        for (Player player:this.players) {
+            sumOfAllCards += player.getCardsOnHandNumber() + player.getCardsOnTableNumber();
+        }
 
-        do {
-            index++;
-            if(index >= this.getNumberOfAllPlayers()) {
-                index = 0;
-            }
-            nextPlayer = this.players.get(index);
-        } while (!(nextPlayer.isAlive()));
-
-        return nextPlayer;
-    }
-    public Player prevPlayer() {
-        int index = this.players.indexOf(this.activePlayer);
-        Player prevPlayer;
-
-        do {
-            index--;
-            if(index < 0) {
-                index = (this.getNumberOfAllPlayers()-1);
-            }
-            prevPlayer = this.players.get(index);
-        } while (!(prevPlayer.isAlive()));
-
-        return prevPlayer;
+        if(sumOfAllCards != 71) {
+            System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_RED + "══════════════════════ DEBUG ════════════════════");
+            System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_RED +  "Debug check: " + sumOfAllCards +
+                    " Deck: " + deck.getNumberOfCardsInDeck() +
+                    " Discard pile: " + deck.getNumberOfCardsInDiscardPile() + TxtDef.ANSI_RESET);
+        }
     }
 }

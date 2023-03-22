@@ -1,6 +1,7 @@
 package sk.stuba.fei.uim.oop.player;
 
 import sk.stuba.fei.uim.oop.cards.*;
+import sk.stuba.fei.uim.oop.cards.blue.Prison;
 import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.utility.TxtDef;
 
@@ -128,32 +129,51 @@ public class Player {
         return outString;
     }
 
-    public boolean checkCardHand(Class cardType, Deck deck) {
+    public boolean checkCardHand(Class cardType, ArrayList<Player> enemyPlayers, Deck deck) {
         for (Card card : this.cardsOnHand) {
             if(cardType.isInstance(card)) {
-                return card.receivePlay(this, deck);
+                return card.receivePlay(this, enemyPlayers, deck);
             }
         }
         return false;
     }
-    public boolean checkCardTable(Class cardType, Deck deck) {
+    public boolean checkCardTable(Class cardType, ArrayList<Player> enemyPlayers, Deck deck) {
         for (Card card:this.cardsOnTable) {
             if(cardType.isInstance(card)) {
-                return card.receivePlay(this, deck);
+                return card.receivePlay(this, enemyPlayers, deck);
             }
-        }
-        if(cardType == Prison.class) {
-            return true;
         }
         return false;
     }
-    public boolean checkCardTable(Class cardType) {
-        for (Card card:this.cardsOnTable) {
-            if(cardType.isInstance(card)) {
-                return true;
+
+    public Player nextPlayer(ArrayList<Player> players) {
+        int index = players.indexOf(this);
+        Player nextPlayer;
+
+        do {
+            index++;
+            if(index >= players.size()) {
+                index = 0;
             }
-        }
-        return false;
+            nextPlayer = players.get(index);
+        } while (!(nextPlayer.isAlive()));
+
+        return nextPlayer;
+    }
+
+    public Player prevPlayer(ArrayList<Player> players) {
+        int index = players.indexOf(this);
+        Player prevPlayer;
+
+        do {
+            index--;
+            if(index < 0) {
+                index = (players.size()-1);
+            }
+            prevPlayer = players.get(index);
+        } while (!(prevPlayer.isAlive()));
+
+        return prevPlayer;
     }
 
     public void useCard(int cardIndex, ArrayList<Player> enemyPlayers, Deck deck) {

@@ -1,6 +1,10 @@
 package sk.stuba.fei.uim.oop.deck;
 
 import sk.stuba.fei.uim.oop.cards.*;
+import sk.stuba.fei.uim.oop.cards.blue.Barrel;
+import sk.stuba.fei.uim.oop.cards.blue.Dynamite;
+import sk.stuba.fei.uim.oop.cards.blue.Prison;
+import sk.stuba.fei.uim.oop.cards.brown.*;
 import sk.stuba.fei.uim.oop.game.Game;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.TxtDef;
@@ -12,7 +16,7 @@ import java.util.Random;
 public class Deck {
     private ArrayList<Card> deck;
     private ArrayList<Card> discardPile;
-    private String statusMessage;
+    private String gameStatusMessage;
 
     public Deck(Game game) {
         Random randomGenerator = new Random();
@@ -36,7 +40,7 @@ public class Deck {
         cards.add(new Indians());
         cards.add(new Barrel(randomGenerator));
         cards.add(new Barrel(randomGenerator));
-        cards.add(new Dynamite(randomGenerator, game));
+        cards.add(new Dynamite(randomGenerator));
         cards.add(new Prison(randomGenerator));
         cards.add(new Prison(randomGenerator));
         cards.add(new Prison(randomGenerator));
@@ -45,16 +49,16 @@ public class Deck {
 
         this.deck = cards;
         this.discardPile = new ArrayList<>();
-        this.statusMessage = "";
+        this.gameStatusMessage = "";
     }
 
     public String getStatusMessage() {
-        String outString = this.statusMessage;
-        this.statusMessage = "";
+        String outString = this.gameStatusMessage;
+        this.gameStatusMessage = "";
         return outString;
     }
     public void setStatusMessage(String message) {
-        this.statusMessage += message + "\n";
+        this.gameStatusMessage += message + "\n";
     }
 
     public ArrayList<Card> drawCards(int numberOfCards) {
@@ -93,5 +97,15 @@ public class Deck {
     public void playerDeath(Player player) {
         this.discardCard(player.removeCardOnTable());
         this.discardCard(player.removeCardsOnHand());
+    }
+
+
+
+    // Debug Only
+    public int getNumberOfCardsInDeck(){
+        return this.deck.size();
+    }
+    public int getNumberOfCardsInDiscardPile(){
+        return this.discardPile.size();
     }
 }

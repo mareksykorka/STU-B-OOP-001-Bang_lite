@@ -1,12 +1,14 @@
-package sk.stuba.fei.uim.oop.cards;
+package sk.stuba.fei.uim.oop.cards.brown;
 
+import sk.stuba.fei.uim.oop.cards.blue.Barrel;
+import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.TxtDef;
 
 import java.util.ArrayList;
 
-public class Bang extends Card {
+public class Bang extends BrownCard {
     private static final String CARD_NAME = "Bang";
 
     public Bang() {
@@ -14,12 +16,7 @@ public class Bang extends Card {
     }
 
     @Override
-    public String getName() {
-        return TxtDef.ANSI_DARK_YELLOW + super.getName() + TxtDef.ANSI_RESET;
-    }
-
-    @Override
-    public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
+    public void play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
         deck.discardCard(activePlayer.removeCardsOnHand(this));
         String options = "";
         for(int i = 0; i < enemyPlayers.size(); i++) {
@@ -27,11 +24,11 @@ public class Bang extends Card {
         }
         Player targetPlayer = this.chooseTarget(enemyPlayers, options, "Who do you want to shoot using " + this.getName() + " ");
 
-        if(targetPlayer.checkCardTable(Barrel.class, deck)) {
-            return true;
+        if(targetPlayer.checkCardTable(Barrel.class, enemyPlayers, deck)) {
+            return;
         }
-        if(targetPlayer.checkCardHand(Missed.class, deck)) {
-            return true;
+        if(targetPlayer.checkCardHand(Missed.class, enemyPlayers,deck)) {
+            return;
         }
 
         targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Life lost.");
@@ -40,10 +37,10 @@ public class Bang extends Card {
             targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Died, Killed by " +
                     activePlayer.getName() + "'s "+ this.getName() + ".");
         }
-        return true;
+        return;
     }
     @Override
-    public boolean receivePlay(Player targetPlayer, Deck deck) {
+    public boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck) {
         deck.discardCard(targetPlayer.removeCardsOnHand(this));
         targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> INDIANS evaded by " + this.getName());
         return true;

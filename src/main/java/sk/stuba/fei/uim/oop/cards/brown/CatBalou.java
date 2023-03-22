@@ -1,5 +1,6 @@
-package sk.stuba.fei.uim.oop.cards;
+package sk.stuba.fei.uim.oop.cards.brown;
 
+import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.TxtDef;
@@ -7,20 +8,16 @@ import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
 
-public class CatBalou extends Card {
+public class CatBalou extends BrownCard {
     private static final String CARD_NAME = "CatBalou";
 
     public CatBalou() {
         super(CARD_NAME);
     }
 
-    @Override
-    public String getName() {
-        return TxtDef.ANSI_DARK_YELLOW + super.getName() + TxtDef.ANSI_RESET;
-    }
 
     @Override
-    public boolean play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
+    public void play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
         ArrayList<Player> playablePlayers = new ArrayList<>();
         for (Player player:enemyPlayers) {
             if((!player.getCardsOnHand().isEmpty()) || (!player.getCardsOnTable().isEmpty())){
@@ -29,7 +26,7 @@ public class CatBalou extends Card {
         }
         if(playablePlayers.isEmpty()){
             activePlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + " -> " + this.getName() + " can't be played now!");
-            return false;
+            return;
         }
 
         String options = "";
@@ -63,14 +60,14 @@ public class CatBalou extends Card {
                 targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " +  "Lost card.");
             } else {
                 targetPlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + " -> " + this.getName() + " can't be played now!");
-                return false;
+                return;
             }
         }
         deck.discardCard(activePlayer.removeCardsOnHand(this));
-        return true;
+        return;
     }
     @Override
-    public boolean receivePlay(Player targetPlayer, Deck deck) {
+    public boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck) {
         return true;
     }
 
