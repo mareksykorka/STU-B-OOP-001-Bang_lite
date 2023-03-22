@@ -5,5 +5,5 @@ import sk.stuba.fei.uim.oop.cards.Card;
 import java.util.ArrayList;
 
 public interface CardPlacement {
-    boolean canBePlacedOnTable(ArrayList<Card> table, Class cardType);
+    public boolean canBePlacedOnTable(ArrayList<Card> table, Class cardType);
 }

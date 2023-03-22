@@ -100,15 +100,4 @@ public class Deck {
         this.discardCard(player.removeCardsOnTable());
         this.discardCard(player.removeCardsOnHand());
     }
-
-
-    //TODO: Remove
-    // Debug Only
-    public int getNumberOfCardsInDeck() {
-        return this.deck.size();
-    }
-
-    public int getNumberOfCardsInDiscardPile() {
-        return this.discardPile.size();
-    }
 }

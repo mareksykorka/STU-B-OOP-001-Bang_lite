@@ -24,7 +24,7 @@ public abstract class Card {
     protected Player chooseTarget(ArrayList<Player> playablePlayers, String options, String question) {
         System.out.println("═════════════════ CHOOSE TARGET ═════════════════");
         if (playablePlayers.size() == 1) {
-            System.out.println("You have only one enemy player - automatically choosing player " + playablePlayers.get(0).getName());
+            System.out.println("Card can be played only on one player - automatically choosing player " + playablePlayers.get(0).getName());
             return playablePlayers.get(0);
         }
         System.out.print(options);

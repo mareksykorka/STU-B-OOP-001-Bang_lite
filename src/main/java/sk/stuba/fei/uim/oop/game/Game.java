@@ -80,7 +80,6 @@ public class Game {
     private void showPlayingField() {
         System.out.println(TxtDef.CLI_CLS + "══════════════════ GAME STATUS ══════════════════");
         System.out.print(this.deck.getStatusMessage());
-        this.debugCheck(); //TODO: Remove
         System.out.println("═════════════════════ TABLE ═════════════════════");
         for (int i = 0; i < this.players.size(); i++) {
             System.out.println(TxtDef.ANSI_BOLD + (i + 1) + ". " + this.players.get(i).getName() +
@@ -137,21 +136,5 @@ public class Game {
         System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "═════════════════════ WINNER ════════════════════\n" +
                 "The winner is " + winner + "\n" + TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW +
                 "═════════════════════ WINNER ════════════════════" + TxtDef.ANSI_RESET);
-    }
-
-
-    //TODO: Remove
-    private void debugCheck() {
-        int sumOfAllCards = this.deck.getNumberOfCardsInDeck() + this.deck.getNumberOfCardsInDiscardPile();
-        for (Player player : this.players) {
-            sumOfAllCards += player.getCardsOnHandNumber() + player.getCardsOnTableNumber();
-        }
-
-        if (sumOfAllCards != 71) {
-            System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_RED + "══════════════════════ DEBUG ════════════════════");
-            System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_RED + "Debug check: " + sumOfAllCards +
-                    " Deck: " + deck.getNumberOfCardsInDeck() +
-                    " Discard pile: " + deck.getNumberOfCardsInDiscardPile() + TxtDef.ANSI_RESET);
-        }
     }
 }

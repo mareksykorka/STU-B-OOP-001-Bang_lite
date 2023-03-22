@@ -44,6 +44,30 @@ public class Player {
         return TxtDef.ANSI_GREY + "DEAD" + TxtDef.ANSI_RESET;
     }
 
+    public void setCardsOnHand(ArrayList<Card> cards) {
+        this.cardsOnHand.addAll(cards);
+    }
+
+    public ArrayList<Card> getCardsOnHand() {
+        return this.cardsOnHand;
+    }
+
+    public int getCardsOnHandNumber() {
+        return this.cardsOnHand.size();
+    }
+
+    public void setCardsOnTable(Card card) {
+        this.cardsOnTable.add(card);
+    }
+
+    public ArrayList<Card> getCardsOnTable() {
+        return this.cardsOnTable;
+    }
+
+    public int getCardsOnTableNumber() {
+        return this.cardsOnTable.size();
+    }
+
     public void addLives(int numberOfLives) {
         for (int i = 0; i < numberOfLives; i++) {
             this.lives++;
@@ -60,10 +84,6 @@ public class Player {
         }
     }
 
-    public void setCardsOnHand(ArrayList<Card> cards) {
-        this.cardsOnHand.addAll(cards);
-    }
-
     public Card removeCardsOnHand(Card card) {
         this.cardsOnHand.remove(card);
         return card;
@@ -73,14 +93,6 @@ public class Player {
         ArrayList<Card> returnArr = new ArrayList<>(this.cardsOnHand);
         this.cardsOnHand.clear();
         return returnArr;
-    }
-
-    public ArrayList<Card> getCardsOnHand() {
-        return this.cardsOnHand;
-    }
-
-    public int getCardsOnHandNumber() {
-        return this.cardsOnHand.size();
     }
 
     public String cardsOnHandToString() {
@@ -95,10 +107,6 @@ public class Player {
         return outString;
     }
 
-    public void setCardsOnTable(Card card) {
-        this.cardsOnTable.add(card);
-    }
-
     public Card removeCardsOnTable(Card card) {
         this.cardsOnTable.remove(card);
         return card;
@@ -108,14 +116,6 @@ public class Player {
         ArrayList<Card> returnArr = new ArrayList<>(this.cardsOnTable);
         this.cardsOnTable.clear();
         return returnArr;
-    }
-
-    public ArrayList<Card> getCardsOnTable() {
-        return this.cardsOnTable;
-    }
-
-    public int getCardsOnTableNumber() {
-        return this.cardsOnTable.size();
     }
 
     public String cardsOnTableToString() {
