@@ -19,15 +19,14 @@ public class Indians extends BrownCard {
         deck.discardCard(activePlayer.removeCardsOnHand(this));
         for (Player targetPlayer:enemyPlayers) {
             if(!targetPlayer.checkCardHand(Bang.class,enemyPlayers,deck)) {
-                targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Life lost.");
+                deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Life lost.");
                 targetPlayer.removeLives(1);
                 if(!targetPlayer.isAlive()){
-                    targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Died, Killed by " +
+                    deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Died, Killed by " +
                             activePlayer.getName() + "'s "+ this.getName() + ".");
                 }
             }
         }
-        return;
     }
     @Override
     public boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck) {

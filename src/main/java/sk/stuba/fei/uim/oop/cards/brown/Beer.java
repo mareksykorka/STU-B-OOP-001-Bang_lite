@@ -17,9 +17,8 @@ public class Beer extends BrownCard {
     @Override
     public void play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
         deck.discardCard(activePlayer.removeCardsOnHand(this));
-        activePlayer.setStatusMessage(TxtDef.CLI_INFO + activePlayer.getName() + " -> Life gained.");
+        deck.setStatusMessage(TxtDef.CLI_INFO + activePlayer.getName() + " -> Life gained.");
         activePlayer.addLives(1);
-        return;
     }
     @Override
     public boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck) {

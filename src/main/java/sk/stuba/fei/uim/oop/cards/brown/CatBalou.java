@@ -25,7 +25,7 @@ public class CatBalou extends BrownCard {
             }
         }
         if(playablePlayers.isEmpty()){
-            activePlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + " -> " + this.getName() + " can't be played now!");
+            deck.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + " -> " + this.getName() + " can't be played now!");
             return;
         }
 
@@ -43,28 +43,27 @@ public class CatBalou extends BrownCard {
         if(targetTable.isEmpty()) {
             System.out.println(targetPlayer.getName() + " has no cards on table, hand chosen automatically.");
             deck.discardCard(targetPlayer.removeCardsOnHand(this.pickCard(targetPlayer.getCardsOnHand())));
-            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " +  "Lost card.");
+            deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " +  "Lost card.");
         } else if(targetHand.isEmpty()) {
             System.out.println(targetPlayer.getName() + " has no cards on hand, table chosen automatically.");
             targetPlayer.showCardsOnTable();
             deck.discardCard(targetPlayer.removeCardOnTable(this.pickCard(targetPlayer.getCardsOnTable())));
-            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " +  "Lost card.");
+            deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " +  "Lost card.");
         } else {
             char charInput = ZKlavesnice.readChar("Do you want to pick a card from " + targetPlayer.getName() + "'s Hand or Table ? (T)able/(H)and");
             if(Character.toLowerCase(charInput) == 'h'){
                 deck.discardCard(targetPlayer.removeCardsOnHand(this.pickCard(targetPlayer.getCardsOnHand())));
-                targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " +  "Lost card.");
+                deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " +  "Lost card.");
             } else if(charInput == 'T' || charInput == 't'){
                 targetPlayer.showCardsOnTable();
                 deck.discardCard(targetPlayer.removeCardOnTable(this.pickCard(targetPlayer.getCardsOnTable())));
-                targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " +  "Lost card.");
+                deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " +  "Lost card.");
             } else {
-                targetPlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + " -> " + this.getName() + " can't be played now!");
+                deck.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + " -> " + this.getName() + " can't be played now!");
                 return;
             }
         }
         deck.discardCard(activePlayer.removeCardsOnHand(this));
-        return;
     }
     @Override
     public boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck) {

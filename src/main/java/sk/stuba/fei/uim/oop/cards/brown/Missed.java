@@ -16,13 +16,12 @@ public class Missed extends BrownCard {
 
     @Override
     public void play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
-        activePlayer.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + " -> " + this.getName() + " is non-playable Card!");
-        return;
+        deck.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + " -> " + this.getName() + " is non-playable Card!");
     }
     @Override
     public boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck) {
         deck.discardCard(targetPlayer.removeCardsOnHand(this));
-        targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> BANG evaded by " + this.getName());
+        deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> BANG evaded by " + this.getName());
         return true;
     }
 }

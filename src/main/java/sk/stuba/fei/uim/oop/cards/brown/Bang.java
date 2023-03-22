@@ -22,7 +22,7 @@ public class Bang extends BrownCard {
         for(int i = 0; i < enemyPlayers.size(); i++) {
             options += (i + 1) + ". " + enemyPlayers.get(i).getName() + " " + enemyPlayers.get(i).isAliveToString() + "\n";
         }
-        Player targetPlayer = this.chooseTarget(enemyPlayers, options, "Who do you want to shoot using " + this.getName() + " ");
+        Player targetPlayer = this.chooseTarget(enemyPlayers, options, "Who do you want to shoot using " + this.getName());
 
         if(targetPlayer.checkCardTable(Barrel.class, enemyPlayers, deck)) {
             return;
@@ -31,18 +31,17 @@ public class Bang extends BrownCard {
             return;
         }
 
-        targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Life lost.");
+        deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Life lost.");
         targetPlayer.removeLives(1);
         if(!targetPlayer.isAlive()) {
-            targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Died, Killed by " +
+            deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Died, Killed by " +
                     activePlayer.getName() + "'s "+ this.getName() + ".");
         }
-        return;
     }
     @Override
     public boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck) {
         deck.discardCard(targetPlayer.removeCardsOnHand(this));
-        targetPlayer.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> INDIANS evaded by " + this.getName());
+        deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> INDIANS evaded by " + this.getName());
         return true;
     }
 }

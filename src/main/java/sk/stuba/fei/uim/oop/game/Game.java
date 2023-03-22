@@ -15,21 +15,21 @@ public class Game {
 
     public Game() {
         System.out.println("══════════════════ BANG \"Lite\" ══════════════════\n" +
-                            "Welcome to the BANG \"Lite\",\n" +
-                            "Goal of the game is to be the last one alive.\n" +
-                            "═════════════════════════════════════════════════");
+                "Welcome to the BANG \"Lite\",\n" +
+                "Goal of the game is to be the last one alive.\n" +
+                "═════════════════════════════════════════════════");
         int playersCount = 0;
-        while(playersCount < 2 || playersCount  > 4){
+        while (playersCount < 2 || playersCount > 4) {
             playersCount = ZKlavesnice.readInt("How many players will be playing ? (2-4)");
-            if(playersCount < 2 || playersCount  > 4){
+            if (playersCount < 2 || playersCount > 4) {
                 System.out.println("You've entered a wrong number of players, Try Again.");
             }
         }
         this.deck = new Deck(this);
 
         ArrayList<Player> newPlayers = new ArrayList<>();
-        for(int i = 0; i < playersCount; i++){
-            newPlayers.add(new Player(ZKlavesnice.readString("What is the name of Player No."+(i+1)).trim(), deck));
+        for (int i = 0; i < playersCount; i++) {
+            newPlayers.add(new Player(ZKlavesnice.readString("What is the name of Player No." + (i + 1)).trim(), deck));
             newPlayers.get(i).setCardsOnHand(this.deck.drawCards(4));
         }
         this.players = new ArrayList<>(newPlayers);
@@ -40,30 +40,32 @@ public class Game {
     private ArrayList<Player> getEnemyPlayers() {
         ArrayList<Player> alivePlayers = new ArrayList<>();
         for (Player player : this.players) {
-            if(player.isAlive() && !player.equals(this.activePlayer)) {
+            if (player.isAlive() && !player.equals(this.activePlayer)) {
                 alivePlayers.add(player);
             }
         }
         return alivePlayers;
     }
+
     private int getNumberOfAlivePlayers() {
         ArrayList<Player> alivePlayers = new ArrayList<>();
         for (Player player : this.players) {
-            if(player.isAlive()) {
+            if (player.isAlive()) {
                 alivePlayers.add(player);
             }
         }
         return alivePlayers.size();
     }
+
     private int getNumberOfAllPlayers() {
         return this.players.size();
     }
 
     private void gameLoop() {
-        while(this.getNumberOfAlivePlayers() > 1) {
+        while (this.getNumberOfAlivePlayers() > 1) {
             this.activePlayer.checkCardTable(Dynamite.class, this.players, this.deck);
-            if(this.activePlayer.isAlive()) {
-                if(!this.activePlayer.checkCardTable(Prison.class, this.players, this.deck)) {
+            if (this.activePlayer.isAlive()) {
+                if (!this.activePlayer.checkCardTable(Prison.class, this.players, this.deck)) {
                     this.activePlayer.setCardsOnHand(this.deck.drawCards(2));
                     this.playCards();
                     this.throwCards();
@@ -77,16 +79,13 @@ public class Game {
 
     private void showPlayingField() {
         System.out.println(TxtDef.CLI_CLS + "══════════════════ GAME STATUS ══════════════════");
-        for (Player player : this.players) {
-            System.out.print(player.getStatusMessage());
-        }
         System.out.print(this.deck.getStatusMessage());
         this.debugCheck();
         System.out.println("═════════════════════ TABLE ═════════════════════");
-        for(int i = 0; i < this.getNumberOfAllPlayers(); i++) {
-            System.out.println(TxtDef.ANSI_BOLD + (i+1) + ". " + this.players.get(i).getName() +
+        for (int i = 0; i < this.getNumberOfAllPlayers(); i++) {
+            System.out.println(TxtDef.ANSI_BOLD + (i + 1) + ". " + this.players.get(i).getName() +
                     TxtDef.ANSI_BOLD + " " + this.players.get(i).isAliveToString());
-            if(this.players.get(i).isAlive()) {
+            if (this.players.get(i).isAlive()) {
                 System.out.println("\t--- Hand ---");
                 System.out.println("\tCards on hand: " + this.players.get(i).getCardsOnHandNumber());
                 System.out.print("\t--- Table ---\n" + this.players.get(i).showCardsOnTable());
@@ -98,23 +97,25 @@ public class Game {
         System.out.println("You have these cards on the hand:");
         System.out.print(this.activePlayer.cardsOnHandToString());
     }
+
     private void playCards() {
         int input;
         do {
             this.showPlayingField();
             input = ZKlavesnice.readInt("What card you want to play? If you want to end your turn just write '0'.");
             if (input != 0) {
-                if(((input-1) >= 0) && ((input-1) < this.activePlayer.getCardsOnHandNumber())) {
+                if (((input - 1) >= 0) && ((input - 1) < this.activePlayer.getCardsOnHandNumber())) {
 
-                    this.activePlayer.useCard((input-1), this.getEnemyPlayers(), this.deck);
+                    this.activePlayer.useCard((input - 1), this.getEnemyPlayers(), this.deck);
                 } else {
                     deck.setStatusMessage(TxtDef.CLI_WARNING + "You don't have the card " + input + "! Try Again!");
                 }
             }
-        } while ((this.getNumberOfAlivePlayers() > 1) && (input!=0) && (this.activePlayer.getCardsOnHandNumber()!=0));
+        } while ((this.getNumberOfAlivePlayers() > 1) && (input != 0) && (this.activePlayer.getCardsOnHandNumber() != 0));
     }
+
     private void throwCards() {
-        if(this.getNumberOfAlivePlayers() > 1) {
+        if (this.getNumberOfAlivePlayers() > 1) {
             while (!(this.activePlayer.isTurnEndAllowed())) {
                 this.showPlayingField();
                 int input = ZKlavesnice.readInt("What card do you want to throw away?");
@@ -126,10 +127,11 @@ public class Game {
             }
         }
     }
+
     private void showWinner() {
         String winner = "";
         for (Player player : this.players) {
-            if(player.isAlive()) {
+            if (player.isAlive()) {
                 winner = player.getName();
             }
         }
@@ -140,13 +142,13 @@ public class Game {
 
     private void debugCheck() {
         int sumOfAllCards = this.deck.getNumberOfCardsInDeck() + this.deck.getNumberOfCardsInDiscardPile();
-        for (Player player:this.players) {
+        for (Player player : this.players) {
             sumOfAllCards += player.getCardsOnHandNumber() + player.getCardsOnTableNumber();
         }
 
-        if(sumOfAllCards != 71) {
+        if (sumOfAllCards != 71) {
             System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_RED + "══════════════════════ DEBUG ════════════════════");
-            System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_RED +  "Debug check: " + sumOfAllCards +
+            System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_RED + "Debug check: " + sumOfAllCards +
                     " Deck: " + deck.getNumberOfCardsInDeck() +
                     " Discard pile: " + deck.getNumberOfCardsInDiscardPile() + TxtDef.ANSI_RESET);
         }
