@@ -1,6 +1,5 @@
 package sk.stuba.fei.uim.oop.cards.blue;
 
-import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.TxtDef;
@@ -26,7 +25,7 @@ public class Barrel extends BlueCard {
     }
 
     @Override
-    public boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck) {
+    public boolean receivePlay(Player targetPlayer, Deck deck) {
         if (this.checkChance((double) 1 / 4)) {
             deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> BANG evaded by " + this.getName());
             return true;

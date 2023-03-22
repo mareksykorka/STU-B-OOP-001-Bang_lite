@@ -19,16 +19,16 @@ public abstract class Card {
 
     public abstract void play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck);
 
-    public abstract boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck);
+    public abstract boolean receivePlay(Player targetPlayer, Deck deck);
 
-    protected Player chooseTarget(ArrayList<Player> playablePLayers, String options, String question) {
+    protected Player chooseTarget(ArrayList<Player> playablePlayers, String options, String question) {
         System.out.println("═════════════════ CHOOSE TARGET ═════════════════");
-        if (playablePLayers.size() == 1) {
-            System.out.println("You have only one enemy player - automatically choosing player " + playablePLayers.get(0).getName());
-            return playablePLayers.get(0);
+        if (playablePlayers.size() == 1) {
+            System.out.println("You have only one enemy player - automatically choosing player " + playablePlayers.get(0).getName());
+            return playablePlayers.get(0);
         }
         System.out.print(options);
-        return playablePLayers.get(this.pickIndex(question, playablePLayers.size()));
+        return playablePlayers.get(this.pickIndex(question, playablePlayers.size()));
     }
 
     protected int pickIndex(String message, int max) {

@@ -1,6 +1,5 @@
 package sk.stuba.fei.uim.oop.cards.brown;
 
-import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.TxtDef;
@@ -18,8 +17,9 @@ public class Missed extends BrownCard {
     public void play(Player activePlayer, ArrayList<Player> alivePlayers, Deck deck) {
         deck.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + " -> " + this.getName() + " is non-playable Card!");
     }
+
     @Override
-    public boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck) {
+    public boolean receivePlay(Player targetPlayer, Deck deck) {
         deck.discardCard(targetPlayer.removeCardsOnHand(this));
         deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> BANG evaded by " + this.getName());
         return true;

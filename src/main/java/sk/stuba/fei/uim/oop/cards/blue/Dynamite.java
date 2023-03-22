@@ -1,8 +1,6 @@
 package sk.stuba.fei.uim.oop.cards.blue;
 
-import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.deck.Deck;
-import sk.stuba.fei.uim.oop.game.Game;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.TxtDef;
 
@@ -12,8 +10,11 @@ import java.util.Random;
 public class Dynamite extends BlueCard {
     private static final String CARD_NAME = "Dynamite";
 
-    public Dynamite(Random randomGenerator) {
+    private ArrayList<Player> allPlayers;
+
+    public Dynamite(Random randomGenerator, ArrayList<Player> players) {
         super(CARD_NAME, randomGenerator);
+        this.allPlayers = players;
     }
 
     @Override
@@ -27,20 +28,20 @@ public class Dynamite extends BlueCard {
     }
 
     @Override
-    public boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck) {
+    public boolean receivePlay(Player targetPlayer, Deck deck) {
         if (this.checkChance((double) 1 / 8)) {
-            deck.discardCard(targetPlayer.removeCardOnTable(this));
+            deck.discardCard(targetPlayer.removeCardsOnTable(this));
             deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " + this.getName() + " exploded.");
             deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " + "3 Lives lost.");
-            targetPlayer.removeLives(3);
+            targetPlayer.removeLives(3, deck);
             if (!targetPlayer.isAlive()) {
                 deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> Died, Killed by " + this.getName() + ".");
             }
             return true;
         }
-        Player prevPlayer = targetPlayer.prevPlayer(alivePlayers);
+        Player prevPlayer = targetPlayer.prevPlayer(this.allPlayers);
         deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " + this.getName() + " moving to " + prevPlayer.getName());
-        prevPlayer.setCardsOnTable(targetPlayer.removeCardOnTable(this));
+        prevPlayer.setCardsOnTable(targetPlayer.removeCardsOnTable(this));
         return false;
     }
 }

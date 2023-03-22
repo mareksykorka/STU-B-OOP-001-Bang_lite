@@ -1,6 +1,5 @@
 package sk.stuba.fei.uim.oop.cards.blue;
 
-import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.TxtDef;
@@ -37,8 +36,8 @@ public class Prison extends BlueCard {
     }
 
     @Override
-    public boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck) {
-        deck.discardCard(targetPlayer.removeCardOnTable(this));
+    public boolean receivePlay(Player targetPlayer, Deck deck) {
+        deck.discardCard(targetPlayer.removeCardsOnTable(this));
         if (this.checkChance((double) 1 / 4)) {
             deck.setStatusMessage(TxtDef.CLI_INFO + targetPlayer.getName() + " -> " + this.getName() + " escaped.");
             return false;

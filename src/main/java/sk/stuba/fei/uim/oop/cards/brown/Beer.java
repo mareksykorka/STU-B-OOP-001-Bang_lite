@@ -1,6 +1,5 @@
 package sk.stuba.fei.uim.oop.cards.brown;
 
-import sk.stuba.fei.uim.oop.cards.Card;
 import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.TxtDef;
@@ -20,8 +19,9 @@ public class Beer extends BrownCard {
         deck.setStatusMessage(TxtDef.CLI_INFO + activePlayer.getName() + " -> Life gained.");
         activePlayer.addLives(1);
     }
+
     @Override
-    public boolean receivePlay(Player targetPlayer, ArrayList<Player> alivePlayers, Deck deck) {
+    public boolean receivePlay(Player targetPlayer, Deck deck) {
         return true;
     }
 }

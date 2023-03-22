@@ -1,11 +1,8 @@
 package sk.stuba.fei.uim.oop.deck;
 
 import sk.stuba.fei.uim.oop.cards.*;
-import sk.stuba.fei.uim.oop.cards.blue.Barrel;
-import sk.stuba.fei.uim.oop.cards.blue.Dynamite;
-import sk.stuba.fei.uim.oop.cards.blue.Prison;
+import sk.stuba.fei.uim.oop.cards.blue.*;
 import sk.stuba.fei.uim.oop.cards.brown.*;
-import sk.stuba.fei.uim.oop.game.Game;
 import sk.stuba.fei.uim.oop.player.Player;
 import sk.stuba.fei.uim.oop.utility.TxtDef;
 
@@ -18,7 +15,7 @@ public class Deck {
     private ArrayList<Card> discardPile;
     private String gameStatusMessage;
 
-    public Deck(Game game) {
+    public Deck(ArrayList<Player> players) {
         Random randomGenerator = new Random();
         ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
@@ -40,7 +37,7 @@ public class Deck {
         cards.add(new Indians());
         cards.add(new Barrel(randomGenerator));
         cards.add(new Barrel(randomGenerator));
-        cards.add(new Dynamite(randomGenerator));
+        cards.add(new Dynamite(randomGenerator, players));
         cards.add(new Prison(randomGenerator));
         cards.add(new Prison(randomGenerator));
         cards.add(new Prison(randomGenerator));
@@ -57,6 +54,7 @@ public class Deck {
         this.gameStatusMessage = "";
         return outString;
     }
+
     public void setStatusMessage(String message) {
         this.gameStatusMessage += message + "\n";
     }
@@ -64,8 +62,8 @@ public class Deck {
     public ArrayList<Card> drawCards(int numberOfCards) {
         ArrayList<Card> outputCards = new ArrayList<>();
         for (int i = 0; i < numberOfCards; i++) {
-            if(this.deck.isEmpty()) {
-                if(this.reffillDeck()) {
+            if (this.deck.isEmpty()) {
+                if (this.reffillDeck()) {
                     outputCards.add(this.deck.remove(0));
                 } else {
                     break;
@@ -76,6 +74,7 @@ public class Deck {
         }
         return outputCards;
     }
+
     private boolean reffillDeck() {
         if (!(this.discardPile.isEmpty())) {
             this.setStatusMessage(TxtDef.ANSI_BOLD + TxtDef.CLI_INFO + "Refilling deck, from the discard pile." + TxtDef.ANSI_RESET);
@@ -88,24 +87,28 @@ public class Deck {
                 "There are no more cards in deck nor discard pile." + TxtDef.ANSI_RESET);
         return false;
     }
+
     public void discardCard(Card card) {
         this.discardPile.add(card);
     }
+
     public void discardCard(ArrayList<Card> cards) {
         this.discardPile.addAll(cards);
     }
+
     public void playerDeath(Player player) {
-        this.discardCard(player.removeCardOnTable());
+        this.discardCard(player.removeCardsOnTable());
         this.discardCard(player.removeCardsOnHand());
     }
 
 
-
+    //TODO: Remove
     // Debug Only
-    public int getNumberOfCardsInDeck(){
+    public int getNumberOfCardsInDeck() {
         return this.deck.size();
     }
-    public int getNumberOfCardsInDiscardPile(){
+
+    public int getNumberOfCardsInDiscardPile() {
         return this.discardPile.size();
     }
 }

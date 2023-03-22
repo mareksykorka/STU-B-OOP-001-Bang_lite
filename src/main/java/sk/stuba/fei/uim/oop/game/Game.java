@@ -2,9 +2,10 @@ package sk.stuba.fei.uim.oop.game;
 
 import sk.stuba.fei.uim.oop.cards.blue.Dynamite;
 import sk.stuba.fei.uim.oop.cards.blue.Prison;
-import sk.stuba.fei.uim.oop.utility.*;
-import sk.stuba.fei.uim.oop.deck.*;
-import sk.stuba.fei.uim.oop.player.*;
+import sk.stuba.fei.uim.oop.deck.Deck;
+import sk.stuba.fei.uim.oop.player.Player;
+import sk.stuba.fei.uim.oop.utility.TxtDef;
+import sk.stuba.fei.uim.oop.utility.ZKlavesnice;
 
 import java.util.ArrayList;
 
@@ -16,35 +17,23 @@ public class Game {
     public Game() {
         System.out.println("══════════════════ BANG \"Lite\" ══════════════════\n" +
                 "Welcome to the BANG \"Lite\",\n" +
-                "Goal of the game is to be the last one alive.\n" +
+                "Goal of the game is to be the " + TxtDef.ANSI_BOLD + "last one alive.\n" + TxtDef.ANSI_RESET +
                 "═════════════════════════════════════════════════");
-        int playersCount = 0;
-        while (playersCount < 2 || playersCount > 4) {
-            playersCount = ZKlavesnice.readInt("How many players will be playing ? (2-4)");
-            if (playersCount < 2 || playersCount > 4) {
-                System.out.println("You've entered a wrong number of players, Try Again.");
-            }
-        }
-        this.deck = new Deck(this);
-
-        ArrayList<Player> newPlayers = new ArrayList<>();
-        for (int i = 0; i < playersCount; i++) {
-            newPlayers.add(new Player(ZKlavesnice.readString("What is the name of Player No." + (i + 1)).trim(), deck));
-            newPlayers.get(i).setCardsOnHand(this.deck.drawCards(4));
-        }
-        this.players = new ArrayList<>(newPlayers);
+        this.players = new ArrayList<>();
+        this.deck = new Deck(this.players);
+        this.initializePlayers();
         this.activePlayer = players.get(0);
         this.gameLoop();
     }
 
     private ArrayList<Player> getEnemyPlayers() {
-        ArrayList<Player> alivePlayers = new ArrayList<>();
+        ArrayList<Player> enemyPlayers = new ArrayList<>();
         for (Player player : this.players) {
             if (player.isAlive() && !player.equals(this.activePlayer)) {
-                alivePlayers.add(player);
+                enemyPlayers.add(player);
             }
         }
-        return alivePlayers;
+        return enemyPlayers;
     }
 
     private int getNumberOfAlivePlayers() {
@@ -57,15 +46,26 @@ public class Game {
         return alivePlayers.size();
     }
 
-    private int getNumberOfAllPlayers() {
-        return this.players.size();
+    private void initializePlayers() {
+        int playersCount = 0;
+        while (playersCount < 2 || playersCount > 4) {
+            playersCount = ZKlavesnice.readInt("How many players will be playing ? (2-4)");
+            if (playersCount < 2 || playersCount > 4) {
+                System.out.println("You've entered a wrong number of players. Try Again!");
+            }
+        }
+
+        for (int i = 0; i < playersCount; i++) {
+            this.players.add(new Player(ZKlavesnice.readString("What is the name of Player No." + (i + 1)).trim()));
+            this.players.get(i).setCardsOnHand(this.deck.drawCards(4));
+        }
     }
 
     private void gameLoop() {
         while (this.getNumberOfAlivePlayers() > 1) {
-            this.activePlayer.checkCardTable(Dynamite.class, this.players, this.deck);
+            this.activePlayer.checkCardTable(Dynamite.class, this.deck);
             if (this.activePlayer.isAlive()) {
-                if (!this.activePlayer.checkCardTable(Prison.class, this.players, this.deck)) {
+                if (!this.activePlayer.checkCardTable(Prison.class, this.deck)) {
                     this.activePlayer.setCardsOnHand(this.deck.drawCards(2));
                     this.playCards();
                     this.throwCards();
@@ -80,15 +80,15 @@ public class Game {
     private void showPlayingField() {
         System.out.println(TxtDef.CLI_CLS + "══════════════════ GAME STATUS ══════════════════");
         System.out.print(this.deck.getStatusMessage());
-        this.debugCheck();
+        this.debugCheck(); //TODO: Remove
         System.out.println("═════════════════════ TABLE ═════════════════════");
-        for (int i = 0; i < this.getNumberOfAllPlayers(); i++) {
+        for (int i = 0; i < this.players.size(); i++) {
             System.out.println(TxtDef.ANSI_BOLD + (i + 1) + ". " + this.players.get(i).getName() +
                     TxtDef.ANSI_BOLD + " " + this.players.get(i).isAliveToString());
             if (this.players.get(i).isAlive()) {
                 System.out.println("\t--- Hand ---");
                 System.out.println("\tCards on hand: " + this.players.get(i).getCardsOnHandNumber());
-                System.out.print("\t--- Table ---\n" + this.players.get(i).showCardsOnTable());
+                System.out.print("\t--- Table ---\n" + this.players.get(i).cardsOnTableToString());
             }
         }
         System.out.println("═════════════════ ACTIVE PLAYER ═════════════════");
@@ -102,10 +102,9 @@ public class Game {
         int input;
         do {
             this.showPlayingField();
-            input = ZKlavesnice.readInt("What card you want to play? If you want to end your turn just write '0'.");
+            input = ZKlavesnice.readInt("What card do you want to play? If you want to end your turn just write '0'.");
             if (input != 0) {
                 if (((input - 1) >= 0) && ((input - 1) < this.activePlayer.getCardsOnHandNumber())) {
-
                     this.activePlayer.useCard((input - 1), this.getEnemyPlayers(), this.deck);
                 } else {
                     deck.setStatusMessage(TxtDef.CLI_WARNING + "You don't have the card " + input + "! Try Again!");
@@ -135,11 +134,13 @@ public class Game {
                 winner = player.getName();
             }
         }
-        System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "═════════════════════ WINNER ════════════════════");
-        System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "The winner is " + winner);
-        System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "═════════════════════ WINNER ════════════════════");
+        System.out.println(TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW + "═════════════════════ WINNER ════════════════════\n" +
+                "The winner is " + winner + "\n" + TxtDef.ANSI_BOLD + TxtDef.ANSI_BRIGHT_YELLOW +
+                "═════════════════════ WINNER ════════════════════" + TxtDef.ANSI_RESET);
     }
 
+
+    //TODO: Remove
     private void debugCheck() {
         int sumOfAllCards = this.deck.getNumberOfCardsInDeck() + this.deck.getNumberOfCardsInDiscardPile();
         for (Player player : this.players) {

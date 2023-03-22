@@ -1,7 +1,6 @@
 package sk.stuba.fei.uim.oop.player;
 
 import sk.stuba.fei.uim.oop.cards.*;
-import sk.stuba.fei.uim.oop.cards.blue.Prison;
 import sk.stuba.fei.uim.oop.deck.Deck;
 import sk.stuba.fei.uim.oop.utility.TxtDef;
 
@@ -12,19 +11,21 @@ public class Player {
     private int lives;
     private ArrayList<Card> cardsOnHand;
     private ArrayList<Card> cardsOnTable;
-    private Deck deck;
 
-    public Player(String name, Deck deck) {
+    public Player(String name) {
         this.name = name;
         this.lives = 4;
         this.cardsOnHand = new ArrayList<>();
         this.cardsOnTable = new ArrayList<>();
-        this.deck = deck;
     }
 
     public String getName() {
-        return TxtDef.ANSI_BOLD + ((this.isAlive()) ? (TxtDef.ANSI_DARK_PURPLE) : (TxtDef.ANSI_GREY)) + "'" +
-                this.name + "'" + TxtDef.ANSI_RESET;
+        return TxtDef.ANSI_BOLD + ((this.isAlive()) ? (TxtDef.ANSI_DARK_PURPLE) : (TxtDef.ANSI_GREY)) +
+                "'" + this.name + "'" + TxtDef.ANSI_RESET;
+    }
+
+    public boolean isTurnEndAllowed() {
+        return (this.cardsOnHand.size() <= this.lives);
     }
 
     public boolean isAlive() {
@@ -32,7 +33,7 @@ public class Player {
     }
 
     public String isAliveToString() {
-        if (this.lives > 0) {
+        if (this.isAlive()) {
             String outString = TxtDef.ANSI_DARK_GREEN + "ALIVE " + TxtDef.ANSI_DARK_RED;
             for (int i = 0; i < this.lives; i++) {
                 outString += TxtDef.UNICODE_HEART;
@@ -43,22 +44,18 @@ public class Player {
         return TxtDef.ANSI_GREY + "DEAD" + TxtDef.ANSI_RESET;
     }
 
-    public boolean isTurnEndAllowed() {
-        return (this.cardsOnHand.size() <= this.lives);
-    }
-
     public void addLives(int numberOfLives) {
         for (int i = 0; i < numberOfLives; i++) {
             this.lives++;
         }
     }
 
-    public void removeLives(int numberOfLives) {
+    public void removeLives(int numberOfLives, Deck deck) {
         for (int i = 0; i < numberOfLives; i++) {
             this.lives--;
             if (this.lives <= 0) {
                 this.lives = 0;
-                this.deck.playerDeath(this);
+                deck.playerDeath(this);
             }
         }
     }
@@ -73,7 +70,7 @@ public class Player {
     }
 
     public ArrayList<Card> removeCardsOnHand() {
-        ArrayList<Card> returnArr = new ArrayList<Card>(this.cardsOnHand);
+        ArrayList<Card> returnArr = new ArrayList<>(this.cardsOnHand);
         this.cardsOnHand.clear();
         return returnArr;
     }
@@ -102,13 +99,13 @@ public class Player {
         this.cardsOnTable.add(card);
     }
 
-    public Card removeCardOnTable(Card card) {
+    public Card removeCardsOnTable(Card card) {
         this.cardsOnTable.remove(card);
         return card;
     }
 
-    public ArrayList<Card> removeCardOnTable() {
-        ArrayList<Card> returnArr = new ArrayList<Card>(this.cardsOnTable);
+    public ArrayList<Card> removeCardsOnTable() {
+        ArrayList<Card> returnArr = new ArrayList<>(this.cardsOnTable);
         this.cardsOnTable.clear();
         return returnArr;
     }
@@ -121,7 +118,7 @@ public class Player {
         return this.cardsOnTable.size();
     }
 
-    public String showCardsOnTable() {
+    public String cardsOnTableToString() {
         String outString = "";
         if (this.getCardsOnTableNumber() > 0) {
             for (int i = 0; i < this.getCardsOnTableNumber(); i++) {
@@ -133,19 +130,19 @@ public class Player {
         return outString;
     }
 
-    public boolean checkCardHand(Class cardType, ArrayList<Player> enemyPlayers, Deck deck) {
+    public boolean checkCardHand(Class cardType, Deck deck) {
         for (Card card : this.cardsOnHand) {
             if (cardType.isInstance(card)) {
-                return card.receivePlay(this, enemyPlayers, deck);
+                return card.receivePlay(this, deck);
             }
         }
         return false;
     }
 
-    public boolean checkCardTable(Class cardType, ArrayList<Player> enemyPlayers, Deck deck) {
+    public boolean checkCardTable(Class cardType, Deck deck) {
         for (Card card : this.cardsOnTable) {
             if (cardType.isInstance(card)) {
-                return card.receivePlay(this, enemyPlayers, deck);
+                return card.receivePlay(this, deck);
             }
         }
         return false;
