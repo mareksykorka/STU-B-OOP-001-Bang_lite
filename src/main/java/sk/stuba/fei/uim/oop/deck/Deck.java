@@ -59,26 +59,40 @@ public class Deck {
         this.gameStatusMessage += message + "\n";
     }
 
-    public ArrayList<Card> drawCards(int numberOfCards) {
+    public ArrayList<Card> drawCards(int numberOfCards, boolean mustHaveCards) {
         ArrayList<Card> outputCards = new ArrayList<>();
-        for (int i = 0; i < numberOfCards; i++) {
-            if (this.deck.isEmpty()) {
-                if (this.reffillDeck()) {
+
+        if (canDrawCards(numberOfCards, mustHaveCards)) {
+            for (int i = 0; i < numberOfCards; i++) {
+                if (this.checkReffillDeck()) {
                     outputCards.add(this.deck.remove(0));
                 } else {
                     break;
                 }
-            } else {
-                outputCards.add(this.deck.remove(0));
             }
         }
         return outputCards;
     }
 
-    private boolean reffillDeck() {
+    private boolean canDrawCards(int numberOfCards, boolean mustHaveCards) {
+        if (mustHaveCards) {
+            return (this.deck.size() + this.discardPile.size()) >= numberOfCards;
+        }
+        return true;
+    }
+
+    private boolean checkReffillDeck() {
+        if (this.deck.isEmpty()) {
+            return refillDeck();
+        }
+        return true;
+    }
+
+    private boolean refillDeck() {
         if (!(this.discardPile.isEmpty())) {
-            this.setStatusMessage(TxtDef.ANSI_BOLD + TxtDef.CLI_INFO + "Refilling deck, from the discard pile." + TxtDef.ANSI_RESET);
+            this.setStatusMessage(TxtDef.ANSI_BOLD + TxtDef.CLI_INFO + "Discard pile reshuffled." + TxtDef.ANSI_RESET);
             Collections.shuffle(this.discardPile);
+            this.setStatusMessage(TxtDef.ANSI_BOLD + TxtDef.CLI_INFO + "Refilling deck, from the discard pile." + TxtDef.ANSI_RESET);
             this.deck.addAll(this.discardPile);
             this.discardPile.clear();
             return true;
@@ -100,4 +114,5 @@ public class Deck {
         this.discardCard(player.removeCardsOnTable());
         this.discardCard(player.removeCardsOnHand());
     }
+
 }

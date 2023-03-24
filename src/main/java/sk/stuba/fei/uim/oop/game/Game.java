@@ -57,7 +57,7 @@ public class Game {
 
         for (int i = 0; i < playersCount; i++) {
             this.players.add(new Player(ZKlavesnice.readString("What is the name of Player No." + (i + 1)).trim()));
-            this.players.get(i).setCardsOnHand(this.deck.drawCards(4));
+            this.players.get(i).setCardsOnHand(this.deck.drawCards(4, false));
         }
     }
 
@@ -66,7 +66,7 @@ public class Game {
             this.activePlayer.checkCardTable(Dynamite.class, this.deck);
             if (this.activePlayer.isAlive()) {
                 if (!this.activePlayer.checkCardTable(Prison.class, this.deck)) {
-                    this.activePlayer.setCardsOnHand(this.deck.drawCards(2));
+                    this.activePlayer.setCardsOnHand(this.deck.drawCards(2, false));
                     this.playCards();
                     this.throwCards();
                 }

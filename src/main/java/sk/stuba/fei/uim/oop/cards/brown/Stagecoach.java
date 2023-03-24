@@ -16,10 +16,14 @@ public class Stagecoach extends BrownCard {
 
     @Override
     public void play(Player activePlayer, ArrayList<Player> enemyPlayers, Deck deck) {
-        ArrayList<Card> drawnCards = deck.drawCards(2);
-        deck.setStatusMessage(TxtDef.CLI_INFO + activePlayer.getName() + " -> " + drawnCards.size() + " cards drawn.");
-        deck.discardCard(activePlayer.removeCardsOnHand(this));
-        activePlayer.setCardsOnHand(drawnCards);
+        ArrayList<Card> drawnCards = deck.drawCards(2, true);
+        if (drawnCards.size() == 0) {
+            deck.setStatusMessage(TxtDef.CLI_WARNING + activePlayer.getName() + " -> " + this.getName() + " can't be played, there are not enough cards!");
+        } else {
+            deck.setStatusMessage(TxtDef.CLI_INFO + activePlayer.getName() + " -> " + drawnCards.size() + " cards drawn.");
+            deck.discardCard(activePlayer.removeCardsOnHand(this));
+            activePlayer.setCardsOnHand(drawnCards);
+        }
     }
 
     @Override
